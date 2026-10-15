@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="description" content="Suivi Santé : vos analyses biochimiques en graphiques, avec alerte rouge au-delà de 20 % des limites. Créée par Kamel Nasralli.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232A47C8'/%3E%3Cpath d='M4 17h6l3-8 5 15 3-7h7' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3Cmask id='m'%3E%3Crect width='32' height='32' fill='white'/%3E%3Ccircle cx='16' cy='6.5' r='8' fill='black'/%3E%3C/mask%3E%3C/defs%3E%3Crect width='32' height='32' rx='7' fill='%2317894A'/%3E%3Ccircle cx='16' cy='11' r='9.5' fill='white' mask='url(%23m)'/%3E%3Cpolygon fill='white' points='16,6.4 16.65,8.11 18.47,8.2 17.05,9.34 17.53,11.1 16,10.1 14.47,11.1 14.95,9.34 13.53,8.2 15.35,8.11'/%3E%3Crect x='15.1' y='19.5' width='1.8' height='9' fill='white'/%3E%3Crect x='11' y='28' width='10' height='1.8' rx='.9' fill='white'/%3E%3Cpath d='M11 27.2C11 24.6 21 25.4 21 23.2C21 21.2 11.8 22 12.6 20.2' fill='none' stroke='%2317894A' stroke-width='4.4' stroke-linecap='round'/%3E%3Cpath d='M11 27.2C11 24.6 21 25.4 21 23.2C21 21.2 11.8 22 12.6 20.2' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E">
 <style>
 :root{color-scheme:light;padding-block:env(safe-area-inset-top,0px) env(safe-area-inset-bottom,0px)}
 body{margin:0}
@@ -18,6 +18,7 @@ img{max-width:100%}
 :root{
   --bg:#F1F4F8; --surface:#FFFFFF; --surface-2:#E8EDF3; --ink:#0F1A26; --ink-2:#47566A; --line:#D3DBE5;
   --accent:#2A47C8; --accent-ink:#FFFFFF;
+  --brand:#17894A; --brand-ink:#FFFFFF;
   --ok:#136F48; --ok-bg:#DCF1E6; --ok-band:rgba(19,111,72,.10);
   --warn:#9A5600; --warn-bg:#FAEACB; --warn-band:rgba(214,140,10,.17);
   --crit:#BE271F; --crit-bg:#FADCD9; --crit-band:rgba(190,39,31,.13);
@@ -27,7 +28,7 @@ img{max-width:100%}
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     --bg:#0D141B; --surface:#151F29; --surface-2:#1D2935; --ink:#E7EDF3; --ink-2:#9DAEC0; --line:#2A3846;
-    --accent:#8AA3FF; --accent-ink:#0D141B;
+    --accent:#8AA3FF; --accent-ink:#0D141B; --brand:#3FBF7A; --brand-ink:#0D141B;
     --ok:#52D294; --ok-bg:#123828; --ok-band:rgba(82,210,148,.10);
     --warn:#F2B552; --warn-bg:#3A2B10; --warn-band:rgba(242,181,82,.14);
     --crit:#FF7C72; --crit-bg:#431B18; --crit-band:rgba(255,124,114,.15);
@@ -36,7 +37,7 @@ img{max-width:100%}
 }
 :root[data-theme="dark"]{
   --bg:#0D141B; --surface:#151F29; --surface-2:#1D2935; --ink:#E7EDF3; --ink-2:#9DAEC0; --line:#2A3846;
-  --accent:#8AA3FF; --accent-ink:#0D141B;
+  --accent:#8AA3FF; --accent-ink:#0D141B; --brand:#3FBF7A; --brand-ink:#0D141B;
   --ok:#52D294; --ok-bg:#123828; --ok-band:rgba(82,210,148,.10);
   --warn:#F2B552; --warn-bg:#3A2B10; --warn-band:rgba(242,181,82,.14);
   --crit:#FF7C72; --crit-bg:#431B18; --crit-band:rgba(255,124,114,.15);
@@ -170,6 +171,14 @@ tbody tr:last-child>*{border-bottom:0}
 .foot b{color:var(--ink);font-weight:600}
 .by{font-size:13px;color:var(--ink-2);margin-top:2px}
 .by b{color:var(--ink);font-weight:600}
+.brand{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:14px;align-items:center}
+.brand>:not(svg){grid-column:2}
+.logo{grid-column:1;grid-row:1 / span 3;width:56px;height:56px;display:block}
+.logo .bg{fill:var(--brand)}
+.logo .fg{fill:var(--brand-ink)}
+.logo .sn{fill:none;stroke:var(--brand-ink);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.logo .so{fill:none;stroke:var(--brand);stroke-width:4.4;stroke-linecap:round;stroke-linejoin:round}
+@media (max-width:420px){.logo{width:48px;height:48px}}
 .mt{margin-top:10px}
 .tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);overflow-x:auto}
 .tab{flex:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;background:transparent;padding:11px 16px;font-weight:600;color:var(--ink-2);cursor:pointer}
@@ -194,7 +203,17 @@ textarea.csvbox{width:100%;min-height:140px;margin-top:12px;padding:10px;border:
 
 <div class="page">
   <header class="top">
-    <div>
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 32 32" role="img" aria-label="Coupe et serpent de la pharmacie, avec croissant et étoile">
+        <defs><mask id="lg-m"><rect width="32" height="32" fill="#fff"/><circle cx="16" cy="6.5" r="8" fill="#000"/></mask></defs>
+        <rect class="bg" width="32" height="32" rx="7"/>
+        <circle class="fg" cx="16" cy="11" r="9.5" mask="url(#lg-m)"/>
+        <polygon class="fg" points="16,6.4 16.65,8.11 18.47,8.2 17.05,9.34 17.53,11.1 16,10.1 14.47,11.1 14.95,9.34 13.53,8.2 15.35,8.11"/>
+        <rect class="fg" x="15.1" y="19.5" width="1.8" height="9"/>
+        <rect class="fg" x="11" y="28" width="10" height="1.8" rx=".9"/>
+        <path class="so" d="M11 27.2C11 24.6 21 25.4 21 23.2C21 21.2 11.8 22 12.6 20.2"/>
+        <path class="sn" d="M11 27.2C11 24.6 21 25.4 21 23.2C21 21.2 11.8 22 12.6 20.2"/>
+      </svg>
       <h1>Suivi Santé</h1>
       <p class="sub" id="sub"></p>
       <p class="by">Créée par <b>Kamel Nasralli</b></p>
