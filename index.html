@@ -176,6 +176,29 @@ td.none{color:var(--ink-2)}
 tbody tr:last-child>*{border-bottom:0}
 .foot{font-size:12px;color:var(--ink-2);max-width:80ch;display:grid;gap:6px}
 .foot b{color:var(--ink);font-weight:600}
+.people{display:grid;gap:10px;padding:14px 16px;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+.people .msg{margin:0;min-height:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{min-height:40px;max-width:100%;padding:0 16px;border:1px solid var(--line);border-radius:999px;background:var(--bg);font-weight:600;cursor:pointer;overflow-wrap:anywhere}
+.chip:hover{border-color:var(--ink-2)}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.pactions{display:flex;flex-wrap:wrap;gap:0 18px}
+.link{border:0;background:transparent;padding:8px 0;min-height:40px;color:var(--accent);font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.link.dng{color:var(--crit)}
+.pform{display:flex;flex-wrap:wrap;gap:10px;align-items:end}
+.pform .field{flex:1 1 220px}
+.pconfirm{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:12px;border-radius:10px;background:var(--crit-bg)}
+.pconfirm span{flex:1 1 240px}
+.btn.danger{background:var(--crit);color:var(--surface)}
+.who-note{color:var(--ink-2);font-size:14px}
+.who-note b{color:var(--ink)}
+.for{font-weight:500;color:var(--ink-2)}
+.tline{margin-top:6px}
+.tform{margin-top:8px}
+.panel .pconfirm{margin-top:8px}
+.foot summary{cursor:pointer;font-weight:600;color:var(--ink)}
+.foot details ul{display:grid;gap:4px;margin-top:8px}
+.foot .vline b{color:var(--ink)}
 .by{font-size:13px;color:var(--ink-2);margin-top:2px}
 .by b{color:var(--ink);font-weight:600}
 .brand{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:14px;align-items:center}
@@ -223,7 +246,7 @@ textarea.csvbox{width:100%;min-height:140px;margin-top:12px;padding:10px;border:
       </svg>
       <h1>Suivi Santé</h1>
       <p class="sub" id="sub"></p>
-      <p class="by">Créée par <b>Kamel Nasralli</b></p>
+      <p class="by">Créée par <b>Kamel Nasralli</b> · version <span id="ver-head"></span></p>
     </div>
     <div class="rule" role="group" aria-label="Seuil d'alerte rouge">
       <span>Rouge au-delà de</span>
@@ -235,6 +258,27 @@ textarea.csvbox{width:100%;min-height:140px;margin-top:12px;padding:10px;border:
       <span>% de la limite</span>
     </div>
   </header>
+
+  <section class="people" aria-label="Personnes">
+    <h2 class="cap">Qui utilise l'application ?</h2>
+    <div class="chips" id="chips"></div>
+    <div class="pactions">
+      <button type="button" class="link" id="p-add">+ Ajouter une personne</button>
+      <button type="button" class="link" id="p-ren">Renommer</button>
+      <button type="button" class="link dng" id="p-del">Supprimer</button>
+    </div>
+    <form class="pform" id="pform" hidden novalidate>
+      <div class="field"><label for="p-name" id="p-label">Prénom ou nom</label><input id="p-name" type="text" maxlength="30" autocomplete="off"></div>
+      <button type="submit" class="btn">Enregistrer</button>
+      <button type="button" class="btn alt" id="p-cancel">Annuler</button>
+    </form>
+    <div class="pconfirm" id="pconfirm" hidden>
+      <span id="pc-text"></span>
+      <button type="button" class="btn danger" id="pc-yes">Supprimer</button>
+      <button type="button" class="btn alt" id="pc-no">Annuler</button>
+    </div>
+    <p class="msg" id="p-msg" role="status"></p>
+  </section>
 
   <div class="tabs" role="tablist" aria-label="Sections">
     <button type="button" class="tab" role="tab" id="tab-b-suivi" data-tab="suivi" aria-selected="true" aria-controls="tab-suivi">Suivi</button>
@@ -253,7 +297,7 @@ textarea.csvbox{width:100%;min-height:140px;margin-top:12px;padding:10px;border:
   </div>
 
   <section class="panel" id="add">
-    <h2>Ajouter une mesure</h2>
+    <h2>Ajouter une mesure <span class="for" id="add-who"></span></h2>
     <form class="form" id="form" novalidate>
       <div class="field"><label for="f-test">Analyse</label><select id="f-test"></select></div>
       <div class="field"><label for="f-date">Date</label><input type="date" id="f-date"></div>
@@ -261,6 +305,22 @@ textarea.csvbox{width:100%;min-height:140px;margin-top:12px;padding:10px;border:
       <button type="submit" class="btn">Ajouter</button>
     </form>
     <p class="msg" id="form-msg" role="status"></p>
+    <div class="tline"><button type="button" class="link" id="t-add">+ Analyse absente de la liste ? Ajoutez-la</button></div>
+    <form class="form tform" id="tform" hidden novalidate>
+      <div class="field"><label for="t-name">Nom de l'analyse</label><input id="t-name" type="text" maxlength="40" autocomplete="off" placeholder="ex. Vitamine D"></div>
+      <div class="field"><label for="t-unit">Unité</label><input id="t-unit" type="text" maxlength="12" autocomplete="off" placeholder="ex. ng/mL"></div>
+      <div class="field"><label for="t-min">Limite basse (facultatif)</label><input id="t-min" type="text" inputmode="decimal" autocomplete="off" placeholder="ex. 30"></div>
+      <div class="field"><label for="t-max">Limite haute (facultatif)</label><input id="t-max" type="text" inputmode="decimal" autocomplete="off" placeholder="ex. 100"></div>
+      <div class="field"><label for="t-dec">Chiffres après la virgule</label><select id="t-dec"><option value="0">0</option><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option></select></div>
+      <button type="submit" class="btn" id="t-save">Ajouter l'analyse</button>
+      <button type="button" class="btn alt" id="t-cancel">Annuler</button>
+    </form>
+    <div class="pconfirm" id="tconfirm" hidden>
+      <span id="tc-text"></span>
+      <button type="button" class="btn danger" id="tc-yes">Supprimer</button>
+      <button type="button" class="btn alt" id="tc-no">Annuler</button>
+    </div>
+    <p class="msg" id="t-msg" role="status"></p>
     <p class="hint" id="store-note"></p>
   </section>
 
@@ -272,10 +332,11 @@ textarea.csvbox{width:100%;min-height:140px;margin-top:12px;padding:10px;border:
   </div>
 
   <div class="tabpanel" id="tab-data" role="tabpanel" aria-labelledby="tab-b-data" hidden>
+    <p class="who-note" id="io-who"></p>
     <div class="io">
       <section class="panel">
         <h2>Exporter</h2>
-        <p class="lead">Enregistrez toutes vos mesures : celles de votre fichier d'analyses et celles que vous avez ajoutées.</p>
+        <p class="lead">Enregistrez toutes les mesures de la personne choisie en haut de la page.</p>
         <div class="actions">
           <button type="button" class="btn" id="exp-csv">Exporter en CSV</button>
           <button type="button" class="btn alt" id="exp-json">Sauvegarde JSON</button>
@@ -289,7 +350,7 @@ textarea.csvbox{width:100%;min-height:140px;margin-top:12px;padding:10px;border:
       </section>
       <section class="panel">
         <h2>Importer</h2>
-        <p class="lead">Ajoutez des mesures depuis un fichier CSV ou JSON. Les mesures déjà présentes sont ignorées.</p>
+        <p class="lead">Ajoutez des mesures à la personne choisie, depuis un fichier CSV ou JSON. Les mesures déjà présentes sont ignorées.</p>
         <div class="file">
           <label for="imp-file" class="hint">Choisir un fichier (.csv ou .json)</label>
           <input type="file" id="imp-file" accept=".csv,.json,.txt,text/csv,application/json">
@@ -297,15 +358,25 @@ textarea.csvbox{width:100%;min-height:140px;margin-top:12px;padding:10px;border:
         <pre class="ex">analyse;date;valeur
 Glycémie;2026-10-12;1,12
 HbA1c;12/10/2026;6,9</pre>
-        <p class="hint mt">Dates : AAAA-MM-JJ ou JJ/MM/AAAA. Décimale : virgule ou point. Analyses reconnues : Glycémie, HbA1c, Cholestérol total, HDL, LDL, Triglycérides, Créatinine, Acide urique.</p>
+        <p class="hint mt">Dates : AAAA-MM-JJ ou JJ/MM/AAAA. Décimale : virgule ou point. Analyses reconnues : Glycémie, HbA1c, Cholestérol total, HDL, LDL, Triglycérides, Créatinine, Acide urique, et les analyses que vous avez ajoutées.</p>
         <div class="res" id="imp-res" role="status"></div>
       </section>
     </div>
   </div>
 
   <footer class="foot">
-    <p><b>Application créée par Kamel Nasralli.</b></p>
-    <p>Valeurs et limites reprises de votre fichier d'analyses. Les colonnes enregistrées comme dates dans ce fichier ont été reconstituées : août 2023, août 2025, 26 févr. 2026 et mai 2026. Vérifiez-les si besoin.</p>
+    <p class="vline"><b>Application créée par Kamel Nasralli.</b> Version <b id="ver-foot"></b>, <span id="ver-date"></span>.</p>
+    <details>
+      <summary>Historique des versions</summary>
+      <ul>
+        <li><b>1.4.0</b> (16 oct. 2026) : analyses supplémentaires, numéro de version.</li>
+        <li><b>1.3.0</b> (16 oct. 2026) : plusieurs personnes, un profil par nom.</li>
+        <li><b>1.2.0</b> (16 oct. 2026) : icône, installation sur l'écran d'accueil, usage hors connexion.</li>
+        <li><b>1.1.0</b> (15 oct. 2026) : onglet Import / Export en CSV et JSON.</li>
+        <li><b>1.0.0</b> (15 oct. 2026) : suivi des analyses, graphiques, alerte rouge au-delà de 20 % des limites.</li>
+      </ul>
+    </details>
+    <p>Valeurs et limites reprises de votre fichier d'analyses, rangées dans le premier profil. Les colonnes enregistrées comme dates dans ce fichier ont été reconstituées : août 2023, août 2025, 26 févr. 2026 et mai 2026. Vérifiez-les si besoin.</p>
     <p>Cette application compare vos résultats aux limites du laboratoire. Elle ne remplace pas l'avis de votre médecin.</p>
   </footer>
 </div>
@@ -340,13 +411,14 @@ const SEED={
  uric:[64.5,69.0,77.5,N,61.0,55.9,82.2,76.1,74.3,63.7,65.2]
 };
 const KEY='suivi-sante-v1';
+const APP_VERSION='1.4.0',APP_DATE='2026-10-16';
 const ST={ok:'Normal',warn:'Hors norme',crit:'Alerte'};
-const RANK={crit:0,warn:1,ok:2};
+const RANK={crit:0,warn:1,ok:2,none:3};
 const MONTHS=['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
-const S={sel:null,pick:null,pct:20,savedPct:20,extras:[],mode:'local',col:null,busy:false};
+const S={sel:null,pick:null,pct:20,extras:[],customs:[],mode:'local',col:null,busy:false,profiles:[],cur:'p1',pmode:null};
 let CH=null;
 
-const T=id=>TESTS.find(t=>t.id===id);
+const T=id=>allTests().find(t=>t.id===id);
 const thr=()=>S.pct/100;
 const fmt=(v,d)=>v.toLocaleString('fr-FR',{minimumFractionDigits:d,maximumFractionDigits:d});
 const ts=d=>Date.parse(d+'T00:00:00Z');
@@ -370,15 +442,15 @@ function why(t,j){
 }
 function readings(t){
   const out=[];
-  SEED[t.id].forEach((v,i)=>{if(v!=null)out.push({id:'s'+i,d:COLS[i][0],m:!!COLS[i][1],v:v,seed:true});});
-  S.extras.forEach(e=>{if(e.t===t.id)out.push({id:e.id,d:e.d,m:false,v:e.v,seed:false});});
+  if(curProf().seed&&SEED[t.id])SEED[t.id].forEach((v,i)=>{if(v!=null)out.push({id:'s'+i,d:COLS[i][0],m:!!COLS[i][1],v:v,seed:true});});
+  S.extras.forEach(e=>{if(e.t===t.id&&(e.p||'p1')===S.cur)out.push({id:e.id,d:e.d,m:false,v:e.v,seed:false});});
   out.sort((a,b)=>a.d<b.d?-1:a.d>b.d?1:0);
   return out;
 }
 function rowsData(){
-  return TESTS.map((t,i)=>{
-    const r=readings(t),last=r[r.length-1];
-    return {t:t,i:i,r:r,last:last,j:judge(t,last.v,thr())};
+  return tests().map((t,i)=>{
+    const r=readings(t),last=r.length?r[r.length-1]:null;
+    return {t:t,i:i,r:r,last:last,j:last?judge(t,last.v,thr()):{st:'none',rel:0,side:null}};
   }).sort((a,b)=>(RANK[a.j.st]-RANK[b.j.st])||(a.i-b.i));
 }
 
@@ -413,11 +485,20 @@ function spark(t,r){
 }
 
 function renderTop(rows){
-  let maxd='';
-  rows.forEach(x=>{if(x.last.d>maxd)maxd=x.last.d;});
-  const c=COLS.find(q=>q[0]===maxd);
-  $('sub').textContent='Dernier bilan : '+dlabel(maxd,c?c[1]:0)+'. '+TESTS.length+' indicateurs suivis depuis '+dlabel(COLS[0][0],1)+'.';
-  const n={ok:0,warn:0,crit:0};
+  const pr=curProf();
+  let best=null,first=null,count=0;
+  rows.forEach(x=>{
+    if(x.last){count++;if(!best||x.last.d>best.d)best=x.last;}
+    x.r.forEach(p=>{if(!first||p.d<first.d)first=p;});
+  });
+  $('sub').textContent=best
+    ?pr.name+' · Dernier bilan : '+dlabel(best.d,best.m)+'. '+count+' indicateur'+(count>1?'s':'')+' suivi'+(count>1?'s':'')+' depuis '+dlabel(first.d,first.m)+'.'
+    :pr.name+' · Aucune mesure pour l\'instant.';
+  if(!best){
+    $('summary').innerHTML='<p class="txt">Aucune mesure pour '+esc(pr.name)+'. Ajoutez la première dans le formulaire plus bas, ou importez un fichier depuis l\'onglet Import / Export.</p>';
+    return;
+  }
+  const n={ok:0,warn:0,crit:0,none:0};
   rows.forEach(x=>{n[x.j.st]++;});
   $('summary').innerHTML=
     '<span class="pill crit">'+n.crit+' en alerte</span>'
@@ -428,6 +509,7 @@ function renderTop(rows){
 function renderList(rows){
   $('list').innerHTML=rows.map(x=>{
     const t=x.t,cur=t.id===S.sel;
+    if(!x.last)return '<li><button type="button" class="ind" data-id="'+t.id+'"'+(cur?' aria-current="true"':'')+'><span class="i-name"><b>'+t.short+'</b><small>Aucune mesure</small></span><span></span><span class="i-val"><span class="num">–</span></span></button></li>';
     return '<li><button type="button" class="ind" data-id="'+t.id+'"'+(cur?' aria-current="true"':'')+'>'
      +'<span class="i-name"><b>'+t.short+'</b><small>'+dlabel(x.last.d,x.last.m)+'</small></span>'
      +spark(t,x.r)
@@ -438,10 +520,15 @@ function renderList(rows){
 
 function renderDetail(){
   const t=T(S.sel),r=readings(t),f=thr();
+  if(!r.length){
+    $('detail').innerHTML='<div class="d-head"><h2>'+t.full+'</h2><p class="lim">Valeur normale du laboratoire : <b>'+t.lim+'</b></p></div>'+tActions(t)+'<p class="note mt">Aucune mesure de '+t.short+' pour '+esc(curProf().name)+'. Ajoutez-en une avec le formulaire plus bas, ou importez un fichier.</p>';
+    return;
+  }
   const crit=r.filter(p=>judge(t,p.v,f).st==='crit').length;
   const vs=r.map(p=>p.v);
   $('detail').innerHTML=
     '<div class="d-head"><h2>'+t.full+'</h2><p class="lim">Valeur normale du laboratoire : <b>'+t.lim+'</b></p></div>'
+   +tActions(t)
    +'<div id="readout" class="readout"></div>'
    +'<div id="chart" class="chart" tabindex="0" role="group" aria-label="Graphique. Flèches gauche et droite pour changer de mesure."></div>'
    +'<ul class="zones">'
@@ -454,7 +541,7 @@ function renderDetail(){
    +'<div><dt>En alerte</dt><dd>'+crit+'</dd></div>'
    +'<div><dt>Plus bas</dt><dd>'+fmt(Math.min.apply(null,vs),t.dec)+'</dd></div>'
    +'<div><dt>Plus haut</dt><dd>'+fmt(Math.max.apply(null,vs),t.dec)+'</dd></div></dl>'
-   +(t.note?'<p class="note">'+t.note+'</p>':'')
+   +(t.note&&curProf().seed?'<p class="note">'+t.note+'</p>':'')
    +'<div class="d-sec"><h3 class="cap">Historique</h3><ul class="hist" id="hist"></ul></div>';
   drawReadout();drawChart();drawHist();
 }
@@ -548,11 +635,11 @@ function pick(id){S.pick=id;drawReadout();drawChart();drawHist();}
 
 function renderTable(){
   const keys=new Map();
-  COLS.forEach(c=>keys.set(c[0],c[1]));
-  S.extras.forEach(e=>{if(!keys.has(e.d))keys.set(e.d,0);});
+  tests().forEach(t=>readings(t).forEach(p=>{if(!keys.has(p.d))keys.set(p.d,p.m?1:0);}));
   const ds=Array.from(keys.keys()).sort(),f=thr();
+  if(!ds.length){$('grid').innerHTML='<tbody><tr><td class="none" style="text-align:left">Aucune mesure pour cette personne.</td></tr></tbody>';return;}
   let h='<thead><tr><th class="rowh" scope="col">Analyse</th>'+ds.map(d=>'<th scope="col">'+dlabel(d,keys.get(d))+'</th>').join('')+'</tr></thead><tbody>';
-  TESTS.forEach(t=>{
+  tests().forEach(t=>{
     const r=readings(t);
     h+='<tr><th class="rowh" scope="row">'+t.short+'<small>'+t.lim+'</small></th>';
     ds.forEach(d=>{
@@ -567,42 +654,122 @@ function renderTable(){
 
 function renderAll(){
   const rows=rowsData();
-  if(!S.sel)S.sel=rows[0].t.id;
-  renderTop(rows);renderList(rows);renderDetail();renderTable();
+  if(!S.sel||!rows.some(r=>r.t.id===S.sel))S.sel=rows[0].t.id;
+  renderProfiles();refreshTestSelect();renderTop(rows);renderList(rows);renderDetail();renderTable();
 }
 
 /* ---------- storage: private db when available, browser otherwise ---------- */
-function loadLocal(){
-  try{
-    const raw=localStorage.getItem(KEY);if(!raw)return;
-    const o=JSON.parse(raw);
-    if(Array.isArray(o.extras))S.extras=o.extras.filter(valid);
-    if(Number.isFinite(o.pct)){S.pct=clampPct(o.pct);S.savedPct=S.pct;}
-  }catch(e){}
+const KEY2='suivi-sante-v2',KEYCUR='suivi-sante-cur';
+function cleanText(s,n){return String(s==null?'':s).replace(/[<>&"]/g,'').replace(/\s+/g,' ').trim().slice(0,n);}
+const fmtLim=v=>v.toLocaleString('fr-FR',{maximumFractionDigits:3});
+function limText(min,max,unit){
+  const u=unit?' '+unit:'';
+  if(min!=null&&max!=null)return fmtLim(min)+' – '+fmtLim(max)+u;
+  if(max!=null)return '< '+fmtLim(max)+u;
+  return '> '+fmtLim(min)+u;
 }
-function saveLocal(){try{localStorage.setItem(KEY,JSON.stringify({extras:S.extras,pct:S.pct}));}catch(e){}}
+function cleanCustom(c){
+  if(!c||typeof c!=='object')return null;
+  const id=typeof c.id==='string'&&/^c_[A-Za-z0-9]{1,30}$/.test(c.id)?c.id:null;
+  const name=cleanText(c.name,40);
+  const min=Number.isFinite(c.min)&&c.min>0?c.min:null,max=Number.isFinite(c.max)&&c.max>0?c.max:null;
+  const dec=Number.isInteger(c.dec)&&c.dec>=0&&c.dec<=3?c.dec:2;
+  if(!id||!name||typeof c.p!=='string'||(min==null&&max==null)||(min!=null&&max!=null&&min>=max))return null;
+  return {id:id,p:c.p,name:name,unit:cleanText(c.unit,12),min:min,max:max,dec:dec};
+}
+function toTest(c){return {id:c.id,short:c.name,full:c.name,unit:c.unit,min:c.min,max:c.max,dec:c.dec,lim:limText(c.min,c.max,c.unit),custom:true};}
+function allTests(){return TESTS.concat(S.customs.map(toTest));}
+function tests(){return TESTS.concat(S.customs.filter(c=>c.p===S.cur).map(toTest));}
+let selSig='';
+function refreshTestSelect(){
+  const sel=$('f-test'),ts2=tests(),sig=ts2.map(t=>t.id+':'+t.full).join('|');
+  if(sig===selSig)return;
+  const prev=sel.value;
+  selSig=sig;
+  sel.innerHTML=ts2.map(t=>'<option value="'+t.id+'">'+esc(t.full)+'</option>').join('');
+  sel.value=ts2.some(t=>t.id===prev)?prev:(S.sel||ts2[0].id);
+  updateUnit();
+}
+function tActions(t){
+  return t.custom?'<div class="pactions"><button type="button" class="link" data-act="t-edit">Modifier l\'analyse</button><button type="button" class="link dng" data-act="t-del">Supprimer l\'analyse</button></div>':'';
+}
+function cleanName(s){return String(s==null?'':s).replace(/\s+/g,' ').trim().slice(0,30);}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function slug(s){return String(s).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'')||'profil';}
+function normProfiles(list,legacyPct){
+  const out=[];
+  (list||[]).forEach(p=>{
+    if(!p||typeof p.id!=='string'||!/^[A-Za-z0-9_\-]{1,40}$/.test(p.id))return;
+    const name=cleanName(p.name);
+    if(!name||out.some(q=>q.id===p.id))return;
+    out.push({id:p.id,name:name,pct:Number.isFinite(p.pct)?clampPct(p.pct):20,c:Number.isFinite(p.c)?p.c:0});
+  });
+  if(!out.some(p=>p.id==='p1'))out.push({id:'p1',name:'Moi',pct:Number.isFinite(legacyPct)?clampPct(legacyPct):20,c:0});
+  out.forEach(p=>{p.seed=p.id==='p1';});
+  out.sort((a,b)=>(a.seed?-1:b.seed?1:0)||(a.c-b.c));
+  return out;
+}
+function curProf(){return S.profiles.find(p=>p.id===S.cur)||S.profiles[0]||{id:'p1',name:'Moi',pct:20,seed:true,c:0};}
+function syncCur(){
+  if(S.profiles.length&&!S.profiles.some(p=>p.id===S.cur))S.cur=S.profiles[0].id;
+  S.pct=curProf().pct;
+  $('th').value=S.pct;
+}
+function loadLocal(){
+  let o=null,legacy=null;
+  try{
+    const raw=localStorage.getItem(KEY2);
+    if(raw)o=JSON.parse(raw);
+    else{
+      const old=localStorage.getItem(KEY);
+      if(old){const q=JSON.parse(old);o={extras:q.extras};legacy=q.pct;}
+    }
+  }catch(e){o=null;}
+  o=o||{};
+  S.profiles=normProfiles(o.profiles,legacy);
+  S.customs=(Array.isArray(o.customs)?o.customs:[]).map(c=>cleanCustom(c)).filter(c=>c&&S.profiles.some(p=>p.id===c.p));
+  S.extras=(Array.isArray(o.extras)?o.extras:[])
+    .map(e=>e&&typeof e==='object'?{id:e.id,t:e.t,d:e.d,v:e.v,p:typeof e.p==='string'?e.p:'p1'}:null)
+    .filter(valid)
+    .filter(e=>S.profiles.some(p=>p.id===e.p));
+}
+function saveLocal(){
+  try{localStorage.setItem(KEY2,JSON.stringify({profiles:S.profiles.map(p=>({id:p.id,name:p.name,pct:p.pct,c:p.c})),customs:S.customs,extras:S.extras}));}catch(e){}
+}
+function loadCur(){try{const c=localStorage.getItem(KEYCUR);if(c)S.cur=c;}catch(e){}}
+function saveCur(){try{localStorage.setItem(KEYCUR,S.cur);}catch(e){}}
+function loadAll(){loadLocal();loadCur();syncCur();}
 function setStoreNote(){
   $('store-note').textContent=S.mode==='db'
     ?'Les mesures ajoutées sont enregistrées sur votre compte et visibles par vous seul.'
     :'Les mesures ajoutées sont enregistrées dans ce navigateur seulement.';
 }
-let pctTimer=null;
-function persistPct(){
-  if(S.pct===S.savedPct)return;
-  S.savedPct=S.pct;
-  if(S.mode==='db'&&S.col){S.col.doc('settings').set({kind:'reglage',th:S.pct}).catch(function(){});}
-  else saveLocal();
+let pctTimer=null,pctPending=false,pctPid='p1';
+function profData(pr){return {kind:'profil',name:pr.name,pct:pr.pct,c:pr.c};}
+function persistProf(pid){
+  const pr=S.profiles.find(p=>p.id===pid);
+  if(!pr)return Promise.resolve();
+  if(S.mode==='db'&&S.col)return S.col.doc(pid).set(profData(pr));
+  saveLocal();
+  return Promise.resolve();
+}
+function flushPct(){
+  if(!pctPending)return;
+  clearTimeout(pctTimer);pctPending=false;
+  persistProf(pctPid).catch(function(){});
 }
 function setPct(p){
   if(!Number.isFinite(p))p=S.pct;
   S.pct=clampPct(p);$('th').value=S.pct;
+  const pr=curProf();pr.pct=S.pct;
   renderAll();
-  clearTimeout(pctTimer);pctTimer=setTimeout(persistPct,500);
+  clearTimeout(pctTimer);pctPending=true;pctPid=pr.id;
+  pctTimer=setTimeout(flushPct,500);
 }
 function msg(text,bad){const el=$('form-msg');el.textContent=text||'';el.className='msg'+(bad?' bad':'');}
 
 async function addExtra(rec){
-  if(S.mode==='db'&&S.col)await S.col.doc(rec.id).set({kind:'mesure',t:rec.t,d:rec.d,v:rec.v});
+  if(S.mode==='db'&&S.col)await S.col.doc(rec.id).set({kind:'mesure',t:rec.t,d:rec.d,v:rec.v,p:rec.p||'p1'});
   if(!S.extras.some(x=>x.id===rec.id))S.extras.push(rec);
   if(S.mode!=='db')saveLocal();
 }
@@ -615,15 +782,21 @@ async function removeExtra(id){
   renderAll();
 }
 function onSnap(snap){
-  const ex=[];let pct=null;
+  const rawM=[],rawC=[],profs=[];let legacy=null;
   snap.docs.forEach(doc=>{
     const x=doc.data();if(!x)return;
-    if(doc.id==='settings'){if(typeof x.th==='number')pct=clampPct(x.th);}
-    else if(x.kind==='mesure'){const rec={id:doc.id,t:x.t,d:x.d,v:x.v};if(valid(rec))ex.push(rec);}
+    if(doc.id==='settings'){if(typeof x.th==='number')legacy=clampPct(x.th);}
+    else if(x.kind==='profil'){profs.push({id:doc.id,name:x.name,pct:x.pct,c:x.c});}
+    else if(x.kind==='analyse'){rawC.push({id:doc.id,p:x.p,name:x.name,unit:x.unit,min:x.min,max:x.max,dec:x.dec});}
+    else if(x.kind==='mesure'){rawM.push({id:doc.id,t:x.t,d:x.d,v:x.v,p:typeof x.p==='string'?x.p:'p1'});}
   });
-  S.extras=ex;
-  if(pct!=null){S.pct=pct;S.savedPct=pct;if(document.activeElement!==$('th'))$('th').value=pct;}
-  if(S.pick&&!ex.some(e=>e.id===S.pick)&&!/^s\d+$/.test(S.pick))S.pick=null;
+  const np=normProfiles(profs,legacy);
+  if(pctPending){const o=curProf(),n=np.find(p=>p.id===o.id);if(n)n.pct=o.pct;}
+  S.profiles=np;
+  S.customs=rawC.map(c=>cleanCustom(c)).filter(c=>c&&np.some(p=>p.id===c.p));
+  S.extras=rawM.filter(valid).filter(e=>np.some(p=>p.id===e.p));
+  syncCur();
+  if(S.pick&&!S.extras.some(e=>e.id===S.pick)&&!/^s\d+$/.test(S.pick))S.pick=null;
   if(!S.busy)renderAll();
 }
 async function bootDb(){
@@ -636,7 +809,7 @@ async function bootDb(){
     if(!uid)return;
     S.col=db.collection('data/users/'+uid);
     S.mode='db';setStoreNote();
-    S.col.onSnapshot(onSnap,function(){S.mode='local';S.col=null;setStoreNote();loadLocal();renderAll();});
+    S.col.onSnapshot(onSnap,function(){S.mode='local';S.col=null;setStoreNote();loadAll();renderAll();});
   }catch(e){S.mode='local';S.col=null;setStoreNote();}
 }
 
@@ -653,6 +826,8 @@ $('list').addEventListener('click',e=>{
 });
 $('detail').addEventListener('click',e=>{
   const h=e.target.closest('[data-pid]');if(h){pick(h.dataset.pid);return;}
+  const a=e.target.closest('[data-act]');
+  if(a){if(a.dataset.act==='t-edit')openTForm(S.sel);else if(a.dataset.act==='t-del')askDeleteTest(S.sel);return;}
   const d=e.target.closest('[data-del]');if(d)removeExtra(d.dataset.del);
 });
 $('detail').addEventListener('pointerdown',e=>{
@@ -676,7 +851,7 @@ $('th-dec').addEventListener('click',()=>setPct(S.pct-1));
 $('th-inc').addEventListener('click',()=>setPct(S.pct+1));
 window.addEventListener('resize',()=>{requestAnimationFrame(drawChart);});
 
-function updateUnit(){const t=T($('f-test').value);$('f-unit').textContent=t?'('+t.unit+')':'';}
+function updateUnit(){const t=T($('f-test').value);$('f-unit').textContent=t&&t.unit?'('+t.unit+')':'';}
 $('f-test').addEventListener('change',updateUnit);
 $('form').addEventListener('submit',async e=>{
   e.preventDefault();
@@ -684,12 +859,179 @@ $('form').addEventListener('submit',async e=>{
   const v=Number(raw),t=T(id);
   if(!d){msg('Choisissez une date.',true);return;}
   if(!raw||!Number.isFinite(v)||v<=0){msg('Entrez une valeur numérique, par exemple 1,12.',true);return;}
-  const rec={id:'m_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),t:id,d:d,v:v};
+  const rec={id:'m_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),t:id,d:d,v:v,p:S.cur};
   try{await addExtra(rec);}catch(err){msg('Enregistrement impossible. Réessayez plus tard.',true);return;}
   S.sel=id;S.pick=rec.id;
   $('f-val').value='';
   renderAll();
-  msg('Mesure ajoutée : '+fmt(v,t.dec)+' '+t.unit+'. Statut : '+ST[judge(t,v,thr()).st]+'.',false);
+  msg('Mesure ajoutée pour '+curProf().name+' : '+fmt(v,t.dec)+' '+t.unit+'. Statut : '+ST[judge(t,v,thr()).st]+'.',false);
+});
+
+/* ---------- people ---------- */
+function pmsg(t,bad){const el=$('p-msg');el.textContent=t||'';el.className='msg'+(bad?' bad':'');}
+function renderProfiles(){
+  const pr=curProf();
+  $('chips').innerHTML=S.profiles.map(p=>'<button type="button" class="chip" data-prof="'+esc(p.id)+'" aria-pressed="'+(p.id===pr.id?'true':'false')+'">'+esc(p.name)+'</button>').join('');
+  $('p-del').hidden=!!pr.seed;
+  $('add-who').textContent='pour '+pr.name;
+  const w=$('io-who');w.textContent='';
+  w.appendChild(document.createTextNode('Les exports et imports concernent '));
+  const b=document.createElement('b');b.textContent=pr.name;w.appendChild(b);
+  w.appendChild(document.createTextNode('. Pour changer de personne, utilisez la liste en haut de la page.'));
+}
+function closePanels(){S.pmode=null;$('pform').hidden=true;$('pconfirm').hidden=true;$('tform').hidden=true;$('tconfirm').hidden=true;}
+function openForm(mode){
+  closePanels();pmsg('');
+  S.pmode=mode;
+  $('p-label').textContent=mode==='add'?'Prénom ou nom de la nouvelle personne':'Nouveau nom';
+  $('p-name').value=mode==='add'?'':curProf().name;
+  $('pform').hidden=false;$('p-name').focus();$('p-name').select();
+}
+function switchProf(id){
+  flushPct();closePanels();pmsg('');
+  S.cur=id;saveCur();
+  S.sel=null;S.pick=null;
+  syncCur();
+  renderAll();
+  msg('');
+}
+async function deleteProfile(pid){
+  const pr=S.profiles.find(p=>p.id===pid);
+  if(!pr||pr.seed)return;
+  const mine=S.extras.filter(e=>e.p===pid);
+  S.busy=true;
+  try{
+    if(S.mode==='db'&&S.col){
+      for(const e of mine)await S.col.doc(e.id).delete();
+      for(const c of S.customs.filter(c=>c.p===pid))await S.col.doc(c.id).delete();
+      await S.col.doc(pid).delete();
+    }
+  }catch(err){S.busy=false;pmsg('Suppression impossible. Réessayez plus tard.',true);return;}
+  S.busy=false;
+  S.extras=S.extras.filter(e=>e.p!==pid);
+  S.customs=S.customs.filter(c=>c.p!==pid);
+  S.profiles=S.profiles.filter(p=>p.id!==pid);
+  if(S.mode!=='db')saveLocal();
+  closePanels();
+  switchProf(S.profiles[0].id);
+  pmsg('Profil « '+pr.name+' » supprimé.');
+}
+$('chips').addEventListener('click',e=>{
+  const b=e.target.closest('[data-prof]');
+  if(b&&b.dataset.prof!==S.cur)switchProf(b.dataset.prof);
+});
+$('p-add').addEventListener('click',()=>openForm('add'));
+$('p-ren').addEventListener('click',()=>openForm('rename'));
+$('p-cancel').addEventListener('click',()=>{closePanels();pmsg('');});
+$('p-del').addEventListener('click',()=>{
+  const pr=curProf();if(pr.seed)return;
+  closePanels();pmsg('');
+  const n=S.extras.filter(x=>x.p===pr.id).length;
+  $('pc-text').textContent='Supprimer '+pr.name+(n?' et ses '+n+' mesure'+(n>1?'s':''):'')+' ? Cette action est définitive.';
+  $('pconfirm').hidden=false;$('pc-yes').focus();
+});
+$('pc-no').addEventListener('click',closePanels);
+$('pc-yes').addEventListener('click',()=>deleteProfile(S.cur));
+$('pform').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const name=cleanName($('p-name').value),mode=S.pmode,self=curProf().id;
+  if(!name){pmsg('Entrez un prénom ou un nom.',true);return;}
+  if(S.profiles.some(p=>p.id!==(mode==='rename'?self:'')&&p.name.toLowerCase()===name.toLowerCase())){pmsg('Ce nom existe déjà. Choisissez-en un autre.',true);return;}
+  if(mode==='rename'){
+    const pr=curProf(),old=pr.name;
+    pr.name=name;
+    try{await persistProf(pr.id);}catch(err){pr.name=old;pmsg('Enregistrement impossible. Réessayez plus tard.',true);return;}
+    closePanels();renderAll();pmsg('Nom modifié.');
+    return;
+  }
+  const np={id:'pf_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),name:name,pct:20,c:Date.now(),seed:false};
+  S.profiles.push(np);
+  try{await persistProf(np.id);}
+  catch(err){S.profiles=S.profiles.filter(p=>p.id!==np.id);pmsg('Enregistrement impossible. Réessayez plus tard.',true);return;}
+  switchProf(np.id);
+  pmsg('Profil « '+name+' » créé. Ajoutez sa première mesure plus bas.');
+});
+
+/* ---------- custom analyses ---------- */
+let tEditId=null;
+function tmsg(t,bad){const el=$('t-msg');el.textContent=t||'';el.className='msg'+(bad?' bad':'');}
+function showEl(el){
+  if(!el.scrollIntoView)return;
+  const calm=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  el.scrollIntoView({behavior:calm?'auto':'smooth',block:'center'});
+}
+async function saveCustom(rec){
+  if(S.mode==='db'&&S.col)await S.col.doc(rec.id).set({kind:'analyse',name:rec.name,unit:rec.unit,min:rec.min,max:rec.max,dec:rec.dec,p:rec.p});
+  const i=S.customs.findIndex(c=>c.id===rec.id);
+  if(i>=0)S.customs[i]=rec;else S.customs.push(rec);
+  if(S.mode!=='db')saveLocal();
+}
+async function deleteCustom(id){
+  const c=S.customs.find(x=>x.id===id);
+  if(!c)return;
+  const mine=S.extras.filter(e=>e.t===id);
+  S.busy=true;
+  try{
+    if(S.mode==='db'&&S.col){
+      for(const e of mine)await S.col.doc(e.id).delete();
+      await S.col.doc(id).delete();
+    }
+  }catch(err){S.busy=false;tmsg('Suppression impossible. Réessayez plus tard.',true);return;}
+  S.busy=false;
+  S.extras=S.extras.filter(e=>e.t!==id);
+  S.customs=S.customs.filter(x=>x.id!==id);
+  if(S.mode!=='db')saveLocal();
+  $('tconfirm').hidden=true;
+  S.sel=null;S.pick=null;
+  renderAll();
+  tmsg('Analyse « '+c.name+' » supprimée.');
+}
+function openTForm(id){
+  $('tconfirm').hidden=true;tmsg('');
+  tEditId=id||null;
+  const t=id?allTests().find(x=>x.id===id):null;
+  $('t-name').value=t?t.full:'';
+  $('t-unit').value=t?t.unit:'';
+  $('t-min').value=t&&t.min!=null?String(t.min).replace('.',','):'';
+  $('t-max').value=t&&t.max!=null?String(t.max).replace('.',','):'';
+  $('t-dec').value=String(t?t.dec:2);
+  $('t-save').textContent=t?'Enregistrer les changements':'Ajouter l\'analyse';
+  $('tform').hidden=false;
+  showEl($('tform'));$('t-name').focus();
+}
+function askDeleteTest(id){
+  const t=allTests().find(x=>x.id===id);
+  if(!t||!t.custom)return;
+  tEditId=id;
+  $('tform').hidden=true;tmsg('');
+  const n=S.extras.filter(e=>e.t===id).length;
+  $('tc-text').textContent='Supprimer l\'analyse '+t.full+(n?' et ses '+n+' mesure'+(n>1?'s':''):'')+' ? Cette action est définitive.';
+  $('tconfirm').hidden=false;showEl($('tconfirm'));$('tc-yes').focus();
+}
+$('t-add').addEventListener('click',()=>openTForm(null));
+$('t-cancel').addEventListener('click',()=>{$('tform').hidden=true;tmsg('');});
+$('tc-no').addEventListener('click',()=>{$('tconfirm').hidden=true;});
+$('tc-yes').addEventListener('click',()=>deleteCustom(tEditId));
+$('tform').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const name=cleanText($('t-name').value,40),unit=cleanText($('t-unit').value,12);
+  const rawMin=$('t-min').value.trim(),rawMax=$('t-max').value.trim();
+  const min=rawMin?parseNum(rawMin):null,max=rawMax?parseNum(rawMax):null;
+  const dec=Number($('t-dec').value);
+  if(!name){tmsg('Entrez le nom de l\'analyse.',true);return;}
+  if(!rawMin&&!rawMax){tmsg('Indiquez au moins une limite : basse, haute, ou les deux.',true);return;}
+  if((rawMin&&min==null)||(rawMax&&max==null)){tmsg('Les limites doivent être des nombres supérieurs à 0, par exemple 1,10.',true);return;}
+  if(min!=null&&max!=null&&min>=max){tmsg('La limite basse doit être plus petite que la limite haute.',true);return;}
+  const editing=!!tEditId;
+  if(tests().some(t=>t.id!==tEditId&&norm(t.full)===norm(name))){tmsg('Cette analyse existe déjà dans la liste.',true);return;}
+  const rec={id:tEditId||'c_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),p:S.cur,name:name,unit:unit,min:min,max:max,dec:Number.isInteger(dec)&&dec>=0&&dec<=3?dec:2};
+  try{await saveCustom(rec);}catch(err){tmsg('Enregistrement impossible. Réessayez plus tard.',true);return;}
+  tEditId=null;
+  $('tform').hidden=true;
+  S.sel=rec.id;S.pick=null;
+  renderAll();
+  $('f-test').value=rec.id;updateUnit();
+  tmsg(editing?'Analyse modifiée.':'Analyse « '+name+' » ajoutée. Choisissez-la dans la liste « Analyse » pour saisir une mesure.');
 });
 
 /* ---------- tabs ---------- */
@@ -713,7 +1055,7 @@ function todayIso(){const n=new Date();return n.getFullYear()+'-'+String(n.getMo
 function csvCell(v){const s=String(v);return /[;"\n\r]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;}
 function allRows(){
   const rows=[];
-  TESTS.forEach((t,i)=>readings(t).forEach(p=>rows.push({t:t,i:i,p:p})));
+  tests().forEach((t,i)=>readings(t).forEach(p=>rows.push({t:t,i:i,p:p})));
   rows.sort((a,b)=>(a.p.d<b.p.d?-1:a.p.d>b.p.d?1:0)||(a.i-b.i));
   return rows;
 }
@@ -724,15 +1066,17 @@ function buildCsv(){
 }
 function buildJson(){
   return JSON.stringify({
-    app:'suivi-sante',version:1,exporte:new Date().toISOString(),seuilPct:S.pct,
+    app:'suivi-sante',version:1,appVersion:APP_VERSION,personne:curProf().name,exporte:new Date().toISOString(),seuilPct:S.pct,
+    analyses:S.customs.filter(c=>c.p===S.cur).map(c=>({id:c.id,nom:c.name,unite:c.unit,min:c.min,max:c.max,decimales:c.dec})),
     mesures:allRows().map(x=>({analyse:x.t.id,date:x.p.d,valeur:x.p.v,unite:x.t.unit,origine:x.p.seed?'fichier':'ajout'}))
   },null,2);
 }
 function expMsg(t,bad){const el=$('exp-msg');el.textContent=t;el.className='msg'+(bad?' bad':'');}
 async function doExport(kind){
+  if(!allRows().length){expMsg('Aucune mesure à exporter pour '+curProf().name+'.',true);return;}
   const csv=kind==='csv';
   const body=csv?buildCsv():buildJson();
-  const name='suivi-sante-'+todayIso()+(csv?'.csv':'.json');
+  const name='suivi-sante-'+slug(curProf().name)+'-'+todayIso()+(csv?'.csv':'.json');
   const DL=await dlReady;
   if(DL){
     try{
@@ -768,8 +1112,7 @@ $('csv-copy').addEventListener('click',async()=>{
 
 /* ---------- import ---------- */
 const norm=s=>String(s).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');
-const NAMES={};
-TESTS.forEach(t=>{[t.id,t.short,t.full].forEach(n=>{NAMES[norm(n)]=t.id;});});
+function nameMap(){const m={};tests().forEach(t=>{[t.id,t.short,t.full].forEach(n=>{m[norm(n)]=t.id;});});return m;}
 function parseDate(s){
   s=String(s).trim();
   let y,mo,d,m;
@@ -826,7 +1169,7 @@ function readFile(f){
 async function importText(text,fileName){
   const res=$('imp-res');
   res.className='res';
-  let items=[],pct=null;
+  let items=[],pct=null,defs=[];
   try{
     if(/\.json$/i.test(fileName)||/^\s*[\[{]/.test(text)){
       const j=JSON.parse(text);
@@ -837,24 +1180,36 @@ async function importText(text,fileName){
         else items.push({line:i+1,name:null,date:null,val:null});
       });
       if(j&&!Array.isArray(j)&&Number.isFinite(j.seuilPct))pct=clampPct(j.seuilPct);
+      if(j&&!Array.isArray(j)&&Array.isArray(j.analyses))defs=j.analyses.slice(0,30);
     }else items=csvItems(text);
   }catch(e){
     res.className='res bad';
     res.textContent='Fichier illisible. Utilisez un CSV (analyse;date;valeur) ou une sauvegarde JSON exportée ici.';
     return;
   }
+  const idMap={};let newTests=0;
+  for(const d of defs){
+    if(!d||typeof d!=='object')continue;
+    const known=nameMap()[norm(d.nom==null?'':d.nom)];
+    if(known){idMap[d.id]=known;continue;}
+    const rec=cleanCustom({id:'c_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),p:S.cur,name:d.nom,unit:d.unite,min:d.min,max:d.max,dec:d.decimales});
+    if(!rec)continue;
+    try{await saveCustom(rec);idMap[d.id]=rec.id;newTests++;}catch(e){}
+  }
+  items.forEach(it=>{if(it.name!=null&&idMap[it.name])it.name=idMap[it.name];});
   if(!items.length){res.className='res bad';res.textContent='Aucune ligne trouvée dans ce fichier.';return;}
-  const seen=new Set();
-  TESTS.forEach(t=>readings(t).forEach(p=>seen.add(t.id+'|'+p.d+'|'+p.v)));
-  const fresh=[],bad=[];let dup=0;
+  const names=nameMap(),seen=new Set();
+  tests().forEach(t=>readings(t).forEach(p=>seen.add(t.id+'|'+p.d+'|'+p.v)));
+  const fresh=[],bad=[],unknown=new Set();let dup=0;
   items.forEach(it=>{
-    const tid=it.name==null?null:NAMES[norm(it.name)];
+    const tid=it.name==null?null:names[norm(it.name)];
     const d=it.date==null?null:parseDate(it.date);
     const v=it.val==null?null:parseNum(it.val);
+    if(!tid&&it.name!=null&&String(it.name).trim()&&d&&v!=null)unknown.add(cleanText(it.name,40));
     if(!tid||!d||v==null){bad.push(it.line);return;}
     const k=tid+'|'+d+'|'+v;
     if(seen.has(k)){dup++;return;}
-    seen.add(k);fresh.push({id:newId(),t:tid,d:d,v:v});
+    seen.add(k);fresh.push({id:newId(),t:tid,d:d,v:v,p:S.cur});
   });
   const over=Math.max(0,fresh.length-300);
   fresh.length=Math.min(fresh.length,300);
@@ -872,6 +1227,8 @@ async function importText(text,fileName){
   if(dup)parts.push('<p>'+dup+' déjà présente'+(dup>1?'s':'')+', ignorée'+(dup>1?'s':'')+'.</p>');
   if(pct!=null)parts.push('<p>Seuil d\'alerte repris du fichier : '+S.pct+' %.</p>');
   if(bad.length)parts.push('<p>'+bad.length+' ligne'+(bad.length>1?'s':'')+' non reconnue'+(bad.length>1?'s':'')+' (lignes : '+bad.slice(0,8).join(', ')+(bad.length>8?'…':'')+').</p>');
+  if(newTests)parts.push('<p>'+newTests+' analyse'+(newTests>1?'s':'')+' ajoutée'+(newTests>1?'s':'')+' à la liste de '+esc(curProf().name)+'.</p>');
+  if(unknown.size)parts.push('<p>Analyse'+(unknown.size>1?'s':'')+' non reconnue'+(unknown.size>1?'s':'')+' : '+Array.from(unknown).slice(0,6).map(esc).join(', ')+'. Ajoutez-'+(unknown.size>1?'les':'la')+' d\'abord avec « Analyse absente de la liste », puis relancez l\'import.</p>');
   if(over)parts.push('<p>'+over+' mesure'+(over>1?'s':'')+' au-delà de la limite de 300 par import : relancez l\'import pour les ajouter.</p>');
   if(failed)parts.push('<p>'+failed+' mesure'+(failed>1?'s':'')+' n\'a pas pu être enregistrée.</p>');
   if(added>0)parts.push('<p><button type="button" class="btn alt" data-tab="suivi">Voir le suivi</button></p>');
@@ -892,11 +1249,10 @@ $('imp-file').addEventListener('change',async e=>{
 
 /* ---------- boot ---------- */
 (function init(){
-  $('f-test').innerHTML=TESTS.map(t=>'<option value="'+t.id+'">'+t.full+'</option>').join('');
   const n=new Date(),iso=n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0')+'-'+String(n.getDate()).padStart(2,'0');
   $('f-date').value=iso;$('f-date').max=iso;
-  loadLocal();
-  $('th').value=S.pct;
+  $('ver-head').textContent=APP_VERSION;$('ver-foot').textContent=APP_VERSION;$('ver-date').textContent=dlabel(APP_DATE,0);
+  loadAll();
   renderAll();
   $('f-test').value=S.sel;updateUnit();
   setStoreNote();
