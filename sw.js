@@ -1,4 +1,4 @@
-const CACHE = 'suivi-sante-1.5.4';
+const CACHE = 'suivi-sante-1.5.5';
 const FILES = ['./', 'index.html', 'manifest.json', 'icon-192.png', 'icon-512.png'];
 
 self.addEventListener('install', e => {

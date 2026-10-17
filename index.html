@@ -425,6 +425,7 @@ HbA1c;12/10/2026;6,9</pre>
     <details>
       <summary>Historique des versions</summary>
       <ul>
+        <li><b>1.5.5</b> (17 oct. 2026) : deuxième lecture de la zone des résultats (autre agrandissement) pour retrouver les lignes manquantes ; noms d'analyses reconnus même avec une lettre mal lue (CH0LESTEROL…).</li>
         <li><b>1.5.4</b> (17 oct. 2026) : chiffre « 1 » mal lu comme I ou l (ex. I,29) corrigé.</li>
         <li><b>1.5.3</b> (17 oct. 2026) : les valeurs de référence (normes) ne sont plus jamais prises pour un résultat ; une analyse mal lue reste vide au lieu d'une valeur fausse ; la ligne lue est affichée sous chaque valeur.</li>
         <li><b>1.5.2</b> (17 oct. 2026) : lecture des analyses fiabilisée : photo lue par bandes, bon chiffre choisi grâce à l'unité, virgules perdues restaurées, triglycérides et créatinine reconnus.</li>
@@ -475,7 +476,7 @@ const SEED={
  uric:[64.5,69.0,77.5,N,61.0,55.9,82.2,76.1,74.3,63.7,65.2]
 };
 const KEY='suivi-sante-v1';
-const APP_VERSION='1.5.4',APP_DATE='2026-10-16';
+const APP_VERSION='1.5.5',APP_DATE='2026-10-16';
 const ST={ok:'Normal',warn:'Hors norme',crit:'Alerte'};
 const RANK={crit:0,warn:1,ok:2,none:3};
 const MONTHS=['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
@@ -995,6 +996,26 @@ function labValue(t,s0){
   }
   return {v:v,flag:flag};
 }
+function levDist(a,b){
+  const m=a.length,n=b.length,d=[];
+  for(let i=0;i<=m;i++){d[i]=[i];}
+  for(let j=1;j<=n;j++)d[0][j]=j;
+  for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));
+  return d[m][n];
+}
+const LAB_FUZZY=[['glycemie','GLYCEMIE'],['chol','CHOLESTEROL'],['tg','TRIGLYCERIDES'],['tg','TRIGLYCERIDE'],['creat','CREATININE'],['uric','URIQUE']];
+function labFuzzy(line,list){
+  const re=/[A-Z0-9]{5,}/g;let m;
+  while((m=re.exec(line))){
+    const tok=m[0].replace(/0/g,'O').replace(/1/g,'I').replace(/5/g,'S').replace(/3/g,'E').replace(/8/g,'B').replace(/V/g,'Y');
+    for(const [id,key] of LAB_FUZZY){
+      const t=list.find(x=>x.id===id);if(!t)continue;
+      const k2=key.replace(/V/g,'Y');
+      if(Math.abs(tok.length-k2.length)<=2&&levDist(tok,k2)<=Math.max(1,Math.floor(k2.length/5)))return {t:t,end:m.index+m[0].length};
+    }
+  }
+  return null;
+}
 function parseLab(text,list){
   const cands=[];
   String(text).split(/\r?\n/).forEach(raw=>{
@@ -1005,6 +1026,7 @@ function parseLab(text,list){
       const t=list.find(x=>x.id===id);if(!t)continue;
       const m=re.exec(line);if(m){hit={t:t,end:m.index+m[0].length};break;}
     }
+    if(!hit)hit=labFuzzy(line,list);
     if(!hit){
       for(const t of list){
         if(LAB_ALIAS.some(a=>a[0]===t.id))continue;
@@ -1074,14 +1096,16 @@ function withTimeout(p,ms,what){
   return Promise.race([p,new Promise((_,ko)=>{tm=setTimeout(()=>ko(new Error(what+' : délai dépassé')),ms);})]).finally(()=>clearTimeout(tm));
 }
 function scanLimits(){return Object.assign({load:25000,init:90000,read:120000},window.SCAN_TIMEOUTS||{});}
-function bandCanvases(file){
+function bandCanvases(file,opt){
+  opt=opt||{};
   return new Promise((ok,ko)=>{
     const url=URL.createObjectURL(file),img=new Image();
     img.onload=()=>{
       try{
         const W=img.naturalWidth,H=img.naturalHeight;
-        const s=Math.max(0.5,Math.min(3,2400/W)),bh=Math.max(200,Math.round(W*0.34)),ov=Math.round(W*0.07),out=[];
-        for(let y=0;y<H;y+=bh-ov){
+        const s=Math.max(0.5,Math.min(3,(opt.tw||2400)/W)),bh=Math.max(200,Math.round(W*0.34)),ov=Math.round(W*0.07),out=[];
+        const yStart=Math.max(0,(opt.y0!=null?opt.y0:0)+Math.round((opt.shift||0)*(bh-ov))),yEnd=opt.y1!=null?Math.min(H,opt.y1+ov):H;
+        for(let y=yStart;y<yEnd;y+=bh-ov){
           const sh=Math.min(bh,H-y);if(sh<Math.round(W*0.05))break;
           const c=document.createElement('canvas');c.width=Math.max(1,Math.round(W*s));c.height=Math.max(1,Math.round(sh*s));
           const g=c.getContext('2d');g.drawImage(img,0,y,W,sh,0,0,c.width,c.height);
@@ -1090,7 +1114,7 @@ function bandCanvases(file){
           if(hi-lo>=60){
             const span=Math.max(40,hi-lo);
             for(let i=0;i<px.length;i+=4){const v=Math.max(0,Math.min(255,(px[i]-lo)*255/span));px[i]=px[i+1]=px[i+2]=v;}
-            g.putImageData(d,0,0);out.push(c);
+            g.putImageData(d,0,0);c._y0=y;c._y1=y+sh;out.push(c);
           }
           if(y+bh>=H)break;
         }
@@ -1101,12 +1125,12 @@ function bandCanvases(file){
     img.src=url;
   });
 }
-async function ocrBands(bands,onProgress,onStage){
+async function ocrBands(bands,onProgress,onStage,next){
   const L=scanLimits();
   if(onStage)onStage('load');
   const T=await withTimeout(loadTess(),L.load,'téléchargement du moteur');
-  let cur=0;
-  const mk=lang=>withTimeout(T.createWorker(lang,1,{langPath:'https://cdn.jsdelivr.net/npm/@tesseract.js-data/'+lang+'/4.0.0_best_int',logger:m=>{if(m&&m.status==='recognizing text'&&onProgress)onProgress((cur+m.progress)/Math.max(1,bands.length));}}),L.init,'préparation du moteur');
+  let cur=0,total=bands.length;
+  const mk=lang=>withTimeout(T.createWorker(lang,1,{langPath:'https://cdn.jsdelivr.net/npm/@tesseract.js-data/'+lang+'/4.0.0_best_int',logger:m=>{if(m&&m.status==='recognizing text'&&onProgress)onProgress((cur+m.progress)/Math.max(1,total));}}),L.init,'préparation du moteur');
   if(onStage)onStage('init');
   let w;
   try{w=await mk('fra');}catch(e){w=await mk('eng');}
@@ -1117,6 +1141,17 @@ async function ocrBands(bands,onProgress,onStage){
     for(cur=0;cur<bands.length;cur++){
       const r=await withTimeout(w.recognize(bands[cur]),L.read,'lecture');
       parts.push(r.data.text||'');
+    }
+    if(next){
+      let more=null;
+      try{more=await next(parts.slice());}catch(e){more=null;}
+      if(more&&more.length){
+        if(onStage)onStage('pass2');
+        total=more.length;
+        for(cur=0;cur<more.length;cur++){
+          try{const r=await withTimeout(w.recognize(more[cur]),L.read,'lecture');parts.push(r.data.text||'');}catch(e){break;}
+        }
+      }
     }
     return parts.join('\n');
   }finally{try{await w.terminate();}catch(e){}}
@@ -1237,6 +1272,7 @@ async function scanFile(file){
     ask:'Lecture par Claude en cours… (quelques secondes ; une demande d’autorisation peut s’afficher)',
     load:'Téléchargement du moteur de lecture… (première fois seulement, environ 10 Mo)',
     init:'Préparation du moteur de lecture…',
+    pass2:'Deuxième lecture de la zone des résultats…',
     read:'Lecture en cours…'})[k]||'Lecture en cours…';};
   try{
     const list=tests();
@@ -1249,7 +1285,13 @@ async function scanFile(file){
       if(run!==SCAN_RUN)return;
       if(!bands.length)throw new Error('image vide ou trop floue');
       const stopP=new Promise((_,ko)=>{ctl.signal.addEventListener('abort',()=>ko(new Error('arrêtée')));});
-      const text=await Promise.race([ocrBands(bands,p=>{if(run===SCAN_RUN)st.textContent='Lecture en cours… '+Math.round(p*100)+' %';},stage),stopP]);
+      const second=async parts=>{
+        const hits=bands.filter((b,i)=>parseLab(parts[i]||'',list).length>0);
+        if(parseLab(parts.join('\n'),list).length<2||!hits.length)return null;
+        const pad=Math.round((hits[0]._y1-hits[0]._y0)*0.7);
+        return await bandCanvases(file,{tw:1700,shift:0.5,y0:Math.max(0,Math.min.apply(null,hits.map(b=>b._y0))-pad),y1:Math.max.apply(null,hits.map(b=>b._y1))+pad});
+      };
+      const text=await Promise.race([ocrBands(bands,p=>{if(run===SCAN_RUN)st.textContent='Lecture en cours… '+Math.round(p*100)+' %';},stage,second),stopP]);
       if(run!==SCAN_RUN)return;
       $('scan-text').value=text;
       found=parseLab(text,list);date=labDate(text);
