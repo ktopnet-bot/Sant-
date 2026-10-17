@@ -425,6 +425,8 @@ HbA1c;12/10/2026;6,9</pre>
     <details>
       <summary>Historique des versions</summary>
       <ul>
+        <li><b>1.5.4</b> (17 oct. 2026) : chiffre « 1 » mal lu comme I ou l (ex. I,29) corrigé.</li>
+        <li><b>1.5.3</b> (17 oct. 2026) : les valeurs de référence (normes) ne sont plus jamais prises pour un résultat ; une analyse mal lue reste vide au lieu d'une valeur fausse ; la ligne lue est affichée sous chaque valeur.</li>
         <li><b>1.5.2</b> (17 oct. 2026) : lecture des analyses fiabilisée : photo lue par bandes, bon chiffre choisi grâce à l'unité, virgules perdues restaurées, triglycérides et créatinine reconnus.</li>
         <li><b>1.5.1</b> (17 oct. 2026) : dans Claude, la photo est lue par Claude (plus fiable) ; sur GitHub Pages, lecture sur l'appareil avec délais maximum et bouton Arrêter ; champs date mieux ajustés sur iPhone.</li>
         <li><b>1.5.0</b> (17 oct. 2026) : scanner une analyse avec l'appareil photo ; les valeurs lues sont proposées, vérifiées par vous, puis enregistrées dans les bonnes cases.</li>
@@ -473,7 +475,7 @@ const SEED={
  uric:[64.5,69.0,77.5,N,61.0,55.9,82.2,76.1,74.3,63.7,65.2]
 };
 const KEY='suivi-sante-v1';
-const APP_VERSION='1.5.2',APP_DATE='2026-10-16';
+const APP_VERSION='1.5.4',APP_DATE='2026-10-16';
 const ST={ok:'Normal',warn:'Hors norme',crit:'Alerte'};
 const RANK={crit:0,warn:1,ok:2,none:3};
 const MONTHS=['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
@@ -967,7 +969,11 @@ function labUnitRe(u){
 }
 function labNumbers(rest){
   const out=[],re=/(^|[^\d.,])(\d{1,4}(?:[.,]\d{1,3})?)(?!\d)/g;let m;
-  while((m=re.exec(rest))){const i=m.index+m[1].length;out.push({s:m[2],after:rest.slice(i+m[2].length)});}
+  while((m=re.exec(rest))){
+    const i=m.index+m[1].length,after=rest.slice(i+m[2].length),pre=rest.slice(0,i).replace(/\s+$/,'').slice(-1);
+    const isRange=/[<>≤≥\-–—]/.test(pre)||/^\s*[-–—]\s*\d/.test(after);
+    out.push({s:m[2],after:after,range:isRange});
+  }
   return out;
 }
 function labOk(t,v){const ref=t.max||t.min||0;return !ref||(v<=ref*5&&v>=ref/10);}
@@ -990,7 +996,7 @@ function labValue(t,s0){
   return {v:v,flag:flag};
 }
 function parseLab(text,list){
-  const out=[],seen={};
+  const cands=[];
   String(text).split(/\r?\n/).forEach(raw=>{
     const line=normOcr(raw);
     if(!line.trim()||/DERNIER|REFERENCE|\bNORMES?\b/.test(line))return;
@@ -1007,17 +1013,26 @@ function parseLab(text,list){
         if(k>=0){hit={t:t,end:k+nm.length};break;}
       }
     }
-    if(!hit||seen[hit.t.id])return;
+    if(!hit)return;
     const t=hit.t;
     let rest=line.slice(hit.end).replace(/\([^)]*\)/g,' ').replace(/[._\-–—·:'`~=]{2,}/g,' ');
-    rest=rest.replace(/(^|[^A-Z0-9])O(?=\d)/g,'$10');
-    const nums=labNumbers(rest),ur=labUnitRe(t.unit);
-    const pick=(ur&&nums.find(n=>ur.test(n.after)))||nums.find(n=>LAB_UNIT.test(n.after))
-      ||nums.find(n=>/^\s*[A-Zµ%]{1,3}(?![A-Z0-9])/.test(n.after)&&Number(n.s.replace(',','.'))>0)
-      ||nums.find(n=>Number(n.s.replace(',','.'))>0);
+    rest=rest.replace(/(^|[^A-Z0-9])O(?=\d)/g,'$10').replace(/(^|[^A-Z0-9])[IL|!](?=[.,]\d)/g,'$11');
+    const nums=labNumbers(rest).filter(n=>!n.range&&Number(n.s.replace(',','.'))>0),ur=labUnitRe(t.unit);
+    let pick=null,tier=0;
+    if(ur){pick=nums.find(n=>ur.test(n.after));tier=1;}
+    if(!pick){pick=nums.find(n=>LAB_UNIT.test(n.after));tier=2;}
+    if(!pick){pick=nums.find(n=>/^\s*[A-Zµ%]{1,3}(?![A-Z0-9])/.test(n.after));tier=3;}
+    if(!pick){pick=nums.find(n=>{const r=labValue(t,n.s);return r&&labOk(t,r.v);});tier=4;}
     if(!pick)return;
     const r=labValue(t,pick.s);if(!r)return;
-    seen[t.id]=1;out.push({id:t.id,v:r.v,flag:r.flag,line:raw.trim()});
+    cands.push({id:t.id,v:r.v,flag:r.flag||tier>=3,tier:tier,line:raw.trim()});
+  });
+  const out=[],ids=[];cands.forEach(c=>{if(ids.indexOf(c.id)<0)ids.push(c.id);});
+  ids.forEach(id=>{
+    const mine=cands.filter(c=>c.id===id),best=Math.min.apply(null,mine.map(c=>c.tier)),top=mine.filter(c=>c.tier===best);
+    const count={};top.forEach(c=>{count[c.v]=(count[c.v]||0)+1;});
+    let win=top[0];top.forEach(c=>{if(count[c.v]>count[win.v])win=c;});
+    out.push({id:id,v:win.v,flag:win.flag&&count[win.v]<2||win.tier>=3,line:win.line});
   });
   return out;
 }
@@ -1140,6 +1155,7 @@ function renderScan(found,date){
       +'<input class="sval" type="text" inputmode="decimal" autocomplete="off" aria-label="Valeur '+esc(t.short)+'" value="'+esc(v)+'" placeholder="–"><span class="sunit">'+esc(t.unit||'')+'</span>'
       +'<span class="pillbox"></span>'
       +(f&&f.flag?'<span class="snote" style="flex:1 1 100%">À vérifier : la lecture est peu sûre.</span>':'')
+      +(f&&f.line?'<span class="snote" style="flex:1 1 100%;opacity:.8">Ligne lue : '+esc(String(f.line).replace(/[.\u2026_]{3,}/g,' … ').slice(0,80))+'</span>':'')
       +(dup?'<span class="snote" style="flex:1 1 100%">Déjà enregistrée à cette date.</span>':'')
       +'</li>';
   }).join('');
