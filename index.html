@@ -230,6 +230,7 @@ tbody tr:last-child>*{border-bottom:0}
 .srow .pill{margin-left:auto}
 .srow.off{opacity:.75}
 .snote{font-size:13px;color:var(--ink-2)}
+.srow.unsure{border-color:var(--warn);box-shadow:inset 4px 0 0 var(--warn)}
 .paste{margin-top:14px}
 .paste summary{cursor:pointer;font-weight:600;color:var(--accent)}
 .paste .csvbox{min-height:110px}
@@ -425,6 +426,7 @@ HbA1c;12/10/2026;6,9</pre>
     <details>
       <summary>Historique des versions</summary>
       <ul>
+        <li><b>1.5.6</b> (17 oct. 2026) : écran de vérification épuré : plus de mention de ligne lue ni de « à vérifier » dans chaque case ; une valeur peu sûre a un cadre orange.</li>
         <li><b>1.5.5</b> (17 oct. 2026) : deuxième lecture de la zone des résultats (autre agrandissement) pour retrouver les lignes manquantes ; noms d'analyses reconnus même avec une lettre mal lue (CH0LESTEROL…).</li>
         <li><b>1.5.4</b> (17 oct. 2026) : chiffre « 1 » mal lu comme I ou l (ex. I,29) corrigé.</li>
         <li><b>1.5.3</b> (17 oct. 2026) : les valeurs de référence (normes) ne sont plus jamais prises pour un résultat ; une analyse mal lue reste vide au lieu d'une valeur fausse ; la ligne lue est affichée sous chaque valeur.</li>
@@ -476,7 +478,7 @@ const SEED={
  uric:[64.5,69.0,77.5,N,61.0,55.9,82.2,76.1,74.3,63.7,65.2]
 };
 const KEY='suivi-sante-v1';
-const APP_VERSION='1.5.5',APP_DATE='2026-10-16';
+const APP_VERSION='1.5.6',APP_DATE='2026-10-16';
 const ST={ok:'Normal',warn:'Hors norme',crit:'Alerte'};
 const RANK={crit:0,warn:1,ok:2,none:3};
 const MONTHS=['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
@@ -1186,17 +1188,15 @@ function renderScan(found,date){
     const f=byId[t.id],v=f?fmt(f.v,t.dec):'';
     const dup=f&&readings(t).some(r=>r.d===(date||'')&&Math.abs(r.v-f.v)<1e-9);
     const on=!!f&&!dup;
-    return '<li class="srow'+(on?'':' off')+'" data-sid="'+esc(t.id)+'"><label class="nm"><input type="checkbox" class="sck"'+(on?' checked':'')+'><span>'+esc(t.short)+'</span></label>'
+    return '<li class="srow'+(on?'':' off')+(f&&f.flag&&on?' unsure':'')+'" data-sid="'+esc(t.id)+'"><label class="nm"><input type="checkbox" class="sck"'+(on?' checked':'')+'><span>'+esc(t.short)+'</span></label>'
       +'<input class="sval" type="text" inputmode="decimal" autocomplete="off" aria-label="Valeur '+esc(t.short)+'" value="'+esc(v)+'" placeholder="–"><span class="sunit">'+esc(t.unit||'')+'</span>'
       +'<span class="pillbox"></span>'
-      +(f&&f.flag?'<span class="snote" style="flex:1 1 100%">À vérifier : la lecture est peu sûre.</span>':'')
-      +(f&&f.line?'<span class="snote" style="flex:1 1 100%;opacity:.8">Ligne lue : '+esc(String(f.line).replace(/[.\u2026_]{3,}/g,' … ').slice(0,80))+'</span>':'')
       +(dup?'<span class="snote" style="flex:1 1 100%">Déjà enregistrée à cette date.</span>':'')
       +'</li>';
   }).join('');
   $('scan-rows').querySelectorAll('.srow').forEach(scanRowStatus);
   const n=found.length;
-  $('scan-note').textContent=n?'Les analyses non trouvées sont en bas : cochez-les après avoir saisi la valeur si besoin.':'';
+  $('scan-note').textContent='';
 }
 let SCAN_AI=null;
 (async()=>{
@@ -1297,7 +1297,7 @@ async function scanFile(file){
       found=parseLab(text,list);date=labDate(text);
     }
     st.textContent=found.length
-      ?found.length+' analyse'+(found.length>1?'s':'')+' trouvée'+(found.length>1?'s':'')+'. Vérifiez chaque valeur avant d’enregistrer.'
+      ?found.length+' analyse'+(found.length>1?'s':'')+' trouvée'+(found.length>1?'s':'')+'. Vérifiez chaque valeur avant d’enregistrer.'+(found.some(x=>x.flag)?' Les cadres orange sont peu sûrs.':'')
       :'Aucune valeur reconnue. Saisissez-les à la main ci-dessous, ou essayez une photo plus nette et bien droite.';
   }catch(e){
     if(run!==SCAN_RUN)return;
