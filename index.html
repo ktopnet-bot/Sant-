@@ -425,6 +425,7 @@ HbA1c;12/10/2026;6,9</pre>
     <details>
       <summary>Historique des versions</summary>
       <ul>
+        <li><b>1.5.2</b> (17 oct. 2026) : lecture des analyses fiabilisée : photo lue par bandes, bon chiffre choisi grâce à l'unité, virgules perdues restaurées, triglycérides et créatinine reconnus.</li>
         <li><b>1.5.1</b> (17 oct. 2026) : dans Claude, la photo est lue par Claude (plus fiable) ; sur GitHub Pages, lecture sur l'appareil avec délais maximum et bouton Arrêter ; champs date mieux ajustés sur iPhone.</li>
         <li><b>1.5.0</b> (17 oct. 2026) : scanner une analyse avec l'appareil photo ; les valeurs lues sont proposées, vérifiées par vous, puis enregistrées dans les bonnes cases.</li>
         <li><b>1.4.3</b> (16 oct. 2026) : couleurs pour tous les résultats : vert (normal), orange (hors norme), rouge (alerte) dans la liste, l'historique et le tableau.</li>
@@ -472,7 +473,7 @@ const SEED={
  uric:[64.5,69.0,77.5,N,61.0,55.9,82.2,76.1,74.3,63.7,65.2]
 };
 const KEY='suivi-sante-v1';
-const APP_VERSION='1.5.1',APP_DATE='2026-10-16';
+const APP_VERSION='1.5.2',APP_DATE='2026-10-16';
 const ST={ok:'Normal',warn:'Hors norme',crit:'Alerte'};
 const RANK={crit:0,warn:1,ok:2,none:3};
 const MONTHS=['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
@@ -942,9 +943,9 @@ const LAB_ALIAS=[
   ['ldl',/(?:CHOL\w*\s*)?\bL\.?\s?D\.?\s?L\b\.?/],
   ['hdl',/(?:CHOL\w*\s*)?\bH\.?\s?D\.?\s?L\b\.?/],
   ['chol',/CHOL[EF]ST[EF]ROL(?:\s+TOTAL)?/],
-  ['tg',/TRIGLYC[EF]RID\w*/],
+  ['tg',/TRI?GLYC\w*|RIGLYC[EF]RID\w*/],
   ['creat',/CR[EF]ATININ\w*/],
-  ['uric',/ACIDE\s+URIQUE|URIC\w*/]
+  ['uric',/(?:ACIDE\s+)?URIQUE|URIC\w*/]
 ];
 function labDate(text){
   const n=normOcr(text),now=new Date().getFullYear()+1;
@@ -957,6 +958,36 @@ function labDate(text){
     return y+'-'+String(mo).padStart(2,'0')+'-'+String(d).padStart(2,'0');
   };
   return tryAt(n.search(/PR[EL]L[EF]V[EF]MENT/))||tryAt(n.search(/PRELEVE/))||tryAt(n.search(/EDITE\s+LE/))||'';
+}
+const LAB_UNIT=/^\s*(?:[MUµNPK]?G\s*[\/|I1L]\s*[LD]|[MUµNP]?MOL|%|ML\s*[\/|I1L]|UI\b|U\s*[\/|I1L]|MEQ)/;
+function labUnitRe(u){
+  if(!u)return null;
+  const e=String(u).toUpperCase().replace(/[.*+?^${}()|[\]\\]/g,'\\$&').replace(/\\\//g,'\\s*[\\/|I1L]\\s*');
+  try{return new RegExp('^\\s*'+e);}catch(x){return null;}
+}
+function labNumbers(rest){
+  const out=[],re=/(^|[^\d.,])(\d{1,4}(?:[.,]\d{1,3})?)(?!\d)/g;let m;
+  while((m=re.exec(rest))){const i=m.index+m[1].length;out.push({s:m[2],after:rest.slice(i+m[2].length)});}
+  return out;
+}
+function labOk(t,v){const ref=t.max||t.min||0;return !ref||(v<=ref*5&&v>=ref/10);}
+function labValue(t,s0){
+  let s=s0.replace(',','.'),flag=false;
+  if(/^0\d+$/.test(s)){s='0.'+s.slice(1);flag=true;}
+  let v=Number(s);
+  if(!Number.isFinite(v)||v<=0)return null;
+  if(!labOk(t,v)){
+    flag=true;
+    if(s.indexOf('.')<0&&s.length>=2){
+      const dec=t.dec==null?2:t.dec,ref=t.max||t.min||1;
+      const cands=[];
+      if(dec>0&&s.length>dec)cands.push(Number(s.slice(0,s.length-dec)+'.'+s.slice(s.length-dec)));
+      for(let k=1;k<s.length;k++)cands.push(Number(s.slice(0,k)+'.'+s.slice(k)));
+      const good=cands.filter(c=>c>0&&labOk(t,c));
+      if(good.length)v=good[0];
+    }
+  }
+  return {v:v,flag:flag};
 }
 function parseLab(text,list){
   const out=[],seen={};
@@ -977,20 +1008,16 @@ function parseLab(text,list){
       }
     }
     if(!hit||seen[hit.t.id])return;
-    let rest=line.slice(hit.end).replace(/\([^)]*\)/g,' ').replace(/[._\-–—·:'`~]{2,}/g,' ');
+    const t=hit.t;
+    let rest=line.slice(hit.end).replace(/\([^)]*\)/g,' ').replace(/[._\-–—·:'`~=]{2,}/g,' ');
     rest=rest.replace(/(^|[^A-Z0-9])O(?=\d)/g,'$10');
-    const m=/(^|[^\d.,])(\d{1,4}(?:[.,]\d{1,3})?)(?!\d)/.exec(rest);
-    if(!m)return;
-    let s=m[2].replace(',','.'),flag=false;
-    if(/^0\d+$/.test(s)){s='0.'+s.slice(1);flag=true;}
-    let v=Number(s);
-    if(!Number.isFinite(v)||v<=0)return;
-    const t=hit.t,ref=t.max||t.min||0;
-    if(ref&&(v>ref*5||v<ref/10)){
-      flag=true;
-      if(s.indexOf('.')<0&&s.length>=2){const c=Number(s[0]+'.'+s.slice(1));if(c<=ref*5&&c>=ref/10)v=c;}
-    }
-    seen[t.id]=1;out.push({id:t.id,v:v,flag:flag,line:raw.trim()});
+    const nums=labNumbers(rest),ur=labUnitRe(t.unit);
+    const pick=(ur&&nums.find(n=>ur.test(n.after)))||nums.find(n=>LAB_UNIT.test(n.after))
+      ||nums.find(n=>/^\s*[A-Zµ%]{1,3}(?![A-Z0-9])/.test(n.after)&&Number(n.s.replace(',','.'))>0)
+      ||nums.find(n=>Number(n.s.replace(',','.'))>0);
+    if(!pick)return;
+    const r=labValue(t,pick.s);if(!r)return;
+    seen[t.id]=1;out.push({id:t.id,v:r.v,flag:r.flag,line:raw.trim()});
   });
   return out;
 }
@@ -1032,6 +1059,53 @@ function withTimeout(p,ms,what){
   return Promise.race([p,new Promise((_,ko)=>{tm=setTimeout(()=>ko(new Error(what+' : délai dépassé')),ms);})]).finally(()=>clearTimeout(tm));
 }
 function scanLimits(){return Object.assign({load:25000,init:90000,read:120000},window.SCAN_TIMEOUTS||{});}
+function bandCanvases(file){
+  return new Promise((ok,ko)=>{
+    const url=URL.createObjectURL(file),img=new Image();
+    img.onload=()=>{
+      try{
+        const W=img.naturalWidth,H=img.naturalHeight;
+        const s=Math.max(0.5,Math.min(3,2400/W)),bh=Math.max(200,Math.round(W*0.34)),ov=Math.round(W*0.07),out=[];
+        for(let y=0;y<H;y+=bh-ov){
+          const sh=Math.min(bh,H-y);if(sh<Math.round(W*0.05))break;
+          const c=document.createElement('canvas');c.width=Math.max(1,Math.round(W*s));c.height=Math.max(1,Math.round(sh*s));
+          const g=c.getContext('2d');g.drawImage(img,0,y,W,sh,0,0,c.width,c.height);
+          const d=g.getImageData(0,0,c.width,c.height),px=d.data;let lo=255,hi=0;
+          for(let i=0;i<px.length;i+=4){const v=(px[i]*299+px[i+1]*587+px[i+2]*114)/1000;px[i]=v;if(v<lo)lo=v;if(v>hi)hi=v;}
+          if(hi-lo>=60){
+            const span=Math.max(40,hi-lo);
+            for(let i=0;i<px.length;i+=4){const v=Math.max(0,Math.min(255,(px[i]-lo)*255/span));px[i]=px[i+1]=px[i+2]=v;}
+            g.putImageData(d,0,0);out.push(c);
+          }
+          if(y+bh>=H)break;
+        }
+        URL.revokeObjectURL(url);ok(out);
+      }catch(e){URL.revokeObjectURL(url);ko(e);}
+    };
+    img.onerror=()=>{URL.revokeObjectURL(url);ko(new Error('image illisible'));};
+    img.src=url;
+  });
+}
+async function ocrBands(bands,onProgress,onStage){
+  const L=scanLimits();
+  if(onStage)onStage('load');
+  const T=await withTimeout(loadTess(),L.load,'téléchargement du moteur');
+  let cur=0;
+  const mk=lang=>withTimeout(T.createWorker(lang,1,{langPath:'https://cdn.jsdelivr.net/npm/@tesseract.js-data/'+lang+'/4.0.0_best_int',logger:m=>{if(m&&m.status==='recognizing text'&&onProgress)onProgress((cur+m.progress)/Math.max(1,bands.length));}}),L.init,'préparation du moteur');
+  if(onStage)onStage('init');
+  let w;
+  try{w=await mk('fra');}catch(e){w=await mk('eng');}
+  const parts=[];
+  try{
+    try{await w.setParameters({tessedit_pageseg_mode:'6',preserve_interword_spaces:'1'});}catch(e){}
+    if(onStage)onStage('read');
+    for(cur=0;cur<bands.length;cur++){
+      const r=await withTimeout(w.recognize(bands[cur]),L.read,'lecture');
+      parts.push(r.data.text||'');
+    }
+    return parts.join('\n');
+  }finally{try{await w.terminate();}catch(e){}}
+}
 async function ocrImage(canvas,onProgress,onStage){
   const L=scanLimits();
   if(onStage)onStage('load');
@@ -1155,10 +1229,11 @@ async function scanFile(file){
       if(run!==SCAN_RUN)return;
       found=r.found;date=r.date;$('scan-text').value=r.text;
     }else{
-      const c=await prepImage(file);
+      const bands=await bandCanvases(file);
       if(run!==SCAN_RUN)return;
+      if(!bands.length)throw new Error('image vide ou trop floue');
       const stopP=new Promise((_,ko)=>{ctl.signal.addEventListener('abort',()=>ko(new Error('arrêtée')));});
-      const text=await Promise.race([ocrImage(c,p=>{if(run===SCAN_RUN)st.textContent='Lecture en cours… '+Math.round(p*100)+' %';},stage),stopP]);
+      const text=await Promise.race([ocrBands(bands,p=>{if(run===SCAN_RUN)st.textContent='Lecture en cours… '+Math.round(p*100)+' %';},stage),stopP]);
       if(run!==SCAN_RUN)return;
       $('scan-text').value=text;
       found=parseLab(text,list);date=labDate(text);

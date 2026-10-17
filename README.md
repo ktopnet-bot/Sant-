@@ -2,7 +2,7 @@
 
 Application de suivi d'analyses biochimiques avec graphiques. Une valeur qui dépasse sa limite de plus de 20 % passe en rouge (seuil réglable).
 
-Créée par Kamel Nasralli. Version 1.5.1 (16 octobre 2026).
+Créée par Kamel Nasralli. Version 1.5.2 (16 octobre 2026).
 
 ## Fichiers à déposer
 
@@ -70,6 +70,6 @@ L'application lit le texte sur votre appareil (la photo n'est pas envoyée), rec
 
 - Il faut une connexion internet la première fois : le moteur de lecture (environ 10 Mo) se télécharge, puis il est gardé par le navigateur.
 - Pour une meilleure lecture : photo bien droite, nette, bien éclairée, sans reflet.
-- Seule la ligne du résultat actuel est lue ; les lignes « Dernier résultat » sont ignorées.
+- La photo est lue par bandes (plus précis) ; cela peut prendre une à deux minutes sur un téléphone. Seule la ligne du résultat actuel est lue ; les lignes « Dernier résultat » sont ignorées.
 
 Note : dans l'application Claude (page publiée sur claude.ai), la photo est lue par Claude, sur votre compte, avec votre autorisation. Sur GitHub Pages, la lecture se fait uniquement sur votre appareil. Un bouton « Arrêter la lecture » et des délais maximum évitent tout blocage ; en cas d'échec, vous saisissez les valeurs à la main.
