@@ -167,6 +167,7 @@ h1{font-size:clamp(26px,6vw,34px);line-height:1.1;font-weight:700;letter-spacing
 .form{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));align-items:end;margin-top:12px}
 .field{display:grid;gap:5px;min-width:0}
 .field label{font-size:13px;color:var(--ink-2)}
+.field input[type=date]{-webkit-appearance:none;appearance:none;max-width:100%;min-width:0;box-sizing:border-box;text-align:left}
 .field select,.field input{width:100%;min-height:44px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);font-size:16px}
 .btn{min-height:44px;padding:0 18px;border:0;border-radius:8px;background:var(--accent);color:var(--accent-ink);font-weight:600;cursor:pointer}
 .btn:hover{filter:brightness(1.08)}
@@ -215,6 +216,20 @@ tbody tr:last-child>*{border-bottom:0}
 .ask p{margin:0}
 .actions2{display:flex;flex-wrap:wrap;gap:8px}
 .actions2 .btn{flex:1 1 130px}
+.scanbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px}
+.scanbar .btn{flex:1 1 150px;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.scanbar svg{width:20px;height:20px;stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.scanbox{display:grid;gap:12px;margin:12px 0;padding:14px;border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+.scanbox[hidden]{display:none}
+.srows{display:grid;gap:8px;list-style:none;margin:0;padding:0}
+.srow{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.srow label.nm{flex:1 1 100%;display:flex;align-items:center;gap:8px;font-weight:600}
+.srow input[type=checkbox]{width:20px;height:20px;flex:none}
+.srow .sval{flex:0 0 96px;min-width:0;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);font:inherit;font-family:var(--mono)}
+.srow .sunit{color:var(--ink-2);font-size:13px}
+.srow .pill{margin-left:auto}
+.srow.off{opacity:.75}
+.snote{font-size:13px;color:var(--ink-2)}
 .paste{margin-top:14px}
 .paste summary{cursor:pointer;font-weight:600;color:var(--accent)}
 .paste .csvbox{min-height:110px}
@@ -317,6 +332,23 @@ textarea.csvbox{width:100%;min-height:140px;margin-top:12px;padding:10px;border:
 
   <section class="panel" id="add">
     <h2>Ajouter une mesure <span class="for" id="add-who"></span></h2>
+    <div class="scanbar">
+      <button type="button" class="btn alt" id="scan-cam"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.6"/></svg>Scanner une analyse</button>
+      <button type="button" class="btn alt" id="scan-pick">Choisir une photo</button>
+      <input type="file" id="scan-file-cam" accept="image/*" capture="environment" hidden>
+      <input type="file" id="scan-file" accept="image/*" hidden>
+    </div>
+    <p class="hint" id="scan-hint">La photo est lue sur votre appareil et n'est pas envoyée. Vous vérifiez les valeurs avant l'enregistrement.</p>
+    <section class="scanbox" id="scan-box" hidden aria-live="polite">
+      <p id="scan-status" role="status"></p>
+      <div class="actions"><button type="button" class="btn alt" id="scan-stop" hidden>Arrêter la lecture</button></div>
+      <div class="field"><label for="scan-date">Date du prélèvement</label><input type="date" id="scan-date"></div>
+      <ul class="srows" id="scan-rows"></ul>
+      <p class="snote" id="scan-note"></p>
+      <details class="paste"><summary>Texte lu sur la photo</summary><textarea class="csvbox" id="scan-text" readonly aria-label="Texte lu sur la photo"></textarea></details>
+      <div class="actions"><button type="button" class="btn" id="scan-save">Enregistrer</button><button type="button" class="btn alt" id="scan-cancel">Annuler</button></div>
+      <p class="msg" id="scan-msg" role="status"></p>
+    </section>
     <form class="form" id="form" novalidate>
       <div class="field"><label for="f-test">Analyse</label><select id="f-test"></select></div>
       <div class="field"><label for="f-date">Date</label><input type="date" id="f-date"></div>
@@ -393,6 +425,8 @@ HbA1c;12/10/2026;6,9</pre>
     <details>
       <summary>Historique des versions</summary>
       <ul>
+        <li><b>1.5.1</b> (17 oct. 2026) : dans Claude, la photo est lue par Claude (plus fiable) ; sur GitHub Pages, lecture sur l'appareil avec délais maximum et bouton Arrêter ; champs date mieux ajustés sur iPhone.</li>
+        <li><b>1.5.0</b> (17 oct. 2026) : scanner une analyse avec l'appareil photo ; les valeurs lues sont proposées, vérifiées par vous, puis enregistrées dans les bonnes cases.</li>
         <li><b>1.4.3</b> (16 oct. 2026) : couleurs pour tous les résultats : vert (normal), orange (hors norme), rouge (alerte) dans la liste, l'historique et le tableau.</li>
         <li><b>1.4.2</b> (16 oct. 2026) : bouton de suppression remplacé par une croix ; les mesures ajoutées ont la même taille et la même présentation que les autres.</li>
         <li><b>1.4.1</b> (16 oct. 2026) : confirmation avant de supprimer une mesure, import des fichiers Excel (accents), zone pour coller le contenu, mise en page sur petit écran.</li>
@@ -438,7 +472,7 @@ const SEED={
  uric:[64.5,69.0,77.5,N,61.0,55.9,82.2,76.1,74.3,63.7,65.2]
 };
 const KEY='suivi-sante-v1';
-const APP_VERSION='1.4.3',APP_DATE='2026-10-16';
+const APP_VERSION='1.5.1',APP_DATE='2026-10-16';
 const ST={ok:'Normal',warn:'Hors norme',crit:'Alerte'};
 const RANK={crit:0,warn:1,ok:2,none:3};
 const MONTHS=['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
@@ -897,6 +931,286 @@ $('form').addEventListener('submit',async e=>{
   $('f-val').value='';
   renderAll();
   msg('Mesure ajoutée pour '+curProf().name+' : '+fmt(v,t.dec)+' '+t.unit+'. Statut : '+ST[judge(t,v,thr()).st]+'.',false);
+});
+
+
+/* ---------- scan d'une analyse (photo -> valeurs) ---------- */
+function normOcr(s){return String(s).normalize('NFD').replace(/[̀-ͯ]/g,'').toUpperCase();}
+const LAB_ALIAS=[
+  ['hba1c',/H[EF]MO\.?\s*GLY\w*(?:\s+A\s*1\s*C|\s+AIC)?|HB\s*A\s*1\s*C|GLYCOSYL\w*/],
+  ['glycemie',/GLYC[EF]MI[EF]?/],
+  ['ldl',/(?:CHOL\w*\s*)?\bL\.?\s?D\.?\s?L\b\.?/],
+  ['hdl',/(?:CHOL\w*\s*)?\bH\.?\s?D\.?\s?L\b\.?/],
+  ['chol',/CHOL[EF]ST[EF]ROL(?:\s+TOTAL)?/],
+  ['tg',/TRIGLYC[EF]RID\w*/],
+  ['creat',/CR[EF]ATININ\w*/],
+  ['uric',/ACIDE\s+URIQUE|URIC\w*/]
+];
+function labDate(text){
+  const n=normOcr(text),now=new Date().getFullYear()+1;
+  const re=/(\d{1,2})\s*[\/.\-]\s*(\d{1,2})\s*[\/.\-]\s*(\d{4}|\d{2})/;
+  const tryAt=i=>{
+    if(i<0)return '';
+    const m=re.exec(n.slice(i,i+60));if(!m)return '';
+    let d=+m[1],mo=+m[2],y=+m[3];if(y<100)y+=2000;
+    if(d<1||d>31||mo<1||mo>12||y<2000||y>now)return '';
+    return y+'-'+String(mo).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+  };
+  return tryAt(n.search(/PR[EL]L[EF]V[EF]MENT/))||tryAt(n.search(/PRELEVE/))||tryAt(n.search(/EDITE\s+LE/))||'';
+}
+function parseLab(text,list){
+  const out=[],seen={};
+  String(text).split(/\r?\n/).forEach(raw=>{
+    const line=normOcr(raw);
+    if(!line.trim()||/DERNIER|REFERENCE|\bNORMES?\b/.test(line))return;
+    let hit=null;
+    for(const [id,re] of LAB_ALIAS){
+      const t=list.find(x=>x.id===id);if(!t)continue;
+      const m=re.exec(line);if(m){hit={t:t,end:m.index+m[0].length};break;}
+    }
+    if(!hit){
+      for(const t of list){
+        if(LAB_ALIAS.some(a=>a[0]===t.id))continue;
+        const nm=normOcr(t.short||t.full||'').trim();
+        const k=nm.length>=4?line.indexOf(nm):-1;
+        if(k>=0){hit={t:t,end:k+nm.length};break;}
+      }
+    }
+    if(!hit||seen[hit.t.id])return;
+    let rest=line.slice(hit.end).replace(/\([^)]*\)/g,' ').replace(/[._\-–—·:'`~]{2,}/g,' ');
+    rest=rest.replace(/(^|[^A-Z0-9])O(?=\d)/g,'$10');
+    const m=/(^|[^\d.,])(\d{1,4}(?:[.,]\d{1,3})?)(?!\d)/.exec(rest);
+    if(!m)return;
+    let s=m[2].replace(',','.'),flag=false;
+    if(/^0\d+$/.test(s)){s='0.'+s.slice(1);flag=true;}
+    let v=Number(s);
+    if(!Number.isFinite(v)||v<=0)return;
+    const t=hit.t,ref=t.max||t.min||0;
+    if(ref&&(v>ref*5||v<ref/10)){
+      flag=true;
+      if(s.indexOf('.')<0&&s.length>=2){const c=Number(s[0]+'.'+s.slice(1));if(c<=ref*5&&c>=ref/10)v=c;}
+    }
+    seen[t.id]=1;out.push({id:t.id,v:v,flag:flag,line:raw.trim()});
+  });
+  return out;
+}
+let TESS_LOAD=null;
+function loadTess(){
+  if(window.Tesseract)return Promise.resolve(window.Tesseract);
+  if(TESS_LOAD)return TESS_LOAD;
+  TESS_LOAD=new Promise((ok,ko)=>{
+    const s=document.createElement('script');
+    s.src='https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js';
+    s.onload=()=>window.Tesseract?ok(window.Tesseract):ko(new Error('moteur absent'));
+    s.onerror=()=>{TESS_LOAD=null;ko(new Error('chargement impossible (connexion ?)'));};
+    document.head.appendChild(s);
+  });
+  return TESS_LOAD;
+}
+function prepImage(file,enhance,maxSide){
+  return new Promise((ok,ko)=>{
+    const url=URL.createObjectURL(file),img=new Image();
+    img.onload=()=>{
+      try{
+        const max=maxSide||2200,k=Math.min(1,max/Math.max(img.naturalWidth,img.naturalHeight));
+        const c=document.createElement('canvas');c.width=Math.max(1,Math.round(img.naturalWidth*k));c.height=Math.max(1,Math.round(img.naturalHeight*k));
+        const g=c.getContext('2d');g.drawImage(img,0,0,c.width,c.height);
+        if(enhance===false){URL.revokeObjectURL(url);ok(c);return;}
+        const d=g.getImageData(0,0,c.width,c.height),px=d.data;let lo=255,hi=0;
+        for(let i=0;i<px.length;i+=4){const y=(px[i]*299+px[i+1]*587+px[i+2]*114)/1000;px[i]=y;if(y<lo)lo=y;if(y>hi)hi=y;}
+        const span=Math.max(40,hi-lo);
+        for(let i=0;i<px.length;i+=4){const y=Math.max(0,Math.min(255,(px[i]-lo)*255/span));px[i]=px[i+1]=px[i+2]=y;}
+        g.putImageData(d,0,0);URL.revokeObjectURL(url);ok(c);
+      }catch(e){URL.revokeObjectURL(url);ko(e);}
+    };
+    img.onerror=()=>{URL.revokeObjectURL(url);ko(new Error('image illisible'));};
+    img.src=url;
+  });
+}
+function withTimeout(p,ms,what){
+  let tm;
+  return Promise.race([p,new Promise((_,ko)=>{tm=setTimeout(()=>ko(new Error(what+' : délai dépassé')),ms);})]).finally(()=>clearTimeout(tm));
+}
+function scanLimits(){return Object.assign({load:25000,init:90000,read:120000},window.SCAN_TIMEOUTS||{});}
+async function ocrImage(canvas,onProgress,onStage){
+  const L=scanLimits();
+  if(onStage)onStage('load');
+  const T=await withTimeout(loadTess(),L.load,'téléchargement du moteur');
+  const mk=lang=>withTimeout(T.createWorker(lang,1,{langPath:'https://cdn.jsdelivr.net/npm/@tesseract.js-data/'+lang+'/4.0.0_best_int',logger:m=>{if(m&&m.status==='recognizing text'&&onProgress)onProgress(m.progress);}}),L.init,'préparation du moteur');
+  if(onStage)onStage('init');
+  let w;
+  try{w=await mk('fra');}catch(e){w=await mk('eng');}
+  try{
+    try{await w.setParameters({tessedit_pageseg_mode:'6',preserve_interword_spaces:'1'});}catch(e){}
+    if(onStage)onStage('read');
+    const r=await withTimeout(w.recognize(canvas),L.read,'lecture');
+    return r.data.text||'';
+  }finally{try{await w.terminate();}catch(e){}}
+}
+function todayIso(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function scanMsg(t,bad){const el=$('scan-msg');el.textContent=t||'';el.className='msg'+(bad?' bad':'');}
+function scanRowStatus(li){
+  const t=T(li.dataset.sid),inp=li.querySelector('.sval'),pillBox=li.querySelector('.pillbox');
+  const v=Number(String(inp.value).trim().replace(',','.'));
+  pillBox.innerHTML=(inp.value.trim()&&Number.isFinite(v)&&v>0)?pill(judge(t,v,thr()).st):'';
+}
+function renderScan(found,date){
+  const list=tests(),byId={};found.forEach(x=>{byId[x.id]=x;});
+  const rows=list.filter(t=>byId[t.id]).concat(list.filter(t=>!byId[t.id]));
+  $('scan-date').value=date||todayIso();
+  $('scan-rows').innerHTML=rows.map(t=>{
+    const f=byId[t.id],v=f?fmt(f.v,t.dec):'';
+    const dup=f&&readings(t).some(r=>r.d===(date||'')&&Math.abs(r.v-f.v)<1e-9);
+    const on=!!f&&!dup;
+    return '<li class="srow'+(on?'':' off')+'" data-sid="'+esc(t.id)+'"><label class="nm"><input type="checkbox" class="sck"'+(on?' checked':'')+'><span>'+esc(t.short)+'</span></label>'
+      +'<input class="sval" type="text" inputmode="decimal" autocomplete="off" aria-label="Valeur '+esc(t.short)+'" value="'+esc(v)+'" placeholder="–"><span class="sunit">'+esc(t.unit||'')+'</span>'
+      +'<span class="pillbox"></span>'
+      +(f&&f.flag?'<span class="snote" style="flex:1 1 100%">À vérifier : la lecture est peu sûre.</span>':'')
+      +(dup?'<span class="snote" style="flex:1 1 100%">Déjà enregistrée à cette date.</span>':'')
+      +'</li>';
+  }).join('');
+  $('scan-rows').querySelectorAll('.srow').forEach(scanRowStatus);
+  const n=found.length;
+  $('scan-note').textContent=n?'Les analyses non trouvées sont en bas : cochez-les après avoir saisi la valeur si besoin.':'';
+}
+let SCAN_AI=null;
+(async()=>{
+  try{
+    if(!window.claude||!window.claude.use)return;
+    const s=await window.claude.use('sample');
+    if(!s||!s.json)return;
+    const caps=await s.limits().catch(()=>null);
+    if(caps&&caps.images){SCAN_AI=s;scanHint();}
+  }catch(e){}
+})();
+function scanHint(){
+  const el=$('scan-hint');if(!el)return;
+  el.textContent=SCAN_AI
+    ?'La photo est envoyée à Claude (votre compte) pour lire les valeurs ; elle n’est pas gardée dans l’application. Vous vérifiez les valeurs avant l’enregistrement.'
+    :'La photo est lue sur votre appareil et n’est pas envoyée. Vous vérifiez les valeurs avant l’enregistrement.';
+}
+function validIso(s){
+  if(typeof s!=='string')return '';
+  const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(s.trim());if(!m)return '';
+  const y=+m[1],mo=+m[2],d=+m[3];
+  if(y<2000||y>new Date().getFullYear()+1||mo<1||mo>12||d<1||d>31)return '';
+  return s.trim();
+}
+function plausible(t,v,s){
+  const ref=t.max||t.min||0;let flag=false;
+  if(ref&&(v>ref*5||v<ref/10))flag=true;
+  return flag;
+}
+async function aiRead(file,list,ctl,onStage){
+  onStage('prep');
+  const c=await prepImage(file,false,1600);
+  const blob=await new Promise((ok,ko)=>c.toBlob(b=>b?ok(b):ko(new Error('image illisible')),'image/jpeg',0.9));
+  const catalog=list.map(t=>({id:t.id,nom:t.full||t.short,unite:t.unit||''}));
+  const prompt='Cette image est la photo ou la capture d’un bilan d’analyses médicales (laboratoire). '
+    +'Pour chaque analyse de cette liste, relève le résultat ACTUEL du patient, dans l’unité indiquée :\n'+JSON.stringify(catalog)+'\n'
+    +'Règles : ignore les lignes « Dernier résultat » (anciennes valeurs), les valeurs de référence (normes) et les valeurs exprimées dans une autre unité. '
+    +'N’invente jamais une valeur : si une analyse n’apparaît pas ou n’est pas lisible, omets-la. Garde les décimales exactes de l’image. '
+    +'Donne aussi la date du prélèvement (pas la date de naissance ni la date d’édition) au format AAAA-MM-JJ, ou null si elle est illisible. '
+    +'Réponds uniquement par un objet JSON : {"date":"AAAA-MM-JJ"|null,"mesures":[{"id":"…","valeur":1.23,"lu":"texte exact de la ligne"}]}';
+  onStage('ask');
+  const r=await SCAN_AI.json(prompt,{images:[blob],modelTier:'default',signal:ctl.signal});
+  const found=[];const seen={};
+  (r&&Array.isArray(r.mesures)?r.mesures:[]).forEach(m=>{
+    const t=list.find(x=>x.id===(m&&m.id));if(!t||seen[t.id])return;
+    const v=typeof m.valeur==='number'?m.valeur:Number(String(m.valeur).replace(',','.'));
+    if(!Number.isFinite(v)||v<=0)return;
+    seen[t.id]=1;found.push({id:t.id,v:v,flag:plausible(t,v),line:String(m.lu||'')});
+  });
+  return {found:found,date:validIso(r&&r.date),text:JSON.stringify(r,null,1)};
+}
+function aiError(e){
+  const c=e&&e.code;
+  if(c==='not_granted')return 'Vous avez refusé l’envoi de la photo à Claude.';
+  if(c==='cancelled')return 'Lecture arrêtée.';
+  if(c==='rate_limited')return 'Trop de demandes. Attendez un moment puis réessayez.';
+  if(c==='image_rejected'||c==='images_unavailable')return 'Cette image ne peut pas être lue (format ou taille).';
+  if(c==='invalid_json')return 'La réponse n’était pas lisible.';
+  return (e&&e.message)?e.message:'erreur';
+}
+let SCAN_RUN=0,SCAN_CTL=null;
+async function scanFile(file){
+  if(!file)return;
+  if(SCAN_CTL)try{SCAN_CTL.abort();}catch(e){}
+  const run=++SCAN_RUN,ctl=new AbortController();SCAN_CTL=ctl;
+  const box=$('scan-box'),st=$('scan-status'),stop=$('scan-stop'),save=$('scan-save');
+  box.hidden=false;scanMsg('');$('scan-rows').innerHTML='';$('scan-text').value='';$('scan-note').textContent='';$('scan-date').value='';
+  save.disabled=true;stop.hidden=false;
+  st.textContent='Préparation de l’image…';showEl(box);
+  let found=[],date='',failed=false;
+  const stage=k=>{if(run!==SCAN_RUN)return;st.textContent=({
+    prep:'Préparation de l’image…',
+    ask:'Lecture par Claude en cours… (quelques secondes ; une demande d’autorisation peut s’afficher)',
+    load:'Téléchargement du moteur de lecture… (première fois seulement, environ 10 Mo)',
+    init:'Préparation du moteur de lecture…',
+    read:'Lecture en cours…'})[k]||'Lecture en cours…';};
+  try{
+    const list=tests();
+    if(SCAN_AI){
+      const r=await aiRead(file,list,ctl,stage);
+      if(run!==SCAN_RUN)return;
+      found=r.found;date=r.date;$('scan-text').value=r.text;
+    }else{
+      const c=await prepImage(file);
+      if(run!==SCAN_RUN)return;
+      const stopP=new Promise((_,ko)=>{ctl.signal.addEventListener('abort',()=>ko(new Error('arrêtée')));});
+      const text=await Promise.race([ocrImage(c,p=>{if(run===SCAN_RUN)st.textContent='Lecture en cours… '+Math.round(p*100)+' %';},stage),stopP]);
+      if(run!==SCAN_RUN)return;
+      $('scan-text').value=text;
+      found=parseLab(text,list);date=labDate(text);
+    }
+    st.textContent=found.length
+      ?found.length+' analyse'+(found.length>1?'s':'')+' trouvée'+(found.length>1?'s':'')+'. Vérifiez chaque valeur avant d’enregistrer.'
+      :'Aucune valeur reconnue. Saisissez-les à la main ci-dessous, ou essayez une photo plus nette et bien droite.';
+  }catch(e){
+    if(run!==SCAN_RUN)return;
+    failed=true;
+    st.textContent=(ctl.signal.aborted?'Lecture arrêtée.':'La lecture automatique n’a pas abouti ('+(SCAN_AI?aiError(e):(e&&e.message?e.message:'erreur'))+').')+' Vous pouvez saisir les valeurs à la main ci-dessous.';
+  }
+  if(run!==SCAN_RUN)return;
+  SCAN_CTL=null;stop.hidden=true;save.disabled=false;
+  renderScan(found,date);
+}
+$('scan-cam').addEventListener('click',()=>$('scan-file-cam').click());
+$('scan-pick').addEventListener('click',()=>$('scan-file').click());
+['scan-file-cam','scan-file'].forEach(id=>$(id).addEventListener('change',e=>{
+  const inp=e.target,f=inp.files&&inp.files[0];
+  scanFile(f).finally(()=>{inp.value='';});
+}));
+$('scan-rows').addEventListener('input',e=>{
+  const li=e.target.closest('.srow');if(!li)return;
+  if(e.target.classList.contains('sval')){
+    const ck=li.querySelector('.sck');if(e.target.value.trim()&&!ck.checked){ck.checked=true;li.classList.remove('off');}
+    scanRowStatus(li);
+  }
+});
+$('scan-rows').addEventListener('change',e=>{
+  const li=e.target.closest('.srow');if(li&&e.target.classList.contains('sck'))li.classList.toggle('off',!e.target.checked);
+});
+$('scan-stop').addEventListener('click',()=>{if(SCAN_CTL)try{SCAN_CTL.abort();}catch(e){}});
+$('scan-cancel').addEventListener('click',()=>{SCAN_RUN++;if(SCAN_CTL){try{SCAN_CTL.abort();}catch(e){}SCAN_CTL=null;}$('scan-stop').hidden=true;$('scan-save').disabled=false;$('scan-box').hidden=true;$('scan-rows').innerHTML='';scanMsg('');});
+$('scan-save').addEventListener('click',async()=>{
+  const d=$('scan-date').value;
+  if(!d){scanMsg('Choisissez la date du prélèvement.',true);return;}
+  const recs=[];
+  for(const li of $('scan-rows').querySelectorAll('.srow')){
+    if(!li.querySelector('.sck').checked)continue;
+    const t=T(li.dataset.sid),raw=li.querySelector('.sval').value.trim().replace(',','.'),v=Number(raw);
+    if(!raw||!Number.isFinite(v)||v<=0){scanMsg('Valeur invalide pour '+t.short+'.',true);return;}
+    recs.push({id:newId(),t:t.id,d:d,v:v,p:S.cur});
+  }
+  if(!recs.length){scanMsg('Cochez au moins une analyse à enregistrer.',true);return;}
+  let n=0;
+  try{for(const r of recs){await addExtra(r);n++;}}
+  catch(err){scanMsg('Enregistrement interrompu après '+n+' mesure'+(n>1?'s':'')+'. Réessayez.',true);renderAll();return;}
+  S.sel=recs[0].t;S.pick=recs[0].id;
+  renderAll();
+  $('scan-box').hidden=true;$('scan-rows').innerHTML='';
+  msg(n+' mesure'+(n>1?'s':'')+' enregistrée'+(n>1?'s':'')+' pour '+curProf().name+' (prélèvement du '+dlabel(d,0)+').',false);
 });
 
 /* ---------- people ---------- */
