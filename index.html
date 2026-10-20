@@ -19,7 +19,7 @@ img{max-width:100%}
 [hidden]{display:none!important}
 </style>
 <title>Suivi Santé</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Schibsted+Grotesk:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap">
 <style>
 /* Layout: summary strip on top, then a workspace with the indicator list (left) and the selected indicator's chart (right); on phones it stacks. Status colors are semantic; the ink-blue accent is only for selection and actions. */
 :root{
@@ -90,7 +90,7 @@ h1{font-size:clamp(26px,6vw,34px);line-height:1.1;font-weight:700;letter-spacing
 .cap{font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2);font-weight:600}
 .list-wrap{display:grid;gap:8px;min-width:0}
 .list{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
-.ind{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,84px) auto;min-width:0;gap:10px;align-items:center;width:100%;padding:12px 14px;background:var(--surface);border:1px solid var(--line);border-radius:10px;text-align:left;cursor:pointer}
+.ind{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,84px) auto;min-width:0;gap:10px;align-items:center;width:100%;padding:12px 14px;background:var(--surface);border:1px solid var(--line);border-radius:10px;text-align:start;cursor:pointer}
 .ind:hover{border-color:var(--ink-2)}
 .ind[aria-current="true"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
 .i-name{display:grid;min-width:0}
@@ -116,7 +116,7 @@ h1{font-size:clamp(26px,6vw,34px);line-height:1.1;font-weight:700;letter-spacing
 .readout .pill{background:var(--surface)}
 .r-when{font-size:13px;color:var(--ink-2);flex-basis:100%}
 .r-val .num{font-size:34px;font-weight:600;line-height:1}
-.r-val .u{font-size:14px;color:var(--ink-2);margin-left:6px}
+.r-val .u{font-size:14px;color:var(--ink-2);margin-inline-start:6px}
 .r-state{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;min-width:0}
 .r-why{font-size:14px}
 
@@ -146,28 +146,28 @@ h1{font-size:clamp(26px,6vw,34px);line-height:1.1;font-weight:700;letter-spacing
 .d-sec{display:grid;gap:8px}
 .hist{display:grid;gap:6px}
 .hist li{position:relative;display:flex}
-.h{flex:1 1 100%;min-width:0;display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px;padding:8px 34px 8px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);text-align:left;cursor:pointer}
-.h.ok{background:var(--ok-bg);border-color:var(--ok);border-left-width:5px}
-.h.warn{background:var(--warn-bg);border-color:var(--warn);border-left-width:5px}
-.h.crit{background:var(--crit-bg);border-color:var(--crit);border-left-width:5px}
+.h{flex:1 1 100%;min-width:0;display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px;padding:8px 12px;padding-inline-end:34px;border:1px solid var(--line);border-radius:8px;background:var(--surface);text-align:start;cursor:pointer}
+.h.ok{background:var(--ok-bg);border-color:var(--ok);border-inline-start-width:5px}
+.h.warn{background:var(--warn-bg);border-color:var(--warn);border-inline-start-width:5px}
+.h.crit{background:var(--crit-bg);border-color:var(--crit);border-inline-start-width:5px}
 .h.ok .h-v{color:var(--ok)}.h.warn .h-v{color:var(--warn)}.h.crit .h-v{color:var(--crit)}
 .h.ok .pill,.h.warn .pill,.h.crit .pill{background:var(--surface)}
 .h.on{outline:2px solid var(--accent);outline-offset:1px}
-.ind.ok{border-left:5px solid var(--ok)}
-.ind.warn{border-left:5px solid var(--warn)}
-.ind.crit{border-left:5px solid var(--crit)}
+.ind.ok{border-inline-start:5px solid var(--ok)}
+.ind.warn{border-inline-start:5px solid var(--warn)}
+.ind.crit{border-inline-start:5px solid var(--crit)}
 .ind.ok .num{color:var(--ok)}.ind.warn .num{color:var(--warn)}.ind.crit .num{color:var(--crit)}
 .h-v{font-family:var(--mono);font-weight:500;white-space:nowrap}
 .h-v small{color:var(--ink-2);font-size:12px}
 .h>span:first-child{flex:1 1 auto;white-space:nowrap}
-.del{position:absolute;top:50%;right:4px;transform:translateY(-50%);width:28px;height:28px;display:grid;place-items:center;padding:0;border:0;background:transparent;color:var(--ink-2);border-radius:6px;cursor:pointer}
+.del{position:absolute;top:50%;inset-inline-end:4px;transform:translateY(-50%);width:28px;height:28px;display:grid;place-items:center;padding:0;border:0;background:transparent;color:var(--ink-2);border-radius:6px;cursor:pointer}
 .del svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;stroke-linecap:round;fill:none}
 .del:hover,.del:focus-visible{background:var(--crit);color:#fff}
 
 .form{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));align-items:end;margin-top:12px}
 .field{display:grid;gap:5px;min-width:0}
 .field label{font-size:13px;color:var(--ink-2)}
-.field input[type=date]{-webkit-appearance:none;appearance:none;max-width:100%;min-width:0;box-sizing:border-box;text-align:left}
+.field input[type=date]{-webkit-appearance:none;appearance:none;max-width:100%;min-width:0;box-sizing:border-box;text-align:start}
 .field select,.field input{width:100%;min-height:44px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);font-size:16px}
 .btn{min-height:44px;padding:0 18px;border:0;border-radius:8px;background:var(--accent);color:var(--accent-ink);font-weight:600;cursor:pointer}
 .btn:hover{filter:brightness(1.08)}
@@ -179,7 +179,7 @@ h1{font-size:clamp(26px,6vw,34px);line-height:1.1;font-weight:700;letter-spacing
 table{border-collapse:separate;border-spacing:0;width:100%;font-size:13px}
 th,td{padding:8px 10px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--line)}
 thead th{font-weight:600;color:var(--ink-2);font-size:12px;background:var(--surface)}
-th.rowh{position:sticky;left:0;z-index:1;text-align:left;background:var(--surface);font-weight:600;border-right:1px solid var(--line)}
+th.rowh{position:sticky;inset-inline-start:0;z-index:1;text-align:start;background:var(--surface);font-weight:600;border-inline-end:1px solid var(--line)}
 th.rowh small{display:block;font-weight:400;color:var(--ink-2);font-size:11px;font-family:var(--mono)}
 td{font-family:var(--mono)}
 td.ok{background:var(--ok-bg);color:var(--ok)}
@@ -227,7 +227,7 @@ tbody tr:last-child>*{border-bottom:0}
 .srow input[type=checkbox]{width:20px;height:20px;flex:none}
 .srow .sval{flex:0 0 96px;min-width:0;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);font:inherit;font-family:var(--mono)}
 .srow .sunit{color:var(--ink-2);font-size:13px}
-.srow .pill{margin-left:auto}
+.srow .pill{margin-inline-start:auto}
 .srow.off{opacity:.75}
 .snote{font-size:13px;color:var(--ink-2)}
 .srow.unsure{border-color:var(--warn);box-shadow:inset 4px 0 0 var(--warn)}
@@ -262,11 +262,39 @@ pre.ex{margin:12px 0 0;padding:12px;border-radius:8px;background:var(--surface-2
 .res{margin-top:12px;font-size:14px;display:grid;gap:6px;min-width:0}
 .res.bad{color:var(--crit)}
 textarea.csvbox{width:100%;min-height:140px;margin-top:12px;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);font:12px/1.5 var(--mono)}
+
+/* ---- langues (fr / de / ar) et sens d'écriture ---- */
+.langbar{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:flex-end}
+.seg{display:inline-flex;direction:ltr;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--surface)}
+.seg button{border:0;background:transparent;color:var(--ink-2);padding:6px 14px;font-size:13px;cursor:pointer;min-height:32px}
+.seg button+button{border-inline-start:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--brand);color:var(--brand-ink);font-weight:600}
+html[dir="rtl"]{--font:'Noto Sans Arabic','Segoe UI',Tahoma,system-ui,-apple-system,sans-serif}
+html[dir="rtl"] h1,html[dir="rtl"] .cap{letter-spacing:0;text-transform:none}
+html[dir="rtl"] th,html[dir="rtl"] td{text-align:left}
+html[dir="rtl"] th.rowh{text-align:right}
+html[dir="rtl"] input[inputmode="decimal"],html[dir="rtl"] .sval{direction:ltr;text-align:right}
+.stepper{direction:ltr}
+.chart,.csvbox,.ex{direction:ltr}
+.csvbox,.ex{text-align:left}
+.num,.h-v,.lim b,.facts dd,.sunit{unicode-bidi:isolate}
+html[dir="rtl"] .num,html[dir="rtl"] .h-v,html[dir="rtl"] .lim b,html[dir="rtl"] .facts dd,html[dir="rtl"] .sunit{direction:ltr}
+.about{background:var(--surface-2);border-radius:8px;padding:10px 12px;font-size:14px;color:var(--ink-2)}
+.about summary{cursor:pointer;font-weight:600;color:var(--ink)}
+.about p{margin-top:6px;line-height:1.55}
+.about .aboutnote{font-size:12px;opacity:.85}
 </style>
 </head>
 <body>
 
 <div class="page">
+  <div class="langbar">
+    <div class="seg" role="group" aria-label="Langue">
+      <button type="button" data-lang="fr" lang="fr" aria-pressed="true">Français</button>
+      <button type="button" data-lang="de" lang="de" aria-pressed="false">Deutsch</button>
+      <button type="button" data-lang="ar" lang="ar" aria-pressed="false">العربية</button>
+    </div>
+  </div>
   <header class="top">
     <div class="brand">
       <svg class="logo" viewBox="0 0 32 32" role="img" aria-label="Coupe et serpent de la pharmacie, avec croissant et étoile">
@@ -426,6 +454,8 @@ HbA1c;12/10/2026;6,9</pre>
     <details>
       <summary>Historique des versions</summary>
       <ul>
+        <li><b>1.6.1</b> (20 oct. 2026) : explication de chaque analyse (à quoi elle sert, ce que peut signifier une valeur trop haute ou trop basse) dans sa fiche.</li>
+        <li><b>1.6.0</b> (20 oct. 2026) : langues arabe (de droite à gauche) et allemande, avec bouton de changement de langue.</li>
         <li><b>1.5.6</b> (17 oct. 2026) : écran de vérification épuré : plus de mention de ligne lue ni de « à vérifier » dans chaque case ; une valeur peu sûre a un cadre orange.</li>
         <li><b>1.5.5</b> (17 oct. 2026) : deuxième lecture de la zone des résultats (autre agrandissement) pour retrouver les lignes manquantes ; noms d'analyses reconnus même avec une lettre mal lue (CH0LESTEROL…).</li>
         <li><b>1.5.4</b> (17 oct. 2026) : chiffre « 1 » mal lu comme I ou l (ex. I,29) corrigé.</li>
@@ -453,17 +483,97 @@ HbA1c;12/10/2026;6,9</pre>
 'use strict';
 const $=id=>document.getElementById(id);
 
+/* ---------- langues : français, allemand, arabe ---------- */
+const LKEY='suivi-sante-lang';
+function detectLang(){
+  try{const s=localStorage.getItem(LKEY);if(s==='fr'||s==='de'||s==='ar')return s;}catch(e){}
+  const n=String(navigator.language||'').slice(0,2).toLowerCase();
+  return n==='ar'||n==='de'?n:'fr';
+}
+let LANG=detectLang();
+const isAr=()=>LANG==='ar';
+const X=(fr,ar,de)=>LANG==='ar'?ar:(LANG==='de'&&de!=null?de:fr);
+const ltr=s=>LANG==='ar'?'⁦'+s+'⁩':s;
+const latin=s=>String(s).replace(/[٠-٩]/g,c=>String(c.charCodeAt(0)-0x660)).replace(/[۰-۹]/g,c=>String(c.charCodeAt(0)-0x6F0)).replace(/٫/g,'.');
+const STATIC_DICT={"Suivi Santé": ["متابعة الصحة", "Gesundheitsverlauf"], "Créée par": ["من إنشاء", "Erstellt von"], "· version": ["· الإصدار", "· Version"], "Seuil d'alerte rouge": ["حد التنبيه الأحمر", "Schwelle für roten Alarm"], "Rouge au-delà de": ["أحمر عند تجاوز", "Rot bei mehr als"], "% de la limite": ["% من الحد", "% über dem Grenzwert"], "Diminuer le seuil": ["تقليل الحد", "Schwelle verringern"], "Augmenter le seuil": ["رفع الحد", "Schwelle erhöhen"], "Seuil en pourcentage": ["الحد بالنسبة المئوية", "Schwelle in Prozent"], "Coupe et serpent de la pharmacie, avec croissant et étoile": ["كأس وثعبان الصيدلة مع هلال ونجمة", "Schale und Schlange der Apotheke, mit Halbmond und Stern"], "Personnes": ["الأشخاص", "Personen"], "Qui utilise l'application ?": ["من يستخدم التطبيق؟", "Wer benutzt die App?"], "+ Ajouter une personne": ["+ إضافة شخص", "+ Person hinzufügen"], "Renommer": ["إعادة تسمية", "Umbenennen"], "Supprimer": ["حذف", "Löschen"], "Prénom ou nom": ["الاسم", "Vor- oder Nachname"], "Enregistrer": ["حفظ", "Speichern"], "Annuler": ["إلغاء", "Abbrechen"], "Sections": ["الأقسام", "Bereiche"], "Suivi": ["المتابعة", "Verlauf"], "Import / Export": ["استيراد / تصدير", "Import / Export"], "Résumé du dernier bilan": ["ملخص آخر تحليل", "Zusammenfassung des letzten Befunds"], "Dernière mesure par indicateur": ["آخر قياس لكل مؤشر", "Letzter Messwert je Indikator"], "Ajouter une mesure": ["إضافة قياس", "Messwert hinzufügen"], "Scanner une analyse": ["مسح تحليل بالكاميرا", "Analyse scannen"], "Choisir une photo": ["اختيار صورة", "Foto auswählen"], "Arrêter la lecture": ["إيقاف القراءة", "Lesen stoppen"], "Date du prélèvement": ["تاريخ أخذ العينة", "Datum der Blutentnahme"], "Texte lu sur la photo": ["النص المقروء من الصورة", "Auf dem Foto gelesener Text"], "Analyse": ["التحليل", "Analyse"], "Date": ["التاريخ", "Datum"], "Valeur": ["القيمة", "Wert"], "ex. 1,12": ["مثال: 1,12", "z. B. 1,12"], "Ajouter": ["إضافة", "Hinzufügen"], "+ Analyse absente de la liste ? Ajoutez-la": ["+ التحليل غير موجود في القائمة؟ أضفه", "+ Analyse fehlt in der Liste? Fügen Sie sie hinzu"], "Nom de l'analyse": ["اسم التحليل", "Name der Analyse"], "ex. Vitamine D": ["مثال: فيتامين د", "z. B. Vitamin D"], "Unité": ["الوحدة", "Einheit"], "ex. ng/mL": ["مثال: ng/mL", "z. B. ng/mL"], "Limite basse (facultatif)": ["الحد الأدنى (اختياري)", "Untere Grenze (optional)"], "ex. 30": ["مثال: 30", "z. B. 30"], "Limite haute (facultatif)": ["الحد الأعلى (اختياري)", "Obere Grenze (optional)"], "ex. 100": ["مثال: 100", "z. B. 100"], "Chiffres après la virgule": ["عدد الأرقام بعد الفاصلة", "Nachkommastellen"], "Ajouter l'analyse": ["إضافة التحليل", "Analyse hinzufügen"], "Tous les résultats": ["كل النتائج", "Alle Ergebnisse"], "Exporter": ["تصدير", "Exportieren"], "Enregistrez toutes les mesures de la personne choisie en haut de la page.": ["احفظ جميع قياسات الشخص المختار في أعلى الصفحة.", "Speichern Sie alle Messwerte der oben auf der Seite gewählten Person."], "Exporter en CSV": ["تصدير بصيغة CSV", "Als CSV exportieren"], "Sauvegarde JSON": ["نسخة احتياطية JSON", "JSON-Sicherung"], "Le CSV s'ouvre dans Excel. La sauvegarde JSON permet de tout restaurer plus tard, y compris le seuil d'alerte.": ["يُفتح ملف CSV في Excel. تتيح النسخة الاحتياطية JSON استعادة كل شيء لاحقاً، بما في ذلك حد التنبيه.", "Die CSV-Datei lässt sich in Excel öffnen. Mit der JSON-Sicherung kann später alles wiederhergestellt werden, auch die Alarmschwelle."], "Contenu à copier": ["المحتوى المراد نسخه", "Zu kopierender Inhalt"], "Copier le texte": ["نسخ النص", "Text kopieren"], "Importer": ["استيراد", "Importieren"], "Ajoutez des mesures à la personne choisie, depuis un fichier CSV ou JSON. Les mesures déjà présentes sont ignorées.": ["أضف قياسات إلى الشخص المختار من ملف CSV أو JSON. القياسات الموجودة مسبقاً تُتجاهل.", "Fügen Sie der gewählten Person Messwerte aus einer CSV- oder JSON-Datei hinzu. Bereits vorhandene Messwerte werden ignoriert."], "Choisir un fichier (.csv ou .json)": ["اختيار ملف (.csv أو .json)", "Datei auswählen (.csv oder .json)"], "Le choix du fichier ne marche pas ? Collez son contenu ici": ["اختيار الملف لا يعمل؟ الصق محتواه هنا", "Dateiauswahl funktioniert nicht? Fügen Sie den Inhalt hier ein"], "Contenu du fichier CSV ou JSON": ["محتوى ملف CSV أو JSON", "Inhalt der CSV- oder JSON-Datei"], "Importer le texte collé": ["استيراد النص الملصق", "Eingefügten Text importieren"], "Dates : AAAA-MM-JJ ou JJ/MM/AAAA. Décimale : virgule ou point. Les fichiers enregistrés par Excel sont acceptés. Analyses reconnues : Glycémie, HbA1c, Cholestérol total, HDL, LDL, Triglycérides, Créatinine, Acide urique, et les analyses que vous avez ajoutées.": ["التواريخ: سنة-شهر-يوم (2026-10-12) أو يوم/شهر/سنة (12/10/2026). الفاصلة العشرية: فاصلة أو نقطة. ملفات Excel مقبولة. التحاليل المعروفة: سكر الدم، HbA1c، الكوليسترول الكلي، HDL، LDL، الدهون الثلاثية، الكرياتينين، حمض اليوريك، والتحاليل التي أضفتها. يمكن كتابة الأسماء بالعربية أو الفرنسية أو الألمانية.", "Datum: JJJJ-MM-TT oder TT/MM/JJJJ. Dezimalzeichen: Komma oder Punkt. Von Excel gespeicherte Dateien werden akzeptiert. Erkannte Analysen: Blutzucker, HbA1c, Gesamtcholesterin, HDL, LDL, Triglyceride, Kreatinin, Harnsäure sowie die von Ihnen hinzugefügten Analysen. Die Namen dürfen auf Französisch, Deutsch oder Arabisch stehen."], "Application créée par Kamel Nasralli.": ["تطبيق من إنشاء Kamel Nasralli.", "App erstellt von Kamel Nasralli."], "Version": ["الإصدار", "Version"], ",": ["،", ","], ".": [".", "."], "Historique des versions": ["سجل الإصدارات", "Versionsverlauf"], "Valeurs et limites reprises de votre fichier d'analyses, rangées dans le premier profil. Les colonnes enregistrées comme dates dans ce fichier ont été reconstituées : août 2023, août 2025, 26 févr. 2026 et mai 2026. Vérifiez-les si besoin.": ["القيم والحدود مأخوذة من ملف تحاليلك وموضوعة في الملف الشخصي الأول. أُعيد بناء الأعمدة المسجلة كتواريخ في ذلك الملف: أوت 2023، أوت 2025، 26 فيفري 2026 وماي 2026. تحقق منها عند الحاجة.", "Werte und Grenzwerte stammen aus Ihrer Analysendatei und liegen im ersten Profil. Die in dieser Datei als Datum gespeicherten Spalten wurden rekonstruiert: Aug. 2023, Aug. 2025, 26. Febr. 2026 und Mai 2026. Bitte bei Bedarf prüfen."], "Cette application compare vos résultats aux limites du laboratoire. Elle ne remplace pas l'avis de votre médecin.": ["يقارن هذا التطبيق نتائجك بحدود المختبر. ولا يغني عن رأي طبيبك.", "Diese App vergleicht Ihre Ergebnisse mit den Grenzwerten des Labors. Sie ersetzt nicht den Rat Ihres Arztes."], "Langue": ["اللغة", "Sprache"], "(20 oct. 2026) : explication de chaque analyse (à quoi elle sert, ce que peut signifier une valeur trop haute ou trop basse) dans sa fiche.": ["(20 أكتوبر 2026): شرح لكل تحليل (فائدته وماذا قد يعني ارتفاع القيمة أو انخفاضها) في صفحة التحليل.", "(20. Okt. 2026): Erklärung zu jeder Analyse (wofür sie dient und was zu hohe oder zu niedrige Werte bedeuten können) in der Detailansicht."], "(20 oct. 2026) : langues arabe (de droite à gauche) et allemande, avec bouton de changement de langue.": ["(20 أكتوبر 2026): اللغتان العربية (من اليمين إلى اليسار) والألمانية، مع زر لتغيير اللغة.", "(20. Okt. 2026): Arabisch (von rechts nach links) und Deutsch, mit Sprachumschalter."], "(17 oct. 2026) : écran de vérification épuré : plus de mention de ligne lue ni de « à vérifier » dans chaque case ; une valeur peu sûre a un cadre orange.": ["(17 أكتوبر 2026): شاشة تحقق أبسط: لا ذكر للسطر المقروء ولا «للتحقق» في كل خانة؛ والقيمة غير المؤكدة يحيط بها إطار برتقالي.", "(17. Okt. 2026): aufgeräumter Prüfbildschirm: kein Hinweis auf die gelesene Zeile und kein „prüfen“ mehr in jedem Feld; ein unsicherer Wert hat einen orangefarbenen Rahmen."], "(17 oct. 2026) : deuxième lecture de la zone des résultats (autre agrandissement) pour retrouver les lignes manquantes ; noms d'analyses reconnus même avec une lettre mal lue (CH0LESTEROL…).": ["(17 أكتوبر 2026): قراءة ثانية لمنطقة النتائج (بتكبير مختلف) لاستعادة الأسطر الناقصة؛ والتعرف على أسماء التحاليل حتى مع حرف مقروء خطأ (CH0LESTEROL…).", "(17. Okt. 2026): zweiter Lesedurchgang des Ergebnisbereichs (andere Vergrößerung), um fehlende Zeilen zu finden; Analysennamen werden auch mit einem falsch gelesenen Buchstaben erkannt (CH0LESTEROL…)."], "(17 oct. 2026) : chiffre « 1 » mal lu comme I ou l (ex. I,29) corrigé.": ["(17 أكتوبر 2026): تصحيح الرقم «1» المقروء خطأ على أنه I أو l (مثال: I,29).", "(17. Okt. 2026): Ziffer „1“, die als I oder l gelesen wurde (z. B. I,29), korrigiert."], "(17 oct. 2026) : les valeurs de référence (normes) ne sont plus jamais prises pour un résultat ; une analyse mal lue reste vide au lieu d'une valeur fausse ; la ligne lue est affichée sous chaque valeur.": ["(17 أكتوبر 2026): لم تعد القيم المرجعية (المعايير) تُعتبر نتيجة أبداً؛ والتحليل المقروء خطأ يبقى فارغاً بدل قيمة خاطئة؛ ويظهر السطر المقروء تحت كل قيمة.", "(17. Okt. 2026): Referenzwerte (Normwerte) werden nie mehr als Ergebnis übernommen; eine falsch gelesene Analyse bleibt leer statt einen falschen Wert zu zeigen; die gelesene Zeile steht unter jedem Wert."], "(17 oct. 2026) : lecture des analyses fiabilisée : photo lue par bandes, bon chiffre choisi grâce à l'unité, virgules perdues restaurées, triglycérides et créatinine reconnus.": ["(17 أكتوبر 2026): قراءة أدق للتحاليل: الصورة تُقرأ على شرائح، واختيار الرقم الصحيح بفضل الوحدة، واستعادة الفواصل المفقودة، والتعرف على الدهون الثلاثية والكرياتينين.", "(17. Okt. 2026): zuverlässigeres Lesen der Analysen: Foto wird in Streifen gelesen, die richtige Zahl wird anhand der Einheit gewählt, verlorene Kommas werden wiederhergestellt, Triglyceride und Kreatinin werden erkannt."], "(17 oct. 2026) : dans Claude, la photo est lue par Claude (plus fiable) ; sur GitHub Pages, lecture sur l'appareil avec délais maximum et bouton Arrêter ; champs date mieux ajustés sur iPhone.": ["(17 أكتوبر 2026): داخل Claude تُقرأ الصورة بواسطة Claude (أدق)؛ وعلى GitHub Pages تُقرأ على الجهاز مع مهلة قصوى وزر إيقاف؛ وتحسين حقول التاريخ على iPhone.", "(17. Okt. 2026): in Claude wird das Foto von Claude gelesen (zuverlässiger); auf GitHub Pages erfolgt das Lesen auf dem Gerät mit Zeitlimit und Stopp-Taste; Datumsfelder auf dem iPhone besser angepasst."], "(17 oct. 2026) : scanner une analyse avec l'appareil photo ; les valeurs lues sont proposées, vérifiées par vous, puis enregistrées dans les bonnes cases.": ["(17 أكتوبر 2026): مسح التحليل بالكاميرا؛ تُقترح القيم المقروءة فتتحقق منها ثم تُحفظ في الخانات الصحيحة.", "(17. Okt. 2026): Analyse mit der Kamera scannen; die gelesenen Werte werden vorgeschlagen, von Ihnen geprüft und dann in den richtigen Feldern gespeichert."], "(16 oct. 2026) : couleurs pour tous les résultats : vert (normal), orange (hors norme), rouge (alerte) dans la liste, l'historique et le tableau.": ["(16 أكتوبر 2026): ألوان لكل النتائج: أخضر (طبيعي)، برتقالي (خارج المعدل)، أحمر (تنبيه) في القائمة والسجل والجدول.", "(16. Okt. 2026): Farben für alle Ergebnisse: grün (normal), orange (außerhalb der Norm), rot (Alarm) in Liste, Verlauf und Tabelle."], "(16 oct. 2026) : bouton de suppression remplacé par une croix ; les mesures ajoutées ont la même taille et la même présentation que les autres.": ["(16 أكتوبر 2026): استبدال زر الحذف بعلامة ×؛ والقياسات المضافة لها نفس الحجم والشكل كغيرها.", "(16. Okt. 2026): Löschen-Schaltfläche durch ein Kreuz ersetzt; hinzugefügte Messwerte haben dieselbe Größe und Darstellung wie die übrigen."], "(16 oct. 2026) : confirmation avant de supprimer une mesure, import des fichiers Excel (accents), zone pour coller le contenu, mise en page sur petit écran.": ["(16 أكتوبر 2026): تأكيد قبل حذف قياس، واستيراد ملفات Excel (الحروف المشكّلة)، ومنطقة للصق المحتوى، وتحسين العرض على الشاشات الصغيرة.", "(16. Okt. 2026): Bestätigung vor dem Löschen eines Messwerts, Import von Excel-Dateien (Akzente), Feld zum Einfügen des Inhalts, Layout für kleine Bildschirme."], "(16 oct. 2026) : analyses supplémentaires, numéro de version.": ["(16 أكتوبر 2026): تحاليل إضافية، ورقم الإصدار.", "(16. Okt. 2026): zusätzliche Analysen, Versionsnummer."], "(16 oct. 2026) : plusieurs personnes, un profil par nom.": ["(16 أكتوبر 2026): عدة أشخاص، وملف شخصي لكل اسم.", "(16. Okt. 2026): mehrere Personen, ein Profil pro Name."], "(16 oct. 2026) : icône, installation sur l'écran d'accueil, usage hors connexion.": ["(16 أكتوبر 2026): أيقونة، والتثبيت على الشاشة الرئيسية، والاستخدام دون اتصال.", "(16. Okt. 2026): Symbol, Installation auf dem Startbildschirm, Nutzung ohne Verbindung."], "(15 oct. 2026) : onglet Import / Export en CSV et JSON.": ["(15 أكتوبر 2026): تبويب استيراد / تصدير بصيغتي CSV وJSON.", "(15. Okt. 2026): Reiter Import / Export in CSV und JSON."], "(15 oct. 2026) : suivi des analyses, graphiques, alerte rouge au-delà de 20 % des limites.": ["(15 أكتوبر 2026): متابعة التحاليل، ورسوم بيانية، وتنبيه أحمر عند تجاوز 20 % من الحدود.", "(15. Okt. 2026): Analysenverlauf, Diagramme, roter Alarm bei mehr als 20 % über den Grenzwerten."]};
+const STATIC=[];
+(function collectStatic(){
+  const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){
+    const p=n.parentNode&&n.parentNode.nodeName;
+    if(p==='SCRIPT'||p==='STYLE'||!n.nodeValue.trim())return NodeFilter.FILTER_REJECT;
+    return NodeFilter.FILTER_ACCEPT;}});
+  let n;while((n=w.nextNode()))STATIC.push({n:n,fr:n.nodeValue});
+  document.querySelectorAll('[aria-label],[placeholder],[title]').forEach(el=>{
+    ['aria-label','placeholder','title'].forEach(a=>{if(el.hasAttribute(a))STATIC.push({el:el,a:a,fr:el.getAttribute(a)});});
+  });
+})();
+function applyStatic(){
+  const idx=LANG==='ar'?0:1;
+  STATIC.forEach(x=>{
+    if(x.n){
+      if(!x.n.parentNode)return;
+      const m=/^(\s*)([\s\S]*?)(\s*)$/.exec(x.fr),tr=STATIC_DICT[m[2]];
+      x.n.nodeValue=(LANG!=='fr'&&tr)?m[1]+tr[idx]+m[3]:x.fr;
+    }else{
+      const tr=STATIC_DICT[x.fr];
+      x.el.setAttribute(x.a,(LANG!=='fr'&&tr)?tr[idx]:x.fr);
+    }
+  });
+}
+const META_DESC=(document.querySelector('meta[name=description]')||{getAttribute:()=>''}).getAttribute('content');
+function applyChrome(){
+  document.documentElement.lang=LANG;
+  document.documentElement.dir=isAr()?'rtl':'ltr';
+  applyStatic();
+  const title=X('Suivi Santé','متابعة الصحة','Gesundheitsverlauf');
+  document.title=title;
+  const md=document.querySelector('meta[name=description]');
+  if(md)md.setAttribute('content',X(META_DESC,'متابعة الصحة: تحاليلك الكيميائية الحيوية في رسوم بيانية، مع تنبيه أحمر عند تجاوز 20 % من الحدود. من إنشاء Kamel Nasralli.','Gesundheitsverlauf: Ihre Laborwerte als Diagramme, mit rotem Alarm bei mehr als 20 % über den Grenzwerten. Erstellt von Kamel Nasralli.'));
+  const am=document.querySelector('meta[name="apple-mobile-web-app-title"]');
+  if(am)am.setAttribute('content',title);
+  document.querySelectorAll('.seg button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.lang===LANG)));
+  $('ver-date').textContent=dlabel(APP_DATE,0);
+  scanHint();
+}
+function setLang(l){
+  if(l===LANG||(l!=='fr'&&l!=='de'&&l!=='ar'))return;
+  LANG=l;
+  try{localStorage.setItem(LKEY,l);}catch(e){}
+  $('scan-cancel').click();
+  closePanels();
+  ['p-msg','form-msg','t-msg','exp-msg','scan-msg'].forEach(id=>{$(id).textContent='';});
+  $('imp-res').textContent='';$('imp-res').className='res';
+  $('exp-fallback').hidden=true;
+  selSig='';
+  applyChrome();setStoreNote();renderAll();updateUnit();
+}
+document.querySelector('.langbar').addEventListener('click',e=>{const b=e.target.closest('[data-lang]');if(b)setLang(b.dataset.lang);});
+const nm=p=>(p.id==='p1'&&p.name==='Moi')?X('Moi','أنا','Ich'):p.name;
+const E_DEL=()=>X('Suppression impossible. Réessayez plus tard.','تعذّر الحذف. أعد المحاولة لاحقاً.','Löschen nicht möglich. Bitte später erneut versuchen.');
+const E_SAVE=()=>X('Enregistrement impossible. Réessayez plus tard.','تعذّر الحفظ. أعد المحاولة لاحقاً.','Speichern nicht möglich. Bitte später erneut versuchen.');
+
+const INFO={"glycemie": {"fr": "Le glucose est le sucre du sang, la principale source d'énergie des cellules ; l'insuline le régule. Un taux élevé à jeun peut évoquer un prédiabète ou un diabète. Un taux trop bas (hypoglycémie) provoque sueurs, tremblements et malaise.", "ar": "الغلوكوز هو سكر الدم، وهو المصدر الرئيسي للطاقة لخلايا الجسم، وينظّمه هرمون الأنسولين. ارتفاعه على الريق قد يشير إلى مقدمات السكري أو السكري، وانخفاضه الشديد (نقص السكر) يسبب تعرقاً ورعشة وإعياءً.", "de": "Glukose ist der Blutzucker, die wichtigste Energiequelle der Körperzellen; das Hormon Insulin reguliert ihn. Erhöhte Nüchternwerte können auf Prädiabetes oder Diabetes hinweisen, zu niedrige Werte (Unterzuckerung) verursachen Schwitzen, Zittern und Schwäche."}, "hba1c": {"fr": "L'HbA1c est la part d'hémoglobine liée au sucre. Elle reflète la glycémie moyenne des 2 à 3 derniers mois et sert à dépister et à surveiller le diabète : plus elle est élevée, plus le sucre a été élevé sur cette période.", "ar": "الهيموغلوبين السكري (HbA1c) هو نسبة الهيموغلوبين المرتبطة بالسكر، ويعكس متوسط سكر الدم خلال الشهرين أو الثلاثة الأشهر الأخيرة. يُستعمل لكشف السكري ومتابعته: كلما ارتفع زاد ارتفاع السكر خلال هذه المدة.", "de": "HbA1c ist der Anteil des Hämoglobins, der an Zucker gebunden ist. Er spiegelt den durchschnittlichen Blutzucker der letzten 2 bis 3 Monate wider und dient zur Erkennung und Kontrolle von Diabetes: je höher, desto höher war der Zucker in dieser Zeit."}, "chol": {"fr": "Le cholestérol est une graisse nécessaire aux cellules et aux hormones, fabriquée surtout par le foie. Le taux total regroupe le HDL, le LDL et d'autres fractions. Trop élevé, il augmente le risque cardiovasculaire.", "ar": "الكوليسترول دهن تحتاجه الخلايا والهرمونات، ويصنعه الكبد في الغالب. والكوليسترول الكلي يجمع الجيد (HDL) والضار (LDL) وأنواعاً أخرى. ارتفاعه يزيد خطر أمراض القلب والأوعية الدموية.", "de": "Cholesterin ist ein Fett, das Zellen und Hormone brauchen und das vor allem die Leber bildet. Das Gesamtcholesterin umfasst HDL, LDL und weitere Anteile. Zu hohe Werte erhöhen das Herz-Kreislauf-Risiko."}, "hdl": {"fr": "Le HDL est le « bon » cholestérol : il ramène l'excès de cholestérol des artères vers le foie. Un taux bas augmente le risque cardiovasculaire ; l'activité physique et l'arrêt du tabac l'augmentent.", "ar": "HDL هو الكوليسترول «الجيد»: يعيد فائض الكوليسترول من الشرايين إلى الكبد. انخفاضه يزيد خطر أمراض القلب والأوعية، ويرتفع بالنشاط البدني والإقلاع عن التدخين.", "de": "HDL ist das „gute“ Cholesterin: Es transportiert überschüssiges Cholesterin aus den Arterien zurück zur Leber. Niedrige Werte erhöhen das Herz-Kreislauf-Risiko; Bewegung und Rauchverzicht steigern es."}, "ldl": {"fr": "Le LDL est le « mauvais » cholestérol : en excès, il se dépose sur la paroi des artères (athérosclérose). Plus il est élevé, plus le risque d'infarctus et d'AVC augmente.", "ar": "LDL هو الكوليسترول «الضار»: يترسب عند زيادته على جدران الشرايين (تصلّب الشرايين). كلما ارتفع زاد خطر الجلطة القلبية والسكتة الدماغية.", "de": "LDL ist das „schlechte“ Cholesterin: Im Überschuss lagert es sich an den Arterienwänden ab (Arteriosklerose). Je höher es ist, desto größer das Risiko für Herzinfarkt und Schlaganfall."}, "tg": {"fr": "Les triglycérides sont des graisses qui circulent dans le sang, venant de l'alimentation et fabriquées par le foie ; ils servent de réserve d'énergie. Ils augmentent avec le sucre, l'alcool, le surpoids et le diabète ; très élevés, ils peuvent irriter le pancréas.", "ar": "الدهون الثلاثية دهون تدور في الدم، مصدرها الغذاء وما يصنعه الكبد، وهي مخزون للطاقة. ترتفع مع السكريات والكحول والوزن الزائد والسكري، وإذا ارتفعت جداً قد تُرهق البنكرياس.", "de": "Triglyceride sind im Blut zirkulierende Fette aus der Nahrung und der Leber und dienen als Energiespeicher. Sie steigen bei viel Zucker, Alkohol, Übergewicht und Diabetes; sehr hohe Werte können die Bauchspeicheldrüse reizen."}, "creat": {"fr": "La créatinine est un déchet produit par les muscles et éliminé par les reins dans les urines. Son taux dans le sang reflète le fonctionnement des reins : élevé, il peut indiquer qu'ils filtrent moins bien (il monte aussi en cas de déshydratation ou de forte masse musculaire).", "ar": "الكرياتينين فضلة تنتجها العضلات وتتخلص منها الكلى عبر البول. يعكس مستواه في الدم سلامة وظيفة الكلى: ارتفاعه قد يعني أن الكلى تُرشّح أقل (وقد يرتفع أيضاً مع الجفاف أو الكتلة العضلية الكبيرة).", "de": "Kreatinin ist ein Abfallprodukt der Muskeln, das die Nieren mit dem Urin ausscheiden. Der Blutwert zeigt, wie gut die Nieren arbeiten: Erhöhte Werte können auf eine geringere Filterleistung hinweisen (auch bei Flüssigkeitsmangel oder viel Muskelmasse)."}, "uric": {"fr": "L'acide urique est le produit de dégradation des purines, des composés présents dans les cellules et dans certains aliments (viandes rouges, abats, fruits de mer, bière). Il est éliminé surtout par les reins, dans les urines. Un taux élevé peut favoriser la goutte et les calculs rénaux ; un taux bas est rare et rarement grave.", "ar": "حمض اليوريك ناتج تفكك مركّبات تُعرف باسم البيورينات، وهي موجودة في خلايا الجسم وفي بعض الأطعمة (اللحوم الحمراء، الأحشاء، المأكولات البحرية، البيرة). تتخلص منه الكلى عبر البول. ارتفاعه قد يسهم في النقرس وحصى الكلى، وانخفاضه نادر وغالباً غير خطير.", "de": "Harnsäure entsteht beim Abbau von Purinen, Verbindungen in den Körperzellen und in manchen Lebensmitteln (rotes Fleisch, Innereien, Meeresfrüchte, Bier). Sie wird hauptsächlich von den Nieren über den Urin ausgeschieden. Erhöhte Werte können Gicht und Nierensteine begünstigen; zu niedrige Werte sind selten und meist harmlos."}};
 const TESTS=[
- {id:'glycemie',short:'Glycémie',full:'Glycémie',unit:'g/L',min:0.70,max:1.10,dec:2,lim:'0,70 – 1,10 g/L'},
- {id:'hba1c',short:'HbA1c',full:'Hémoglobine glycosylée (HbA1c)',unit:'%',max:6.0,dec:2,lim:'< 6,0 %',
-  note:'En février 2026, la cellule du fichier était au format date (6 août). Elle a été lue comme 6,80 %.'},
- {id:'chol',short:'Cholestérol total',full:'Cholestérol total',unit:'g/L',max:2.0,dec:2,lim:'< 2,0 g/L'},
- {id:'hdl',short:'HDL',full:'HDL cholestérol',unit:'g/L',min:0.45,dec:2,lim:'> 0,45 g/L'},
- {id:'ldl',short:'LDL',full:'LDL cholestérol',unit:'g/L',max:1.30,dec:2,lim:'< 1,30 g/L',
-  note:'Le fichier indique 10,1 g/L en mai 2026. Cette valeur a été écartée, car elle ressemble à une erreur de saisie (1,01 ?). Ajoutez la bonne valeur dans le formulaire plus bas.'},
- {id:'tg',short:'Triglycérides',full:'Triglycérides',unit:'g/L',max:1.50,dec:2,lim:'< 1,50 g/L'},
- {id:'creat',short:'Créatinine',full:'Créatinine',unit:'mg/L',min:8,max:13,dec:1,lim:'8 – 13 mg/L'},
- {id:'uric',short:'Acide urique',full:'Acide urique',unit:'mg/L',min:34,max:70,dec:1,lim:'34 – 70 mg/L'}
+ {id:'glycemie',info:INFO.glycemie,short:'Glycémie',full:'Glycémie',unit:'g/L',min:0.70,max:1.10,dec:2,lim:'0,70 – 1,10 g/L',
+  ar:{short:'سكر الدم',full:'سكر الدم (الغلوكوز)'},de:{short:'Blutzucker',full:'Blutzucker (Glykämie)'}},
+ {id:'hba1c',info:INFO.hba1c,short:'HbA1c',full:'Hémoglobine glycosylée (HbA1c)',unit:'%',max:6.0,dec:2,lim:'< 6,0 %',
+  note:'En février 2026, la cellule du fichier était au format date (6 août). Elle a été lue comme 6,80 %.',
+  ar:{short:'HbA1c',full:'الهيموغلوبين السكري (HbA1c)',note:'في فيفري 2026 كانت الخلية في الملف بصيغة تاريخ (6 أوت). تمت قراءتها على أنها 6,80 %.'},
+  de:{short:'HbA1c',full:'Glykiertes Hämoglobin (HbA1c)',note:'Im Februar 2026 hatte die Zelle der Datei das Datumsformat (6. August). Sie wurde als 6,80 % gelesen.'}},
+ {id:'chol',info:INFO.chol,short:'Cholestérol total',full:'Cholestérol total',unit:'g/L',max:2.0,dec:2,lim:'< 2,0 g/L',
+  ar:{short:'الكوليسترول الكلي',full:'الكوليسترول الكلي'},de:{short:'Gesamtcholesterin',full:'Gesamtcholesterin'}},
+ {id:'hdl',info:INFO.hdl,short:'HDL',full:'HDL cholestérol',unit:'g/L',min:0.45,dec:2,lim:'> 0,45 g/L',
+  ar:{short:'HDL',full:'الكوليسترول الجيد (HDL)'},de:{short:'HDL',full:'HDL-Cholesterin'}},
+ {id:'ldl',info:INFO.ldl,short:'LDL',full:'LDL cholestérol',unit:'g/L',max:1.30,dec:2,lim:'< 1,30 g/L',
+  note:'Le fichier indique 10,1 g/L en mai 2026. Cette valeur a été écartée, car elle ressemble à une erreur de saisie (1,01 ?). Ajoutez la bonne valeur dans le formulaire plus bas.',
+  ar:{short:'LDL',full:'الكوليسترول الضار (LDL)',note:'يشير الملف إلى 10,1 g/L في ماي 2026. استُبعدت هذه القيمة لأنها تشبه خطأ إدخال (1,01؟). أضف القيمة الصحيحة من النموذج أدناه.'},
+  de:{short:'LDL',full:'LDL-Cholesterin',note:'Die Datei nennt 10,1 g/L im Mai 2026. Dieser Wert wurde verworfen, da er wie ein Eingabefehler aussieht (1,01?). Tragen Sie den richtigen Wert im Formular weiter unten ein.'}},
+ {id:'tg',info:INFO.tg,short:'Triglycérides',full:'Triglycérides',unit:'g/L',max:1.50,dec:2,lim:'< 1,50 g/L',
+  ar:{short:'الدهون الثلاثية',full:'الدهون الثلاثية'},de:{short:'Triglyceride',full:'Triglyceride'}},
+ {id:'creat',info:INFO.creat,short:'Créatinine',full:'Créatinine',unit:'mg/L',min:8,max:13,dec:1,lim:'8 – 13 mg/L',
+  ar:{short:'الكرياتينين',full:'الكرياتينين'},de:{short:'Kreatinin',full:'Kreatinin'}},
+ {id:'uric',info:INFO.uric,short:'Acide urique',full:'Acide urique',unit:'mg/L',min:34,max:70,dec:1,lim:'34 – 70 mg/L',
+  ar:{short:'حمض اليوريك',full:'حمض اليوريك'},de:{short:'Harnsäure',full:'Harnsäure'}}
 ];
 const COLS=[['2023-01-01',1],['2023-08-01',1],['2023-12-01',1],['2024-03-01',1],['2024-06-01',1],['2024-12-01',1],['2025-04-01',1],['2025-08-01',1],['2025-09-01',1],['2026-02-26',0],['2026-05-01',1]];
 const N=null;
@@ -478,10 +588,13 @@ const SEED={
  uric:[64.5,69.0,77.5,N,61.0,55.9,82.2,76.1,74.3,63.7,65.2]
 };
 const KEY='suivi-sante-v1';
-const APP_VERSION='1.5.6',APP_DATE='2026-10-16';
-const ST={ok:'Normal',warn:'Hors norme',crit:'Alerte'};
+const APP_VERSION='1.6.1',APP_DATE='2026-10-20';
+const ST_L={fr:{ok:'Normal',warn:'Hors norme',crit:'Alerte'},de:{ok:'Normal',warn:'Außerhalb der Norm',crit:'Alarm'},ar:{ok:'طبيعي',warn:'خارج المعدل',crit:'تنبيه'}};
+const stName=k=>ST_L[LANG][k];
 const RANK={crit:0,warn:1,ok:2,none:3};
 const MONTHS=['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
+const MONTHS_DE=['Jan.','Feb.','März','Apr.','Mai','Juni','Juli','Aug.','Sept.','Okt.','Nov.','Dez.'];
+const MONTHS_AR=['جانفي','فيفري','مارس','أفريل','ماي','جوان','جويلية','أوت','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
 const S={sel:null,pick:null,pct:20,extras:[],customs:[],mode:'local',col:null,busy:false,profiles:[],cur:'p1',pmode:null,delAsk:null};
 let CH=null;
 
@@ -491,8 +604,8 @@ const fmt=(v,d)=>v.toLocaleString('fr-FR',{minimumFractionDigits:d,maximumFracti
 const ts=d=>Date.parse(d+'T00:00:00Z');
 const clampPct=p=>Math.min(100,Math.max(1,Math.round(p)));
 const valid=x=>!!(x&&typeof x.id==='string'&&T(x.t)&&/^\d{4}-\d{2}-\d{2}$/.test(x.d)&&Number.isFinite(x.v));
-function dlabel(d,m){const p=d.split('-').map(Number);return m?MONTHS[p[1]-1]+' '+p[0]:p[2]+' '+MONTHS[p[1]-1]+' '+p[0];}
-function pill(st){return '<span class="pill '+st+'">'+ST[st]+'</span>';}
+function dlabel(d,m){const p=d.split('-').map(Number),MS=LANG==='ar'?MONTHS_AR:LANG==='de'?MONTHS_DE:MONTHS;return m?MS[p[1]-1]+' '+p[0]:p[2]+(LANG==='de'?'. ':' ')+MS[p[1]-1]+' '+p[0];}
+function pill(st){return '<span class="pill '+st+'">'+stName(st)+'</span>';}
 
 function judge(t,v,f){
   let rel=0,side=null;
@@ -502,10 +615,12 @@ function judge(t,v,f){
   return {st:st,rel:rel,side:side};
 }
 function why(t,j){
-  if(j.st==='ok')return 'Dans la limite ('+t.lim+')';
-  const n=fmt(j.rel*100,j.rel<0.1?1:0);
-  const lim=j.side==='haut'?t.max:t.min;
-  return n+' % '+(j.side==='haut'?'au-dessus':'en dessous')+' de la limite ('+fmt(lim,t.dec)+' '+t.unit+')';
+  if(j.st==='ok')return X('Dans la limite (','ضمن الحد (','Innerhalb des Grenzwerts (')+ltr(t.lim)+')';
+  const n=fmt(j.rel*100,j.rel<0.1?1:0),hi=j.side==='haut';
+  const lim=hi?t.max:t.min,l=fmt(lim,t.dec)+' '+t.unit;
+  if(LANG==='ar')return ltr(n+' %')+' '+(hi?'فوق':'تحت')+' الحد ('+ltr(l)+')';
+  if(LANG==='de')return n+' % '+(hi?'über':'unter')+' dem Grenzwert ('+l+')';
+  return n+' % '+(hi?'au-dessus':'en dessous')+' de la limite ('+l+')';
 }
 function readings(t){
   const out=[];
@@ -552,31 +667,37 @@ function spark(t,r){
 }
 
 function renderTop(rows){
-  const pr=curProf();
+  const pr=curProf(),who=nm(pr);
   let best=null,first=null,count=0;
   rows.forEach(x=>{
     if(x.last){count++;if(!best||x.last.d>best.d)best=x.last;}
     x.r.forEach(p=>{if(!first||p.d<first.d)first=p;});
   });
   $('sub').textContent=best
-    ?pr.name+' · Dernier bilan : '+dlabel(best.d,best.m)+'. '+count+' indicateur'+(count>1?'s':'')+' suivi'+(count>1?'s':'')+' depuis '+dlabel(first.d,first.m)+'.'
-    :pr.name+' · Aucune mesure pour l\'instant.';
+    ?X(who+' · Dernier bilan : '+dlabel(best.d,best.m)+'. '+count+' indicateur'+(count>1?'s':'')+' suivi'+(count>1?'s':'')+' depuis '+dlabel(first.d,first.m)+'.',
+       who+' · آخر تحليل: '+dlabel(best.d,best.m)+'. عدد المؤشرات المتابَعة: '+count+' منذ '+dlabel(first.d,first.m)+'.',
+       who+' · Letzter Befund: '+dlabel(best.d,best.m)+'. Beobachtete Indikatoren: '+count+' seit '+dlabel(first.d,first.m)+'.')
+    :who+' · '+X('Aucune mesure pour l\'instant.','لا توجد قياسات حتى الآن.','Noch keine Messwerte.');
   if(!best){
-    $('summary').innerHTML='<p class="txt">Aucune mesure pour '+esc(pr.name)+'. Ajoutez la première dans le formulaire plus bas, ou importez un fichier depuis l\'onglet Import / Export.</p>';
+    $('summary').innerHTML='<p class="txt">'+X('Aucune mesure pour '+esc(who)+'. Ajoutez la première dans le formulaire plus bas, ou importez un fichier depuis l\'onglet Import / Export.',
+      'لا توجد قياسات ('+esc(who)+'). أضف أول قياس من النموذج أدناه، أو استورد ملفاً من تبويب «استيراد / تصدير».',
+      'Keine Messwerte für '+esc(who)+'. Fügen Sie den ersten im Formular weiter unten hinzu oder importieren Sie eine Datei über den Reiter Import / Export.')+'</p>';
     return;
   }
   const n={ok:0,warn:0,crit:0,none:0};
   rows.forEach(x=>{n[x.j.st]++;});
   $('summary').innerHTML=
-    '<span class="pill crit">'+n.crit+' en alerte</span>'
-   +'<span class="pill warn">'+n.warn+' hors norme</span>'
-   +'<span class="pill ok">'+n.ok+' normal'+(n.ok>1?'ux':'')+'</span>'
-   +'<p class="txt">Alerte rouge : valeur à plus de '+S.pct+' % au-delà de la limite du laboratoire. Hors norme : limite dépassée de '+S.pct+' % ou moins.</p>';
+    '<span class="pill crit">'+X(n.crit+' en alerte','تنبيه: '+n.crit,n.crit+' im Alarm')+'</span>'
+   +'<span class="pill warn">'+X(n.warn+' hors norme','خارج المعدل: '+n.warn,n.warn+' außerhalb der Norm')+'</span>'
+   +'<span class="pill ok">'+X(n.ok+(n.ok>1?' normaux':' normal'),'طبيعي: '+n.ok,n.ok+' normal')+'</span>'
+   +'<p class="txt">'+X('Alerte rouge : valeur à plus de '+S.pct+' % au-delà de la limite du laboratoire. Hors norme : limite dépassée de '+S.pct+' % ou moins.',
+      'تنبيه أحمر: قيمة تتجاوز حد المختبر بأكثر من '+S.pct+' %. خارج المعدل: تجاوز الحد بنسبة '+S.pct+' % أو أقل.',
+      'Roter Alarm: Wert mehr als '+S.pct+' % über dem Grenzwert des Labors. Außerhalb der Norm: Grenzwert um höchstens '+S.pct+' % überschritten.')+'</p>';
 }
 function renderList(rows){
   $('list').innerHTML=rows.map(x=>{
     const t=x.t,cur=t.id===S.sel;
-    if(!x.last)return '<li><button type="button" class="ind" data-id="'+t.id+'"'+(cur?' aria-current="true"':'')+'><span class="i-name"><b>'+t.short+'</b><small>Aucune mesure</small></span><span></span><span class="i-val"><span class="num">–</span></span></button></li>';
+    if(!x.last)return '<li><button type="button" class="ind" data-id="'+t.id+'"'+(cur?' aria-current="true"':'')+'><span class="i-name"><b>'+t.short+'</b><small>'+X('Aucune mesure','لا توجد قياسات','Kein Messwert')+'</small></span><span></span><span class="i-val"><span class="num">–</span></span></button></li>';
     return '<li><button type="button" class="ind '+x.j.st+'" data-id="'+t.id+'"'+(cur?' aria-current="true"':'')+'>'
      +'<span class="i-name"><b>'+t.short+'</b><small>'+dlabel(x.last.d,x.last.m)+'</small></span>'
      +spark(t,x.r)
@@ -585,31 +706,38 @@ function renderList(rows){
   }).join('');
 }
 
+function about(t){
+  if(!t.info)return '';
+  return '<details class="about" open><summary>'+X('À propos de cette analyse','عن هذا التحليل','Über diese Analyse')+'</summary><p>'+X(t.info.fr,t.info.ar,t.info.de)+'</p><p class="aboutnote">'+X('Informations générales ; seul votre médecin peut interpréter vos résultats.','معلومات عامة؛ الطبيب وحده يفسّر نتائجك.','Allgemeine Informationen; nur Ihr Arzt kann Ihre Ergebnisse beurteilen.')+'</p></details>';
+}
+function dhead(t){return '<div class="d-head"><h2>'+t.full+'</h2><p class="lim">'+X('Valeur normale du laboratoire : ','القيمة الطبيعية في المختبر: ','Normalwert des Labors: ')+'<b>'+ltr(t.lim)+'</b></p></div>'+about(t);}
 function renderDetail(){
-  const t=T(S.sel),r=readings(t),f=thr();
+  const t=T(S.sel),r=readings(t),f=thr(),who=nm(curProf());
   if(!r.length){
-    $('detail').innerHTML='<div class="d-head"><h2>'+t.full+'</h2><p class="lim">Valeur normale du laboratoire : <b>'+t.lim+'</b></p></div>'+tActions(t)+'<p class="note mt">Aucune mesure de '+t.short+' pour '+esc(curProf().name)+'. Ajoutez-en une avec le formulaire plus bas, ou importez un fichier.</p>';
+    $('detail').innerHTML=dhead(t)+tActions(t)+'<p class="note mt">'+X('Aucune mesure de '+t.short+' pour '+esc(who)+'. Ajoutez-en une avec le formulaire plus bas, ou importez un fichier.',
+      'لا توجد قياسات '+t.short+' ('+esc(who)+'). أضف قياساً من النموذج أدناه، أو استورد ملفاً.',
+      'Keine Messwerte für '+t.short+' bei '+esc(who)+'. Fügen Sie einen im Formular weiter unten hinzu oder importieren Sie eine Datei.')+'</p>';
     return;
   }
   const crit=r.filter(p=>judge(t,p.v,f).st==='crit').length;
   const vs=r.map(p=>p.v);
   $('detail').innerHTML=
-    '<div class="d-head"><h2>'+t.full+'</h2><p class="lim">Valeur normale du laboratoire : <b>'+t.lim+'</b></p></div>'
+    dhead(t)
    +tActions(t)
    +'<div id="readout" class="readout"></div>'
-   +'<div id="chart" class="chart" tabindex="0" role="group" aria-label="Graphique. Flèches gauche et droite pour changer de mesure."></div>'
+   +'<div id="chart" class="chart" tabindex="0" role="group" aria-label="'+X('Graphique. Flèches gauche et droite pour changer de mesure.','مخطط. استخدم السهمين الأيمن والأيسر للتنقل بين القياسات.','Diagramm. Mit den Pfeiltasten links und rechts wechseln Sie den Messwert.')+'"></div>'
    +'<ul class="zones">'
-   +'<li><i class="sw ok"></i>Normal</li>'
-   +'<li><i class="sw warn"></i>Hors norme, jusqu\'à '+S.pct+' % de la limite</li>'
-   +'<li><i class="sw crit"></i>Alerte, plus de '+S.pct+' % au-delà</li></ul>'
-   +'<p class="zones-note">Tirets gris : limite du laboratoire. Pointillés rouges : limite + '+S.pct+' %.</p>'
+   +'<li><i class="sw ok"></i>'+X('Normal','طبيعي','Normal')+'</li>'
+   +'<li><i class="sw warn"></i>'+X('Hors norme, jusqu\'à '+S.pct+' % de la limite','خارج المعدل، حتى '+S.pct+' % من الحد','Außerhalb der Norm, bis '+S.pct+' % über dem Grenzwert')+'</li>'
+   +'<li><i class="sw crit"></i>'+X('Alerte, plus de '+S.pct+' % au-delà','تنبيه، أكثر من '+S.pct+' % فوق الحد','Alarm, mehr als '+S.pct+' % darüber')+'</li></ul>'
+   +'<p class="zones-note">'+X('Tirets gris : limite du laboratoire. Pointillés rouges : limite + '+S.pct+' %.','الخط المتقطع الرمادي: حد المختبر. النقاط الحمراء: الحد + '+S.pct+' %.','Graue Striche: Grenzwert des Labors. Rote Punkte: Grenzwert + '+S.pct+' %.')+'</p>'
    +'<dl class="facts">'
-   +'<div><dt>Mesures</dt><dd>'+r.length+'</dd></div>'
-   +'<div><dt>En alerte</dt><dd>'+crit+'</dd></div>'
-   +'<div><dt>Plus bas</dt><dd>'+fmt(Math.min.apply(null,vs),t.dec)+'</dd></div>'
-   +'<div><dt>Plus haut</dt><dd>'+fmt(Math.max.apply(null,vs),t.dec)+'</dd></div></dl>'
+   +'<div><dt>'+X('Mesures','القياسات','Messwerte')+'</dt><dd>'+r.length+'</dd></div>'
+   +'<div><dt>'+X('En alerte','في التنبيه','Im Alarm')+'</dt><dd>'+crit+'</dd></div>'
+   +'<div><dt>'+X('Plus bas','الأدنى','Niedrigster')+'</dt><dd>'+fmt(Math.min.apply(null,vs),t.dec)+'</dd></div>'
+   +'<div><dt>'+X('Plus haut','الأعلى','Höchster')+'</dt><dd>'+fmt(Math.max.apply(null,vs),t.dec)+'</dd></div></dl>'
    +(t.note&&curProf().seed?'<p class="note">'+t.note+'</p>':'')
-   +'<div class="d-sec"><h3 class="cap">Historique</h3><ul class="hist" id="hist"></ul></div>';
+   +'<div class="d-sec"><h3 class="cap">'+X('Historique','السجل','Verlauf')+'</h3><ul class="hist" id="hist"></ul></div>';
   drawReadout();drawChart();drawHist();
 }
 function current(t,r){return r.find(p=>p.id===S.pick)||r[r.length-1];}
@@ -625,10 +753,10 @@ function drawHist(){
   const t=T(S.sel),r=readings(t),sel=current(t,r),f=thr();
   $('hist').innerHTML=r.slice().reverse().map(p=>{
     const j=judge(t,p.v,f),lb=dlabel(p.d,p.m);
-    if(S.delAsk===p.id&&!p.seed)return '<li class="askdel"><div class="ask"><p>Supprimer la mesure du <b>'+lb+'</b> ('+fmt(p.v,t.dec)+(t.unit?' '+t.unit:'')+') ? Cette action est définitive.</p><div class="actions2"><button type="button" class="btn alt" data-delno="1">Annuler</button><button type="button" class="btn danger" data-delyes="'+p.id+'">Oui, supprimer</button></div></div></li>';
+    if(S.delAsk===p.id&&!p.seed){const vt=fmt(p.v,t.dec)+(t.unit?' '+t.unit:'');return '<li class="askdel"><div class="ask"><p>'+X('Supprimer la mesure du <b>'+lb+'</b> ('+vt+') ? Cette action est définitive.','حذف قياس <b>'+lb+'</b> ('+ltr(vt)+')؟ لا يمكن التراجع عن هذا الإجراء.','Messwert vom <b>'+lb+'</b> ('+vt+') löschen? Diese Aktion ist endgültig.')+'</p><div class="actions2"><button type="button" class="btn alt" data-delno="1">'+X('Annuler','إلغاء','Abbrechen')+'</button><button type="button" class="btn danger" data-delyes="'+p.id+'">'+X('Oui, supprimer','نعم، احذف','Ja, löschen')+'</button></div></div></li>';}
     return '<li><button type="button" class="h '+j.st+(p.id===sel.id?' on':'')+'" data-pid="'+p.id+'">'
      +'<span>'+lb+'</span><span class="h-v">'+fmt(p.v,t.dec)+' <small>'+t.unit+'</small></span>'+pill(j.st)+'</button>'
-     +(p.seed?'':'<button type="button" class="del" data-del="'+p.id+'" aria-label="Supprimer la mesure du '+lb+'" title="Supprimer"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12"/></svg></button>')
+     +(p.seed?'':'<button type="button" class="del" data-del="'+p.id+'" aria-label="'+X('Supprimer la mesure du ','حذف قياس ','Messwert löschen: ')+lb+'" title="'+X('Supprimer','حذف','Löschen')+'"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12"/></svg></button>')
      +'</li>';
   }).join('');
 }
@@ -696,7 +824,7 @@ function drawChart(){
     s+='<circle class="pt c-'+p.st+'" cx="'+n1(p.x)+'" cy="'+n1(p.y)+'" r="5"/>';
     if(p.id===sel.id)s+='<circle class="ring" cx="'+n1(p.x)+'" cy="'+n1(p.y)+'" r="9"/>';
   });
-  box.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" role="img" aria-label="Évolution de '+t.full+'">'+s+'</svg>';
+  box.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" role="img" aria-label="'+X('Évolution de ','تطور ','Verlauf: ')+t.full+'">'+s+'</svg>';
   CH={W:W,pts:pts};
 }
 function pick(id){S.pick=id;S.delAsk=null;drawReadout();drawChart();drawHist();}
@@ -705,11 +833,11 @@ function renderTable(){
   const keys=new Map();
   tests().forEach(t=>readings(t).forEach(p=>{if(!keys.has(p.d))keys.set(p.d,p.m?1:0);}));
   const ds=Array.from(keys.keys()).sort(),f=thr();
-  if(!ds.length){$('grid').innerHTML='<tbody><tr><td class="none" style="text-align:left">Aucune mesure pour cette personne.</td></tr></tbody>';return;}
-  let h='<thead><tr><th class="rowh" scope="col">Analyse</th>'+ds.map(d=>'<th scope="col">'+dlabel(d,keys.get(d))+'</th>').join('')+'</tr></thead><tbody>';
+  if(!ds.length){$('grid').innerHTML='<tbody><tr><td class="none" style="text-align:start">'+X('Aucune mesure pour cette personne.','لا توجد قياسات لهذا الشخص.','Keine Messwerte für diese Person.')+'</td></tr></tbody>';return;}
+  let h='<thead><tr><th class="rowh" scope="col">'+X('Analyse','التحليل','Analyse')+'</th>'+ds.map(d=>'<th scope="col">'+dlabel(d,keys.get(d))+'</th>').join('')+'</tr></thead><tbody>';
   tests().forEach(t=>{
     const r=readings(t);
-    h+='<tr><th class="rowh" scope="row">'+t.short+'<small>'+t.lim+'</small></th>';
+    h+='<tr><th class="rowh" scope="row">'+t.short+'<small>'+ltr(t.lim)+'</small></th>';
     ds.forEach(d=>{
       let p=null;r.forEach(q=>{if(q.d===d)p=q;});
       if(!p){h+='<td class="none">–</td>';return;}
@@ -746,8 +874,9 @@ function cleanCustom(c){
   return {id:id,p:c.p,name:name,unit:cleanText(c.unit,12),min:min,max:max,dec:dec};
 }
 function toTest(c){return {id:c.id,short:c.name,full:c.name,unit:c.unit,min:c.min,max:c.max,dec:c.dec,lim:limText(c.min,c.max,c.unit),custom:true};}
-function allTests(){return TESTS.concat(S.customs.map(toTest));}
-function tests(){return TESTS.concat(S.customs.filter(c=>c.p===S.cur).map(toTest));}
+function loc(t){const o=t[LANG];return o?Object.assign({},t,o):t;}
+function allTests(){return TESTS.map(loc).concat(S.customs.map(toTest));}
+function tests(){return TESTS.map(loc).concat(S.customs.filter(c=>c.p===S.cur).map(toTest));}
 let selSig='';
 function refreshTestSelect(){
   const sel=$('f-test'),ts2=tests(),sig=ts2.map(t=>t.id+':'+t.full).join('|');
@@ -759,11 +888,11 @@ function refreshTestSelect(){
   updateUnit();
 }
 function tActions(t){
-  return t.custom?'<div class="pactions"><button type="button" class="link" data-act="t-edit">Modifier l\'analyse</button><button type="button" class="link dng" data-act="t-del">Supprimer l\'analyse</button></div>':'';
+  return t.custom?'<div class="pactions"><button type="button" class="link" data-act="t-edit">'+X('Modifier l\'analyse','تعديل التحليل','Analyse bearbeiten')+'</button><button type="button" class="link dng" data-act="t-del">'+X('Supprimer l\'analyse','حذف التحليل','Analyse löschen')+'</button></div>':'';
 }
 function cleanName(s){return String(s==null?'':s).replace(/\s+/g,' ').trim().slice(0,30);}
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-function slug(s){return String(s).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'')||'profil';}
+function slug(s){return String(s).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9\u0600-\u06FF]+/g,'-').replace(/^-+|-+$/g,'')||'profil';}
 function normProfiles(list,legacyPct){
   const out=[];
   (list||[]).forEach(p=>{
@@ -809,8 +938,8 @@ function saveCur(){try{localStorage.setItem(KEYCUR,S.cur);}catch(e){}}
 function loadAll(){loadLocal();loadCur();syncCur();}
 function setStoreNote(){
   $('store-note').textContent=S.mode==='db'
-    ?'Les mesures ajoutées sont enregistrées sur votre compte et visibles par vous seul.'
-    :'Les mesures ajoutées sont enregistrées dans ce navigateur seulement.';
+    ?X('Les mesures ajoutées sont enregistrées sur votre compte et visibles par vous seul.','تُحفظ القياسات المضافة في حسابك ولا يراها غيرك.','Hinzugefügte Messwerte werden in Ihrem Konto gespeichert und sind nur für Sie sichtbar.')
+    :X('Les mesures ajoutées sont enregistrées dans ce navigateur seulement.','تُحفظ القياسات المضافة في هذا المتصفح فقط.','Hinzugefügte Messwerte werden nur in diesem Browser gespeichert.');
 }
 let pctTimer=null,pctPending=false,pctPid='p1';
 function profData(pr){return {kind:'profil',name:pr.name,pct:pr.pct,c:pr.c};}
@@ -843,7 +972,7 @@ async function addExtra(rec){
 }
 async function removeExtra(id){
   try{if(S.mode==='db'&&S.col)await S.col.doc(id).delete();}
-  catch(e){msg('Suppression impossible. Réessayez plus tard.',true);return;}
+  catch(e){msg(E_DEL(),true);return;}
   S.extras=S.extras.filter(x=>x.id!==id);
   S.delAsk=null;
   if(S.pick===id)S.pick=null;
@@ -927,16 +1056,18 @@ function updateUnit(){const t=T($('f-test').value);$('f-unit').textContent=t&&t.
 $('f-test').addEventListener('change',updateUnit);
 $('form').addEventListener('submit',async e=>{
   e.preventDefault();
-  const id=$('f-test').value,d=$('f-date').value,raw=$('f-val').value.trim().replace(',','.');
+  const id=$('f-test').value,d=$('f-date').value,raw=latin($('f-val').value).trim().replace(',','.');
   const v=Number(raw),t=T(id);
-  if(!d){msg('Choisissez une date.',true);return;}
-  if(!raw||!Number.isFinite(v)||v<=0){msg('Entrez une valeur numérique, par exemple 1,12.',true);return;}
+  if(!d){msg(X('Choisissez une date.','اختر تاريخاً.','Wählen Sie ein Datum.'),true);return;}
+  if(!raw||!Number.isFinite(v)||v<=0){msg(X('Entrez une valeur numérique, par exemple 1,12.','أدخل قيمة رقمية، مثال: 1,12.','Geben Sie einen Zahlenwert ein, z. B. 1,12.'),true);return;}
   const rec={id:'m_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),t:id,d:d,v:v,p:S.cur};
-  try{await addExtra(rec);}catch(err){msg('Enregistrement impossible. Réessayez plus tard.',true);return;}
+  try{await addExtra(rec);}catch(err){msg(E_SAVE(),true);return;}
   S.sel=id;S.pick=rec.id;
   $('f-val').value='';
   renderAll();
-  msg('Mesure ajoutée pour '+curProf().name+' : '+fmt(v,t.dec)+' '+t.unit+'. Statut : '+ST[judge(t,v,thr()).st]+'.',false);
+  msg(X('Mesure ajoutée pour '+nm(curProf())+' : '+fmt(v,t.dec)+' '+t.unit+'. Statut : '+stName(judge(t,v,thr()).st)+'.',
+    'أُضيف قياس ('+nm(curProf())+'): '+ltr(fmt(v,t.dec)+' '+t.unit)+'. الحالة: '+stName(judge(t,v,thr()).st)+'.',
+    'Messwert für '+nm(curProf())+' hinzugefügt: '+fmt(v,t.dec)+' '+t.unit+'. Status: '+stName(judge(t,v,thr()).st)+'.'),false);
 });
 
 
@@ -1067,8 +1198,8 @@ function loadTess(){
   TESS_LOAD=new Promise((ok,ko)=>{
     const s=document.createElement('script');
     s.src='https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js';
-    s.onload=()=>window.Tesseract?ok(window.Tesseract):ko(new Error('moteur absent'));
-    s.onerror=()=>{TESS_LOAD=null;ko(new Error('chargement impossible (connexion ?)'));};
+    s.onload=()=>window.Tesseract?ok(window.Tesseract):ko(new Error(X('moteur absent','المحرك غير متوفر','Engine nicht verfügbar')));
+    s.onerror=()=>{TESS_LOAD=null;ko(new Error(X('chargement impossible (connexion ?)','تعذّر التحميل (الاتصال؟)','Laden nicht möglich (Verbindung?)')));};
     document.head.appendChild(s);
   });
   return TESS_LOAD;
@@ -1089,13 +1220,13 @@ function prepImage(file,enhance,maxSide){
         g.putImageData(d,0,0);URL.revokeObjectURL(url);ok(c);
       }catch(e){URL.revokeObjectURL(url);ko(e);}
     };
-    img.onerror=()=>{URL.revokeObjectURL(url);ko(new Error('image illisible'));};
+    img.onerror=()=>{URL.revokeObjectURL(url);ko(new Error(X('image illisible','الصورة غير مقروءة','Bild nicht lesbar')));};
     img.src=url;
   });
 }
 function withTimeout(p,ms,what){
   let tm;
-  return Promise.race([p,new Promise((_,ko)=>{tm=setTimeout(()=>ko(new Error(what+' : délai dépassé')),ms);})]).finally(()=>clearTimeout(tm));
+  return Promise.race([p,new Promise((_,ko)=>{tm=setTimeout(()=>ko(new Error(what+X(' : délai dépassé',' : انتهت المهلة',' : Zeitüberschreitung'))),ms);})]).finally(()=>clearTimeout(tm));
 }
 function scanLimits(){return Object.assign({load:25000,init:90000,read:120000},window.SCAN_TIMEOUTS||{});}
 function bandCanvases(file,opt){
@@ -1123,16 +1254,16 @@ function bandCanvases(file,opt){
         URL.revokeObjectURL(url);ok(out);
       }catch(e){URL.revokeObjectURL(url);ko(e);}
     };
-    img.onerror=()=>{URL.revokeObjectURL(url);ko(new Error('image illisible'));};
+    img.onerror=()=>{URL.revokeObjectURL(url);ko(new Error(X('image illisible','الصورة غير مقروءة','Bild nicht lesbar')));};
     img.src=url;
   });
 }
 async function ocrBands(bands,onProgress,onStage,next){
   const L=scanLimits();
   if(onStage)onStage('load');
-  const T=await withTimeout(loadTess(),L.load,'téléchargement du moteur');
+  const T=await withTimeout(loadTess(),L.load,X('téléchargement du moteur','تنزيل المحرك','Download der Engine'));
   let cur=0,total=bands.length;
-  const mk=lang=>withTimeout(T.createWorker(lang,1,{langPath:'https://cdn.jsdelivr.net/npm/@tesseract.js-data/'+lang+'/4.0.0_best_int',logger:m=>{if(m&&m.status==='recognizing text'&&onProgress)onProgress((cur+m.progress)/Math.max(1,total));}}),L.init,'préparation du moteur');
+  const mk=lang=>withTimeout(T.createWorker(lang,1,{langPath:'https://cdn.jsdelivr.net/npm/@tesseract.js-data/'+lang+'/4.0.0_best_int',logger:m=>{if(m&&m.status==='recognizing text'&&onProgress)onProgress((cur+m.progress)/Math.max(1,total));}}),L.init,X('préparation du moteur','تحضير المحرك','Vorbereitung der Engine'));
   if(onStage)onStage('init');
   let w;
   try{w=await mk('fra');}catch(e){w=await mk('eng');}
@@ -1141,7 +1272,7 @@ async function ocrBands(bands,onProgress,onStage,next){
     try{await w.setParameters({tessedit_pageseg_mode:'6',preserve_interword_spaces:'1'});}catch(e){}
     if(onStage)onStage('read');
     for(cur=0;cur<bands.length;cur++){
-      const r=await withTimeout(w.recognize(bands[cur]),L.read,'lecture');
+      const r=await withTimeout(w.recognize(bands[cur]),L.read,X('lecture','القراءة','Lesen'));
       parts.push(r.data.text||'');
     }
     if(next){
@@ -1151,7 +1282,7 @@ async function ocrBands(bands,onProgress,onStage,next){
         if(onStage)onStage('pass2');
         total=more.length;
         for(cur=0;cur<more.length;cur++){
-          try{const r=await withTimeout(w.recognize(more[cur]),L.read,'lecture');parts.push(r.data.text||'');}catch(e){break;}
+          try{const r=await withTimeout(w.recognize(more[cur]),L.read,X('lecture','القراءة','Lesen'));parts.push(r.data.text||'');}catch(e){break;}
         }
       }
     }
@@ -1161,15 +1292,15 @@ async function ocrBands(bands,onProgress,onStage,next){
 async function ocrImage(canvas,onProgress,onStage){
   const L=scanLimits();
   if(onStage)onStage('load');
-  const T=await withTimeout(loadTess(),L.load,'téléchargement du moteur');
-  const mk=lang=>withTimeout(T.createWorker(lang,1,{langPath:'https://cdn.jsdelivr.net/npm/@tesseract.js-data/'+lang+'/4.0.0_best_int',logger:m=>{if(m&&m.status==='recognizing text'&&onProgress)onProgress(m.progress);}}),L.init,'préparation du moteur');
+  const T=await withTimeout(loadTess(),L.load,X('téléchargement du moteur','تنزيل المحرك','Download der Engine'));
+  const mk=lang=>withTimeout(T.createWorker(lang,1,{langPath:'https://cdn.jsdelivr.net/npm/@tesseract.js-data/'+lang+'/4.0.0_best_int',logger:m=>{if(m&&m.status==='recognizing text'&&onProgress)onProgress(m.progress);}}),L.init,X('préparation du moteur','تحضير المحرك','Vorbereitung der Engine'));
   if(onStage)onStage('init');
   let w;
   try{w=await mk('fra');}catch(e){w=await mk('eng');}
   try{
     try{await w.setParameters({tessedit_pageseg_mode:'6',preserve_interword_spaces:'1'});}catch(e){}
     if(onStage)onStage('read');
-    const r=await withTimeout(w.recognize(canvas),L.read,'lecture');
+    const r=await withTimeout(w.recognize(canvas),L.read,X('lecture','القراءة','Lesen'));
     return r.data.text||'';
   }finally{try{await w.terminate();}catch(e){}}
 }
@@ -1177,7 +1308,7 @@ function todayIso(){const d=new Date();return d.getFullYear()+'-'+String(d.getMo
 function scanMsg(t,bad){const el=$('scan-msg');el.textContent=t||'';el.className='msg'+(bad?' bad':'');}
 function scanRowStatus(li){
   const t=T(li.dataset.sid),inp=li.querySelector('.sval'),pillBox=li.querySelector('.pillbox');
-  const v=Number(String(inp.value).trim().replace(',','.'));
+  const v=Number(latin(inp.value).trim().replace(',','.'));
   pillBox.innerHTML=(inp.value.trim()&&Number.isFinite(v)&&v>0)?pill(judge(t,v,thr()).st):'';
 }
 function renderScan(found,date){
@@ -1189,9 +1320,9 @@ function renderScan(found,date){
     const dup=f&&readings(t).some(r=>r.d===(date||'')&&Math.abs(r.v-f.v)<1e-9);
     const on=!!f&&!dup;
     return '<li class="srow'+(on?'':' off')+(f&&f.flag&&on?' unsure':'')+'" data-sid="'+esc(t.id)+'"><label class="nm"><input type="checkbox" class="sck"'+(on?' checked':'')+'><span>'+esc(t.short)+'</span></label>'
-      +'<input class="sval" type="text" inputmode="decimal" autocomplete="off" aria-label="Valeur '+esc(t.short)+'" value="'+esc(v)+'" placeholder="–"><span class="sunit">'+esc(t.unit||'')+'</span>'
+      +'<input class="sval" type="text" inputmode="decimal" autocomplete="off" aria-label="'+X('Valeur ','القيمة ','Wert ')+esc(t.short)+'" value="'+esc(v)+'" placeholder="–"><span class="sunit">'+esc(t.unit||'')+'</span>'
       +'<span class="pillbox"></span>'
-      +(dup?'<span class="snote" style="flex:1 1 100%">Déjà enregistrée à cette date.</span>':'')
+      +(dup?'<span class="snote" style="flex:1 1 100%">'+X('Déjà enregistrée à cette date.','مسجّلة مسبقاً في هذا التاريخ.','An diesem Datum bereits gespeichert.')+'</span>':'')
       +'</li>';
   }).join('');
   $('scan-rows').querySelectorAll('.srow').forEach(scanRowStatus);
@@ -1211,8 +1342,12 @@ let SCAN_AI=null;
 function scanHint(){
   const el=$('scan-hint');if(!el)return;
   el.textContent=SCAN_AI
-    ?'La photo est envoyée à Claude (votre compte) pour lire les valeurs ; elle n’est pas gardée dans l’application. Vous vérifiez les valeurs avant l’enregistrement.'
-    :'La photo est lue sur votre appareil et n’est pas envoyée. Vous vérifiez les valeurs avant l’enregistrement.';
+    ?X('La photo est envoyée à Claude (votre compte) pour lire les valeurs ; elle n’est pas gardée dans l’application. Vous vérifiez les valeurs avant l’enregistrement.',
+       'تُرسل الصورة إلى Claude (حسابك) لقراءة القيم، ولا تُحفظ داخل التطبيق. تتحقق من القيم قبل الحفظ.',
+       'Das Foto wird zum Lesen der Werte an Claude (Ihr Konto) gesendet und nicht in der App gespeichert. Sie prüfen die Werte vor dem Speichern.')
+    :X('La photo est lue sur votre appareil et n’est pas envoyée. Vous vérifiez les valeurs avant l’enregistrement.',
+       'تُقرأ الصورة على جهازك ولا تُرسل إلى أي جهة. تتحقق من القيم قبل الحفظ.',
+       'Das Foto wird auf Ihrem Gerät gelesen und nicht gesendet. Sie prüfen die Werte vor dem Speichern.');
 }
 function validIso(s){
   if(typeof s!=='string')return '';
@@ -1229,7 +1364,7 @@ function plausible(t,v,s){
 async function aiRead(file,list,ctl,onStage){
   onStage('prep');
   const c=await prepImage(file,false,1600);
-  const blob=await new Promise((ok,ko)=>c.toBlob(b=>b?ok(b):ko(new Error('image illisible')),'image/jpeg',0.9));
+  const blob=await new Promise((ok,ko)=>c.toBlob(b=>b?ok(b):ko(new Error(X('image illisible','الصورة غير مقروءة','Bild nicht lesbar'))),'image/jpeg',0.9));
   const catalog=list.map(t=>({id:t.id,nom:t.full||t.short,unite:t.unit||''}));
   const prompt='Cette image est la photo ou la capture d’un bilan d’analyses médicales (laboratoire). '
     +'Pour chaque analyse de cette liste, relève le résultat ACTUEL du patient, dans l’unité indiquée :\n'+JSON.stringify(catalog)+'\n'
@@ -1250,12 +1385,12 @@ async function aiRead(file,list,ctl,onStage){
 }
 function aiError(e){
   const c=e&&e.code;
-  if(c==='not_granted')return 'Vous avez refusé l’envoi de la photo à Claude.';
-  if(c==='cancelled')return 'Lecture arrêtée.';
-  if(c==='rate_limited')return 'Trop de demandes. Attendez un moment puis réessayez.';
-  if(c==='image_rejected'||c==='images_unavailable')return 'Cette image ne peut pas être lue (format ou taille).';
-  if(c==='invalid_json')return 'La réponse n’était pas lisible.';
-  return (e&&e.message)?e.message:'erreur';
+  if(c==='not_granted')return X('Vous avez refusé l’envoi de la photo à Claude.','لقد رفضت إرسال الصورة إلى Claude.','Sie haben das Senden des Fotos an Claude abgelehnt.');
+  if(c==='cancelled')return X('Lecture arrêtée.','تم إيقاف القراءة.','Lesen gestoppt.');
+  if(c==='rate_limited')return X('Trop de demandes. Attendez un moment puis réessayez.','طلبات كثيرة. انتظر قليلاً ثم أعد المحاولة.','Zu viele Anfragen. Warten Sie einen Moment und versuchen Sie es erneut.');
+  if(c==='image_rejected'||c==='images_unavailable')return X('Cette image ne peut pas être lue (format ou taille).','تعذّرت قراءة هذه الصورة (الصيغة أو الحجم).','Dieses Bild kann nicht gelesen werden (Format oder Größe).');
+  if(c==='invalid_json')return X('La réponse n’était pas lisible.','لم تكن الإجابة مقروءة.','Die Antwort war nicht lesbar.');
+  return (e&&e.message)?e.message:X('erreur','خطأ','Fehler');
 }
 let SCAN_RUN=0,SCAN_CTL=null;
 async function scanFile(file){
@@ -1265,15 +1400,15 @@ async function scanFile(file){
   const box=$('scan-box'),st=$('scan-status'),stop=$('scan-stop'),save=$('scan-save');
   box.hidden=false;scanMsg('');$('scan-rows').innerHTML='';$('scan-text').value='';$('scan-note').textContent='';$('scan-date').value='';
   save.disabled=true;stop.hidden=false;
-  st.textContent='Préparation de l’image…';showEl(box);
+  st.textContent=X('Préparation de l’image…','جارٍ تحضير الصورة…','Bild wird vorbereitet…');showEl(box);
   let found=[],date='',failed=false;
   const stage=k=>{if(run!==SCAN_RUN)return;st.textContent=({
-    prep:'Préparation de l’image…',
-    ask:'Lecture par Claude en cours… (quelques secondes ; une demande d’autorisation peut s’afficher)',
-    load:'Téléchargement du moteur de lecture… (première fois seulement, environ 10 Mo)',
-    init:'Préparation du moteur de lecture…',
-    pass2:'Deuxième lecture de la zone des résultats…',
-    read:'Lecture en cours…'})[k]||'Lecture en cours…';};
+    prep:X('Préparation de l’image…','جارٍ تحضير الصورة…','Bild wird vorbereitet…'),
+    ask:X('Lecture par Claude en cours… (quelques secondes ; une demande d’autorisation peut s’afficher)','Claude يقرأ الصورة الآن… (بضع ثوانٍ؛ قد يظهر طلب إذن)','Claude liest das Foto… (einige Sekunden; es kann eine Berechtigungsanfrage erscheinen)'),
+    load:X('Téléchargement du moteur de lecture… (première fois seulement, environ 10 Mo)','جارٍ تنزيل محرك القراءة… (في المرة الأولى فقط، نحو 10 ميغابايت)','Lese-Engine wird heruntergeladen… (nur beim ersten Mal, ca. 10 MB)'),
+    init:X('Préparation du moteur de lecture…','جارٍ تحضير محرك القراءة…','Lese-Engine wird vorbereitet…'),
+    pass2:X('Deuxième lecture de la zone des résultats…','قراءة ثانية لمنطقة النتائج…','Zweiter Lesedurchgang des Ergebnisbereichs…'),
+    read:X('Lecture en cours…','القراءة جارية…','Lesen läuft…')})[k]||X('Lecture en cours…','القراءة جارية…','Lesen läuft…');};
   try{
     const list=tests();
     if(SCAN_AI){
@@ -1283,26 +1418,28 @@ async function scanFile(file){
     }else{
       const bands=await bandCanvases(file);
       if(run!==SCAN_RUN)return;
-      if(!bands.length)throw new Error('image vide ou trop floue');
-      const stopP=new Promise((_,ko)=>{ctl.signal.addEventListener('abort',()=>ko(new Error('arrêtée')));});
+      if(!bands.length)throw new Error(X('image vide ou trop floue','الصورة فارغة أو غير واضحة','Bild leer oder zu unscharf'));
+      const stopP=new Promise((_,ko)=>{ctl.signal.addEventListener('abort',()=>ko(new Error(X('arrêtée','أُوقفت','gestoppt'))));});
       const second=async parts=>{
         const hits=bands.filter((b,i)=>parseLab(parts[i]||'',list).length>0);
         if(parseLab(parts.join('\n'),list).length<2||!hits.length)return null;
         const pad=Math.round((hits[0]._y1-hits[0]._y0)*0.7);
         return await bandCanvases(file,{tw:1700,shift:0.5,y0:Math.max(0,Math.min.apply(null,hits.map(b=>b._y0))-pad),y1:Math.max.apply(null,hits.map(b=>b._y1))+pad});
       };
-      const text=await Promise.race([ocrBands(bands,p=>{if(run===SCAN_RUN)st.textContent='Lecture en cours… '+Math.round(p*100)+' %';},stage,second),stopP]);
+      const text=await Promise.race([ocrBands(bands,p=>{if(run===SCAN_RUN)st.textContent=X('Lecture en cours… ','القراءة جارية… ','Lesen läuft… ')+Math.round(p*100)+' %';},stage,second),stopP]);
       if(run!==SCAN_RUN)return;
       $('scan-text').value=text;
       found=parseLab(text,list);date=labDate(text);
     }
     st.textContent=found.length
-      ?found.length+' analyse'+(found.length>1?'s':'')+' trouvée'+(found.length>1?'s':'')+'. Vérifiez chaque valeur avant d’enregistrer.'+(found.some(x=>x.flag)?' Les cadres orange sont peu sûrs.':'')
-      :'Aucune valeur reconnue. Saisissez-les à la main ci-dessous, ou essayez une photo plus nette et bien droite.';
+      ?X(found.length+' analyse'+(found.length>1?'s':'')+' trouvée'+(found.length>1?'s':'')+'. Vérifiez chaque valeur avant d’enregistrer.'+(found.some(x=>x.flag)?' Les cadres orange sont peu sûrs.':''),
+         'عدد التحاليل التي وُجدت: '+found.length+'. تحقق من كل قيمة قبل الحفظ.'+(found.some(x=>x.flag)?' الإطارات البرتقالية غير مؤكدة.':''),
+         found.length+' Analyse'+(found.length>1?'n':'')+' gefunden. Prüfen Sie jeden Wert vor dem Speichern.'+(found.some(x=>x.flag)?' Orangefarbene Rahmen sind unsicher.':''))
+      :X('Aucune valeur reconnue. Saisissez-les à la main ci-dessous, ou essayez une photo plus nette et bien droite.','لم يتم التعرف على أي قيمة. أدخلها يدوياً أدناه، أو جرّب صورة أوضح ومستقيمة.','Kein Wert erkannt. Geben Sie die Werte unten von Hand ein oder versuchen Sie ein schärferes, gerades Foto.');
   }catch(e){
     if(run!==SCAN_RUN)return;
     failed=true;
-    st.textContent=(ctl.signal.aborted?'Lecture arrêtée.':'La lecture automatique n’a pas abouti ('+(SCAN_AI?aiError(e):(e&&e.message?e.message:'erreur'))+').')+' Vous pouvez saisir les valeurs à la main ci-dessous.';
+    st.textContent=(ctl.signal.aborted?X('Lecture arrêtée.','تم إيقاف القراءة.','Lesen gestoppt.'):X('La lecture automatique n’a pas abouti (','لم تنجح القراءة التلقائية (','Das automatische Lesen war nicht erfolgreich (')+(SCAN_AI?aiError(e):(e&&e.message?e.message:X('erreur','خطأ','Fehler')))+').')+X(' Vous pouvez saisir les valeurs à la main ci-dessous.',' يمكنك إدخال القيم يدوياً أدناه.',' Sie können die Werte unten von Hand eingeben.');
   }
   if(run!==SCAN_RUN)return;
   SCAN_CTL=null;stop.hidden=true;save.disabled=false;
@@ -1328,42 +1465,44 @@ $('scan-stop').addEventListener('click',()=>{if(SCAN_CTL)try{SCAN_CTL.abort();}c
 $('scan-cancel').addEventListener('click',()=>{SCAN_RUN++;if(SCAN_CTL){try{SCAN_CTL.abort();}catch(e){}SCAN_CTL=null;}$('scan-stop').hidden=true;$('scan-save').disabled=false;$('scan-box').hidden=true;$('scan-rows').innerHTML='';scanMsg('');});
 $('scan-save').addEventListener('click',async()=>{
   const d=$('scan-date').value;
-  if(!d){scanMsg('Choisissez la date du prélèvement.',true);return;}
+  if(!d){scanMsg(X('Choisissez la date du prélèvement.','اختر تاريخ أخذ العينة.','Wählen Sie das Datum der Blutentnahme.'),true);return;}
   const recs=[];
   for(const li of $('scan-rows').querySelectorAll('.srow')){
     if(!li.querySelector('.sck').checked)continue;
-    const t=T(li.dataset.sid),raw=li.querySelector('.sval').value.trim().replace(',','.'),v=Number(raw);
-    if(!raw||!Number.isFinite(v)||v<=0){scanMsg('Valeur invalide pour '+t.short+'.',true);return;}
+    const t=T(li.dataset.sid),raw=latin(li.querySelector('.sval').value).trim().replace(',','.'),v=Number(raw);
+    if(!raw||!Number.isFinite(v)||v<=0){scanMsg(X('Valeur invalide pour '+t.short+'.','قيمة غير صالحة لـ '+t.short+'.','Ungültiger Wert für '+t.short+'.'),true);return;}
     recs.push({id:newId(),t:t.id,d:d,v:v,p:S.cur});
   }
-  if(!recs.length){scanMsg('Cochez au moins une analyse à enregistrer.',true);return;}
+  if(!recs.length){scanMsg(X('Cochez au moins une analyse à enregistrer.','حدّد تحليلاً واحداً على الأقل للحفظ.','Wählen Sie mindestens eine Analyse zum Speichern aus.'),true);return;}
   let n=0;
   try{for(const r of recs){await addExtra(r);n++;}}
-  catch(err){scanMsg('Enregistrement interrompu après '+n+' mesure'+(n>1?'s':'')+'. Réessayez.',true);renderAll();return;}
+  catch(err){scanMsg(X('Enregistrement interrompu après '+n+' mesure'+(n>1?'s':'')+'. Réessayez.','توقف الحفظ بعد '+n+' قياس. أعد المحاولة.','Speichern nach '+n+' Messwert'+(n>1?'en':'')+' abgebrochen. Bitte erneut versuchen.'),true);renderAll();return;}
   S.sel=recs[0].t;S.pick=recs[0].id;
   renderAll();
   $('scan-box').hidden=true;$('scan-rows').innerHTML='';
-  msg(n+' mesure'+(n>1?'s':'')+' enregistrée'+(n>1?'s':'')+' pour '+curProf().name+' (prélèvement du '+dlabel(d,0)+').',false);
+  msg(X(n+' mesure'+(n>1?'s':'')+' enregistrée'+(n>1?'s':'')+' pour '+nm(curProf())+' (prélèvement du '+dlabel(d,0)+').',
+    'عدد القياسات المحفوظة ('+nm(curProf())+'): '+n+' (أخذ العينة بتاريخ '+dlabel(d,0)+').',
+    n+' Messwert'+(n>1?'e':'')+' für '+nm(curProf())+' gespeichert (Blutentnahme am '+dlabel(d,0)+').'),false);
 });
 
 /* ---------- people ---------- */
 function pmsg(t,bad){const el=$('p-msg');el.textContent=t||'';el.className='msg'+(bad?' bad':'');}
 function renderProfiles(){
   const pr=curProf();
-  $('chips').innerHTML=S.profiles.map(p=>'<button type="button" class="chip" data-prof="'+esc(p.id)+'" aria-pressed="'+(p.id===pr.id?'true':'false')+'">'+esc(p.name)+'</button>').join('');
+  $('chips').innerHTML=S.profiles.map(p=>'<button type="button" class="chip" data-prof="'+esc(p.id)+'" aria-pressed="'+(p.id===pr.id?'true':'false')+'">'+esc(nm(p))+'</button>').join('');
   $('p-del').hidden=!!pr.seed;
-  $('add-who').textContent='pour '+pr.name;
+  $('add-who').textContent=X('pour ','— ','für ')+nm(pr);
   const w=$('io-who');w.textContent='';
-  w.appendChild(document.createTextNode('Les exports et imports concernent '));
-  const b=document.createElement('b');b.textContent=pr.name;w.appendChild(b);
-  w.appendChild(document.createTextNode('. Pour changer de personne, utilisez la liste en haut de la page.'));
+  w.appendChild(document.createTextNode(X('Les exports et imports concernent ','التصدير والاستيراد يخصان ','Export und Import betreffen ')));
+  const b=document.createElement('b');b.textContent=nm(pr);w.appendChild(b);
+  w.appendChild(document.createTextNode(X('. Pour changer de personne, utilisez la liste en haut de la page.','. لتغيير الشخص، استخدم القائمة في أعلى الصفحة.','. Um die Person zu wechseln, nutzen Sie die Liste oben auf der Seite.')));
 }
 function closePanels(){S.pmode=null;$('pform').hidden=true;$('pconfirm').hidden=true;$('tform').hidden=true;$('tconfirm').hidden=true;}
 function openForm(mode){
   closePanels();pmsg('');
   S.pmode=mode;
-  $('p-label').textContent=mode==='add'?'Prénom ou nom de la nouvelle personne':'Nouveau nom';
-  $('p-name').value=mode==='add'?'':curProf().name;
+  $('p-label').textContent=mode==='add'?X('Prénom ou nom de la nouvelle personne','اسم الشخص الجديد','Vor- oder Nachname der neuen Person'):X('Nouveau nom','الاسم الجديد','Neuer Name');
+  $('p-name').value=mode==='add'?'':nm(curProf());
   $('pform').hidden=false;$('p-name').focus();$('p-name').select();
 }
 function switchProf(id){
@@ -1385,7 +1524,7 @@ async function deleteProfile(pid){
       for(const c of S.customs.filter(c=>c.p===pid))await S.col.doc(c.id).delete();
       await S.col.doc(pid).delete();
     }
-  }catch(err){S.busy=false;pmsg('Suppression impossible. Réessayez plus tard.',true);return;}
+  }catch(err){S.busy=false;pmsg(E_DEL(),true);return;}
   S.busy=false;
   S.extras=S.extras.filter(e=>e.p!==pid);
   S.customs=S.customs.filter(c=>c.p!==pid);
@@ -1393,7 +1532,7 @@ async function deleteProfile(pid){
   if(S.mode!=='db')saveLocal();
   closePanels();
   switchProf(S.profiles[0].id);
-  pmsg('Profil « '+pr.name+' » supprimé.');
+  pmsg(X('Profil « '+pr.name+' » supprimé.','تم حذف الملف «'+pr.name+'».','Profil „'+pr.name+'“ gelöscht.'));
 }
 $('chips').addEventListener('click',e=>{
   const b=e.target.closest('[data-prof]');
@@ -1406,7 +1545,7 @@ $('p-del').addEventListener('click',()=>{
   const pr=curProf();if(pr.seed)return;
   closePanels();pmsg('');
   const n=S.extras.filter(x=>x.p===pr.id).length;
-  $('pc-text').textContent='Supprimer '+pr.name+(n?' et ses '+n+' mesure'+(n>1?'s':''):'')+' ? Cette action est définitive.';
+  $('pc-text').textContent=X('Supprimer '+nm(pr)+(n?' et ses '+n+' mesure'+(n>1?'s':''):'')+' ? Cette action est définitive.','حذف '+nm(pr)+(n?' مع قياساته ('+n+')':'')+'؟ لا يمكن التراجع عن هذا الإجراء.',nm(pr)+(n?' und '+n+' Messwert'+(n>1?'e':''):'')+' löschen? Diese Aktion ist endgültig.');
   $('pconfirm').hidden=false;$('pc-yes').focus();
 });
 $('pc-no').addEventListener('click',closePanels);
@@ -1414,21 +1553,21 @@ $('pc-yes').addEventListener('click',()=>deleteProfile(S.cur));
 $('pform').addEventListener('submit',async e=>{
   e.preventDefault();
   const name=cleanName($('p-name').value),mode=S.pmode,self=curProf().id;
-  if(!name){pmsg('Entrez un prénom ou un nom.',true);return;}
-  if(S.profiles.some(p=>p.id!==(mode==='rename'?self:'')&&p.name.toLowerCase()===name.toLowerCase())){pmsg('Ce nom existe déjà. Choisissez-en un autre.',true);return;}
+  if(!name){pmsg(X('Entrez un prénom ou un nom.','أدخل اسماً.','Geben Sie einen Namen ein.'),true);return;}
+  if(S.profiles.some(p=>p.id!==(mode==='rename'?self:'')&&p.name.toLowerCase()===name.toLowerCase())){pmsg(X('Ce nom existe déjà. Choisissez-en un autre.','هذا الاسم موجود مسبقاً. اختر اسماً آخر.','Dieser Name existiert bereits. Wählen Sie einen anderen.'),true);return;}
   if(mode==='rename'){
     const pr=curProf(),old=pr.name;
     pr.name=name;
-    try{await persistProf(pr.id);}catch(err){pr.name=old;pmsg('Enregistrement impossible. Réessayez plus tard.',true);return;}
-    closePanels();renderAll();pmsg('Nom modifié.');
+    try{await persistProf(pr.id);}catch(err){pr.name=old;pmsg(E_SAVE(),true);return;}
+    closePanels();renderAll();pmsg(X('Nom modifié.','تم تعديل الاسم.','Name geändert.'));
     return;
   }
   const np={id:'pf_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),name:name,pct:20,c:Date.now(),seed:false};
   S.profiles.push(np);
   try{await persistProf(np.id);}
-  catch(err){S.profiles=S.profiles.filter(p=>p.id!==np.id);pmsg('Enregistrement impossible. Réessayez plus tard.',true);return;}
+  catch(err){S.profiles=S.profiles.filter(p=>p.id!==np.id);pmsg(E_SAVE(),true);return;}
   switchProf(np.id);
-  pmsg('Profil « '+name+' » créé. Ajoutez sa première mesure plus bas.');
+  pmsg(X('Profil « '+name+' » créé. Ajoutez sa première mesure plus bas.','تم إنشاء الملف «'+name+'». أضف أول قياس له أدناه.','Profil „'+name+'“ erstellt. Fügen Sie unten den ersten Messwert hinzu.'));
 });
 
 /* ---------- custom analyses ---------- */
@@ -1455,7 +1594,7 @@ async function deleteCustom(id){
       for(const e of mine)await S.col.doc(e.id).delete();
       await S.col.doc(id).delete();
     }
-  }catch(err){S.busy=false;tmsg('Suppression impossible. Réessayez plus tard.',true);return;}
+  }catch(err){S.busy=false;tmsg(E_DEL(),true);return;}
   S.busy=false;
   S.extras=S.extras.filter(e=>e.t!==id);
   S.customs=S.customs.filter(x=>x.id!==id);
@@ -1463,7 +1602,7 @@ async function deleteCustom(id){
   $('tconfirm').hidden=true;
   S.sel=null;S.pick=null;
   renderAll();
-  tmsg('Analyse « '+c.name+' » supprimée.');
+  tmsg(X('Analyse « '+c.name+' » supprimée.','تم حذف التحليل «'+c.name+'».','Analyse „'+c.name+'“ gelöscht.'));
 }
 function openTForm(id){
   $('tconfirm').hidden=true;tmsg('');
@@ -1474,7 +1613,7 @@ function openTForm(id){
   $('t-min').value=t&&t.min!=null?String(t.min).replace('.',','):'';
   $('t-max').value=t&&t.max!=null?String(t.max).replace('.',','):'';
   $('t-dec').value=String(t?t.dec:2);
-  $('t-save').textContent=t?'Enregistrer les changements':'Ajouter l\'analyse';
+  $('t-save').textContent=t?X('Enregistrer les changements','حفظ التغييرات','Änderungen speichern'):X('Ajouter l\'analyse','إضافة التحليل','Analyse hinzufügen');
   $('tform').hidden=false;
   showEl($('tform'));$('t-name').focus();
 }
@@ -1484,7 +1623,7 @@ function askDeleteTest(id){
   tEditId=id;
   $('tform').hidden=true;tmsg('');
   const n=S.extras.filter(e=>e.t===id).length;
-  $('tc-text').textContent='Supprimer l\'analyse '+t.full+(n?' et ses '+n+' mesure'+(n>1?'s':''):'')+' ? Cette action est définitive.';
+  $('tc-text').textContent=X('Supprimer l\'analyse '+t.full+(n?' et ses '+n+' mesure'+(n>1?'s':''):'')+' ? Cette action est définitive.','حذف التحليل '+t.full+(n?' مع قياساته ('+n+')':'')+'؟ لا يمكن التراجع عن هذا الإجراء.','Analyse '+t.full+(n?' und '+n+' Messwert'+(n>1?'e':''):'')+' löschen? Diese Aktion ist endgültig.');
   $('tconfirm').hidden=false;showEl($('tconfirm'));$('tc-yes').focus();
 }
 $('t-add').addEventListener('click',()=>openTForm(null));
@@ -1494,23 +1633,23 @@ $('tc-yes').addEventListener('click',()=>deleteCustom(tEditId));
 $('tform').addEventListener('submit',async e=>{
   e.preventDefault();
   const name=cleanText($('t-name').value,40),unit=cleanText($('t-unit').value,12);
-  const rawMin=$('t-min').value.trim(),rawMax=$('t-max').value.trim();
+  const rawMin=latin($('t-min').value).trim(),rawMax=latin($('t-max').value).trim();
   const min=rawMin?parseNum(rawMin):null,max=rawMax?parseNum(rawMax):null;
   const dec=Number($('t-dec').value);
-  if(!name){tmsg('Entrez le nom de l\'analyse.',true);return;}
-  if(!rawMin&&!rawMax){tmsg('Indiquez au moins une limite : basse, haute, ou les deux.',true);return;}
-  if((rawMin&&min==null)||(rawMax&&max==null)){tmsg('Les limites doivent être des nombres supérieurs à 0, par exemple 1,10.',true);return;}
-  if(min!=null&&max!=null&&min>=max){tmsg('La limite basse doit être plus petite que la limite haute.',true);return;}
+  if(!name){tmsg(X('Entrez le nom de l\'analyse.','أدخل اسم التحليل.','Geben Sie den Namen der Analyse ein.'),true);return;}
+  if(!rawMin&&!rawMax){tmsg(X('Indiquez au moins une limite : basse, haute, ou les deux.','حدّد حداً واحداً على الأقل: أدنى أو أعلى أو كليهما.','Geben Sie mindestens eine Grenze an: untere, obere oder beide.'),true);return;}
+  if((rawMin&&min==null)||(rawMax&&max==null)){tmsg(X('Les limites doivent être des nombres supérieurs à 0, par exemple 1,10.','يجب أن تكون الحدود أعداداً أكبر من 0، مثال: 1,10.','Die Grenzen müssen Zahlen größer als 0 sein, z. B. 1,10.'),true);return;}
+  if(min!=null&&max!=null&&min>=max){tmsg(X('La limite basse doit être plus petite que la limite haute.','يجب أن يكون الحد الأدنى أصغر من الحد الأعلى.','Die untere Grenze muss kleiner als die obere Grenze sein.'),true);return;}
   const editing=!!tEditId;
-  if(tests().some(t=>t.id!==tEditId&&norm(t.full)===norm(name))){tmsg('Cette analyse existe déjà dans la liste.',true);return;}
+  if(tests().some(t=>t.id!==tEditId&&norm(t.full)===norm(name))){tmsg(X('Cette analyse existe déjà dans la liste.','هذا التحليل موجود مسبقاً في القائمة.','Diese Analyse ist bereits in der Liste vorhanden.'),true);return;}
   const rec={id:tEditId||'c_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),p:S.cur,name:name,unit:unit,min:min,max:max,dec:Number.isInteger(dec)&&dec>=0&&dec<=3?dec:2};
-  try{await saveCustom(rec);}catch(err){tmsg('Enregistrement impossible. Réessayez plus tard.',true);return;}
+  try{await saveCustom(rec);}catch(err){tmsg(E_SAVE(),true);return;}
   tEditId=null;
   $('tform').hidden=true;
   S.sel=rec.id;S.pick=null;
   renderAll();
   $('f-test').value=rec.id;updateUnit();
-  tmsg(editing?'Analyse modifiée.':'Analyse « '+name+' » ajoutée. Choisissez-la dans la liste « Analyse » pour saisir une mesure.');
+  tmsg(editing?X('Analyse modifiée.','تم تعديل التحليل.','Analyse geändert.'):X('Analyse « '+name+' » ajoutée. Choisissez-la dans la liste « Analyse » pour saisir une mesure.','تمت إضافة التحليل «'+name+'». اخترها من قائمة «التحليل» لإدخال قياس.','Analyse „'+name+'“ hinzugefügt. Wählen Sie sie in der Liste „Analyse“, um einen Messwert einzutragen.'));
 });
 
 /* ---------- tabs ---------- */
@@ -1540,7 +1679,7 @@ function allRows(){
 }
 function buildCsv(){
   const f=thr(),lines=['analyse;date;valeur;unite;limite;statut'];
-  allRows().forEach(x=>lines.push([x.t.full,x.p.d,String(x.p.v).replace('.',','),x.t.unit,x.t.lim,ST[judge(x.t,x.p.v,f).st]].map(csvCell).join(';')));
+  allRows().forEach(x=>lines.push([x.t.full,x.p.d,String(x.p.v).replace('.',','),x.t.unit,x.t.lim,stName(judge(x.t,x.p.v,f).st)].map(csvCell).join(';')));
   return lines.join('\r\n')+'\r\n';
 }
 function buildJson(){
@@ -1552,7 +1691,7 @@ function buildJson(){
 }
 function expMsg(t,bad){const el=$('exp-msg');el.textContent=t;el.className='msg'+(bad?' bad':'');}
 async function doExport(kind){
-  if(!allRows().length){expMsg('Aucune mesure à exporter pour '+curProf().name+'.',true);return;}
+  if(!allRows().length){expMsg(X('Aucune mesure à exporter pour '+nm(curProf())+'.','لا توجد قياسات للتصدير ('+nm(curProf())+').','Keine Messwerte zum Exportieren für '+nm(curProf())+'.'),true);return;}
   const csv=kind==='csv';
   const body=csv?buildCsv():buildJson();
   const name='suivi-sante-'+slug(curProf().name)+'-'+todayIso()+(csv?'.csv':'.json');
@@ -1561,10 +1700,10 @@ async function doExport(kind){
     try{
       await DL.save({filename:name,data:csv?'﻿'+body:body});
       $('exp-fallback').hidden=true;
-      expMsg('Fichier prêt : '+name+'.',false);
+      expMsg(X('Fichier prêt : ','الملف جاهز: ','Datei bereit: ')+name+'.',false);
       return;
     }catch(err){
-      if(err&&err.code==='declined'){expMsg('Enregistrement annulé.',false);return;}
+      if(err&&err.code==='declined'){expMsg(X('Enregistrement annulé.','أُلغي الحفظ.','Speichern abgebrochen.'),false);return;}
     }
   }
   if(!DL){
@@ -1574,26 +1713,31 @@ async function doExport(kind){
       a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();
       setTimeout(()=>URL.revokeObjectURL(url),1000);
       $('exp-fallback').hidden=true;
-      expMsg('Fichier téléchargé : '+name+'.',false);
+      expMsg(X('Fichier téléchargé : ','تم تنزيل الملف: ','Datei heruntergeladen: ')+name+'.',false);
       return;
     }catch(e){}
   }
   $('csv-box').value=body;$('exp-fallback').hidden=false;
-  expMsg('Impossible d\'enregistrer un fichier ici. Copiez le texte ci-dessous.',true);
+  expMsg(X('Impossible d\'enregistrer un fichier ici. Copiez le texte ci-dessous.','تعذّر حفظ ملف هنا. انسخ النص أدناه.','Hier kann keine Datei gespeichert werden. Kopieren Sie den Text unten.'),true);
 }
 $('exp-csv').addEventListener('click',()=>doExport('csv'));
 $('exp-json').addEventListener('click',()=>doExport('json'));
 $('csv-copy').addEventListener('click',async()=>{
   const box=$('csv-box');
-  try{await navigator.clipboard.writeText(box.value);expMsg('Texte copié.',false);}
-  catch(e){box.focus();box.select();expMsg('Texte sélectionné. Copiez-le avec Ctrl+C.',false);}
+  try{await navigator.clipboard.writeText(box.value);expMsg(X('Texte copié.','تم نسخ النص.','Text kopiert.'),false);}
+  catch(e){box.focus();box.select();expMsg(X('Texte sélectionné. Copiez-le avec Ctrl+C.','تم تحديد النص. انسخه بـ Ctrl+C.','Text markiert. Kopieren Sie ihn mit Strg+C.'),false);}
 });
 
 /* ---------- import ---------- */
-const norm=s=>String(s).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');
-function nameMap(){const m={};tests().forEach(t=>{[t.id,t.short,t.full].forEach(n=>{m[norm(n)]=t.id;});});return m;}
+const norm=s=>String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[\u064B-\u065F\u0670\u0640]/g,'').toLowerCase().replace(/[^a-z0-9\u0600-\u06FF]/g,'');
+function nameMap(){
+  const m={};
+  TESTS.forEach(t=>{[t.id,t.short,t.full,t.ar&&t.ar.short,t.ar&&t.ar.full,t.de&&t.de.short,t.de&&t.de.full].forEach(n=>{if(n)m[norm(n)]=t.id;});});
+  tests().filter(t=>t.custom).forEach(t=>{[t.id,t.short,t.full].forEach(n=>{m[norm(n)]=t.id;});});
+  return m;
+}
 function parseDate(s){
-  s=String(s).trim();
+  s=latin(s).trim();
   let y,mo,d,m;
   if((m=/^(\d{4})-(\d{1,2})(?:-(\d{1,2}))?(?:[T ].*)?$/.exec(s))){y=+m[1];mo=+m[2];d=m[3]?+m[3]:1;}
   else if((m=/^(\d{1,2})[\/.\-](\d{1,2})[\/.\-](\d{4})$/.exec(s))){d=+m[1];mo=+m[2];y=+m[3];}
@@ -1603,7 +1747,7 @@ function parseDate(s){
   return y+'-'+String(mo).padStart(2,'0')+'-'+String(d).padStart(2,'0');
 }
 function parseNum(s){
-  const x=String(s).trim().replace(/\s*(g\/l|mg\/l|%)$/i,'').replace(/\s/g,'').replace(',','.');
+  const x=latin(s).trim().replace(/\s*(g\/l|mg\/l|%)$/i,'').replace(/\s/g,'').replace(',','.');
   if(!/^\d+(\.\d+)?$/.test(x))return null;
   const v=Number(x);
   return v>0?v:null;
@@ -1631,9 +1775,9 @@ function csvItems(text){
   const rows=parseCsv(text);
   if(!rows.length)return [];
   const hn=rows[0].map(norm);
-  let ia=hn.findIndex(h=>['analyse','test','nom','indicateur'].indexOf(h)>=0);
-  let id=hn.indexOf('date');
-  let iv=hn.findIndex(h=>['valeur','resultat','value'].indexOf(h)>=0);
+  let ia=hn.findIndex(h=>['analyse','test','nom','indicateur','analysen','name','\u0627\u0644\u062a\u062d\u0644\u064a\u0644','\u062a\u062d\u0644\u064a\u0644','\u0627\u0644\u0627\u0633\u0645'].indexOf(h)>=0);
+  let id=hn.findIndex(h=>['date','datum','\u0627\u0644\u062a\u0627\u0631\u064a\u062e'].indexOf(h)>=0);
+  let iv=hn.findIndex(h=>['valeur','resultat','value','wert','ergebnis','\u0627\u0644\u0642\u064a\u0645\u0629','\u0627\u0644\u0646\u062a\u064a\u062c\u0629'].indexOf(h)>=0);
   let start=0;
   if(ia>=0&&id>=0&&iv>=0)start=1;
   else{ia=0;id=1;iv=2;if(!parseDate(rows[0][1]||''))start=1;}
@@ -1670,7 +1814,7 @@ async function importText(text,fileName){
     }else items=csvItems(text);
   }catch(e){
     res.className='res bad';
-    res.textContent='Fichier illisible. Utilisez un CSV (analyse;date;valeur) ou une sauvegarde JSON exportée ici.';
+    res.textContent=X('Fichier illisible. Utilisez un CSV (analyse;date;valeur) ou une sauvegarde JSON exportée ici.','الملف غير مقروء. استخدم ملف CSV (analyse;date;valeur) أو نسخة JSON احتياطية مُصدَّرة من هنا.','Datei nicht lesbar. Verwenden Sie eine CSV-Datei (analyse;date;valeur) oder eine hier exportierte JSON-Sicherung.');
     return;
   }
   const idMap={};let newTests=0;
@@ -1683,7 +1827,7 @@ async function importText(text,fileName){
     try{await saveCustom(rec);idMap[d.id]=rec.id;newTests++;}catch(e){}
   }
   items.forEach(it=>{if(it.name!=null&&idMap[it.name])it.name=idMap[it.name];});
-  if(!items.length){res.className='res bad';res.textContent='Aucune ligne trouvée dans ce fichier.';return;}
+  if(!items.length){res.className='res bad';res.textContent=X('Aucune ligne trouvée dans ce fichier.','لم يُعثر على أي سطر في هذا الملف.','In dieser Datei wurde keine Zeile gefunden.');return;}
   const names=nameMap(),seen=new Set();
   tests().forEach(t=>readings(t).forEach(p=>seen.add(t.id+'|'+p.d+'|'+p.v)));
   const fresh=[],bad=[],unknown=new Set();let dup=0;
@@ -1699,7 +1843,7 @@ async function importText(text,fileName){
   });
   const over=Math.max(0,fresh.length-300);
   fresh.length=Math.min(fresh.length,300);
-  res.textContent='Import en cours…';
+  res.textContent=X('Import en cours…','الاستيراد جارٍ…','Import läuft…');
   S.busy=true;
   let added=0;
   for(const rec of fresh){
@@ -1710,18 +1854,23 @@ async function importText(text,fileName){
   const failed=fresh.length-added;
   if(pct!=null&&pct!==S.pct)setPct(pct);else renderAll();
   const nothing=added===0&&dup>0&&!bad.length&&!unknown.size&&!failed;
+  const who=esc(nm(curProf()));
   const parts=[nothing
-    ?'<p><b>Rien à ajouter.</b> '+(dup>1?'Les '+dup+' mesures de ce fichier existent':'La mesure de ce fichier existe')+' déjà pour '+esc(curProf().name)+'.</p>'
-    :'<p><b>'+added+' mesure'+(added>1?'s':'')+' ajoutée'+(added>1?'s':'')+'.</b></p>'];
-  if(dup&&!nothing)parts.push('<p>'+dup+' déjà présente'+(dup>1?'s':'')+', ignorée'+(dup>1?'s':'')+'.</p>');
-  if(pct!=null)parts.push('<p>Seuil d\'alerte repris du fichier : '+S.pct+' %.</p>');
-  if(bad.length)parts.push('<p>'+bad.length+' ligne'+(bad.length>1?'s':'')+' non reconnue'+(bad.length>1?'s':'')+' (lignes : '+bad.slice(0,8).join(', ')+(bad.length>8?'…':'')+').</p>');
-  if(added===0&&bad.length&&!unknown.size)parts.push('<p>Le fichier doit avoir une ligne par mesure : analyse;date;valeur. Un tableau avec les dates en colonnes n\'est pas lu.</p>');
-  if(newTests)parts.push('<p>'+newTests+' analyse'+(newTests>1?'s':'')+' ajoutée'+(newTests>1?'s':'')+' à la liste de '+esc(curProf().name)+'.</p>');
-  if(unknown.size)parts.push('<p>Analyse'+(unknown.size>1?'s':'')+' non reconnue'+(unknown.size>1?'s':'')+' : '+Array.from(unknown).slice(0,6).map(esc).join(', ')+'. Ajoutez-'+(unknown.size>1?'les':'la')+' d\'abord avec « Analyse absente de la liste », puis relancez l\'import.</p>');
-  if(over)parts.push('<p>'+over+' mesure'+(over>1?'s':'')+' au-delà de la limite de 300 par import : relancez l\'import pour les ajouter.</p>');
-  if(failed)parts.push('<p>'+failed+' mesure'+(failed>1?'s':'')+' n\'a pas pu être enregistrée.</p>');
-  if(added>0)parts.push('<p><button type="button" class="btn alt" data-tab="suivi">Voir le suivi</button></p>');
+    ?'<p>'+X('<b>Rien à ajouter.</b> '+(dup>1?'Les '+dup+' mesures de ce fichier existent':'La mesure de ce fichier existe')+' déjà pour '+who+'.',
+        '<b>لا شيء لإضافته.</b> '+(dup>1?'جميع القياسات في هذا الملف ('+dup+') موجودة':'القياس في هذا الملف موجود')+' مسبقاً ('+who+').',
+        '<b>Nichts hinzuzufügen.</b> '+(dup>1?'Die '+dup+' Messwerte dieser Datei sind':'Der Messwert dieser Datei ist')+' für '+who+' bereits vorhanden.')+'</p>'
+    :'<p><b>'+X(added+' mesure'+(added>1?'s':'')+' ajoutée'+(added>1?'s':'')+'.','عدد القياسات المضافة: '+added+'.',added+' Messwert'+(added>1?'e':'')+' hinzugefügt.')+'</b></p>'];
+  if(dup&&!nothing)parts.push('<p>'+X(dup+' déjà présente'+(dup>1?'s':'')+', ignorée'+(dup>1?'s':'')+'.','قياسات مكررة تم تجاهلها: '+dup+'.',dup+' bereits vorhanden, ignoriert.')+'</p>');
+  if(pct!=null)parts.push('<p>'+X('Seuil d\'alerte repris du fichier : '+S.pct+' %.','حد التنبيه المأخوذ من الملف: '+S.pct+' %.','Alarmschwelle aus der Datei übernommen: '+S.pct+' %.')+'</p>');
+  const bl=bad.slice(0,8).join(', ')+(bad.length>8?'…':'');
+  if(bad.length)parts.push('<p>'+X(bad.length+' ligne'+(bad.length>1?'s':'')+' non reconnue'+(bad.length>1?'s':'')+' (lignes : '+bl+').','أسطر غير معروفة: '+bad.length+' (الأسطر: '+bl+').',bad.length+' Zeile'+(bad.length>1?'n':'')+' nicht erkannt (Zeilen: '+bl+').')+'</p>');
+  if(added===0&&bad.length&&!unknown.size)parts.push('<p>'+X('Le fichier doit avoir une ligne par mesure : analyse;date;valeur. Un tableau avec les dates en colonnes n\'est pas lu.','يجب أن يحتوي الملف على سطر لكل قياس: analyse;date;valeur. الجدول الذي تكون فيه التواريخ أعمدة غير مدعوم.','Die Datei muss eine Zeile pro Messwert enthalten: analyse;date;valeur. Eine Tabelle mit Datumsspalten wird nicht gelesen.')+'</p>');
+  if(newTests)parts.push('<p>'+X(newTests+' analyse'+(newTests>1?'s':'')+' ajoutée'+(newTests>1?'s':'')+' à la liste de '+who+'.','عدد التحاليل المضافة إلى قائمة '+who+': '+newTests+'.',newTests+' Analyse'+(newTests>1?'n':'')+' zur Liste von '+who+' hinzugefügt.')+'</p>');
+  const ul=Array.from(unknown).slice(0,6).map(esc).join(', ');
+  if(unknown.size)parts.push('<p>'+X('Analyse'+(unknown.size>1?'s':'')+' non reconnue'+(unknown.size>1?'s':'')+' : '+ul+'. Ajoutez-'+(unknown.size>1?'les':'la')+' d\'abord avec « Analyse absente de la liste », puis relancez l\'import.','تحاليل غير معروفة: '+ul+'. أضفها أولاً عبر «التحليل غير موجود في القائمة» ثم أعد الاستيراد.','Nicht erkannte Analyse'+(unknown.size>1?'n':'')+': '+ul+'. Fügen Sie '+(unknown.size>1?'sie':'sie')+' zuerst über „Analyse fehlt in der Liste“ hinzu und starten Sie den Import erneut.')+'</p>');
+  if(over)parts.push('<p>'+X(over+' mesure'+(over>1?'s':'')+' au-delà de la limite de 300 par import : relancez l\'import pour les ajouter.',over+' قياساً فوق حد 300 لكل استيراد: أعد الاستيراد لإضافتها.',over+' Messwert'+(over>1?'e':'')+' über dem Limit von 300 pro Import: Starten Sie den Import erneut, um sie hinzuzufügen.')+'</p>');
+  if(failed)parts.push('<p>'+X(failed+' mesure'+(failed>1?'s':'')+' n\'a pas pu être enregistrée.',failed+' قياساً تعذّر حفظه.',failed+' Messwert'+(failed>1?'e':'')+' konnte'+(failed>1?'n':'')+' nicht gespeichert werden.')+'</p>');
+  if(added>0)parts.push('<p><button type="button" class="btn alt" data-tab="suivi">'+X('Voir le suivi','عرض المتابعة','Verlauf ansehen')+'</button></p>');
   res.className='res'+(added===0&&(bad.length||failed)?' bad':'');
   res.innerHTML=parts.join('');
 }
@@ -1730,31 +1879,32 @@ $('imp-file').addEventListener('change',async e=>{
   const inp=e.target,f=inp.files&&inp.files[0];
   if(!f)return;
   const res=$('imp-res');
-  res.className='res';res.textContent='Lecture de « '+f.name+' »…';
+  res.className='res';res.textContent=X('Lecture de « '+f.name+' »…','قراءة «'+f.name+'»…','„'+f.name+'“ wird gelesen…');
   showEl(res);
   try{
-    if(f.size>2*1024*1024){res.className='res bad';res.textContent='Fichier trop volumineux (2 Mo maximum).';return;}
+    if(f.size>2*1024*1024){res.className='res bad';res.textContent=X('Fichier trop volumineux (2 Mo maximum).','الملف كبير جداً (2 ميغابايت كحد أقصى).','Datei zu groß (maximal 2 MB).');return;}
     let text;
     try{text=await readFile(f);}
-    catch(err){res.className='res bad';res.textContent='Impossible de lire ce fichier. Essayez de coller son contenu dans la zone prévue plus bas.';return;}
+    catch(err){res.className='res bad';res.textContent=X('Impossible de lire ce fichier. Essayez de coller son contenu dans la zone prévue plus bas.','تعذّرت قراءة هذا الملف. جرّب لصق محتواه في المنطقة المخصصة أدناه.','Diese Datei kann nicht gelesen werden. Fügen Sie den Inhalt im Feld weiter unten ein.');return;}
     await importText(text,f.name);
     showEl(res);
   }catch(err){
-    res.className='res bad';res.textContent='Import impossible : '+(err&&err.message?err.message:'erreur inattendue')+'.';
+    res.className='res bad';res.textContent=X('Import impossible : ','تعذّر الاستيراد: ','Import nicht möglich: ')+(err&&err.message?err.message:X('erreur inattendue','خطأ غير متوقع','unerwarteter Fehler'))+'.';
   }finally{inp.value='';}
 });
 $('imp-paste').addEventListener('click',async()=>{
   const res=$('imp-res'),text=$('imp-text').value;
-  if(!text.trim()){res.className='res bad';res.textContent='Collez d\'abord le contenu du fichier.';showEl(res);return;}
+  if(!text.trim()){res.className='res bad';res.textContent=X('Collez d\'abord le contenu du fichier.','الصق أولاً محتوى الملف.','Fügen Sie zuerst den Inhalt der Datei ein.');showEl(res);return;}
   try{await importText(text,'');showEl(res);}
-  catch(err){res.className='res bad';res.textContent='Import impossible : '+(err&&err.message?err.message:'erreur inattendue')+'.';}
+  catch(err){res.className='res bad';res.textContent=X('Import impossible : ','تعذّر الاستيراد: ','Import nicht möglich: ')+(err&&err.message?err.message:X('erreur inattendue','خطأ غير متوقع','unerwarteter Fehler'))+'.';}
 });
 
 /* ---------- boot ---------- */
 (function init(){
   const n=new Date(),iso=n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0')+'-'+String(n.getDate()).padStart(2,'0');
   $('f-date').value=iso;$('f-date').max=iso;
-  $('ver-head').textContent=APP_VERSION;$('ver-foot').textContent=APP_VERSION;$('ver-date').textContent=dlabel(APP_DATE,0);
+  $('ver-head').textContent=APP_VERSION;$('ver-foot').textContent=APP_VERSION;
+  applyChrome();
   loadAll();
   renderAll();
   $('f-test').value=S.sel;updateUnit();

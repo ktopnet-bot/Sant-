@@ -2,7 +2,11 @@
 
 Application de suivi d'analyses biochimiques avec graphiques. Une valeur qui dépasse sa limite de plus de 20 % passe en rouge (seuil réglable).
 
-Créée par Kamel Nasralli. Version 1.5.2 (16 octobre 2026).
+Créée par Kamel Nasralli. Version 1.6.1 (20 octobre 2026).
+
+## Langues
+
+L'application existe en français, en allemand (Deutsch) et en arabe (العربية, de droite à gauche). Le bouton de langue est en haut de la page ; le choix est mémorisé, et la langue de l'appareil est utilisée au premier lancement. L'import CSV/JSON reconnaît les noms d'analyses dans les trois langues.
 
 ## Fichiers à déposer
 
