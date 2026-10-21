@@ -2,7 +2,7 @@
 
 Application de suivi d'analyses biochimiques avec graphiques. Une valeur qui dépasse sa limite de plus de 20 % passe en rouge (seuil réglable).
 
-Créée par Kamel Nasralli. Version 1.7.2 (21 octobre 2026).
+Créée par Kamel Nasralli. Version 1.7.3 (21 octobre 2026).
 
 ## Langues
 
@@ -11,6 +11,10 @@ L'application existe en français, en allemand (Deutsch) et en arabe (العرب
 ## Aide
 
 Le bouton **?** en haut de la page ouvre un guide en français, allemand et arabe : ajouter une mesure, ajouter une analyse absente de la liste, scanner une analyse, comprendre les couleurs, régler le seuil, gérer plusieurs personnes, supprimer une mesure, importer et exporter, installer l'application.
+
+## Partager l'application
+
+L'icône de partage en haut de la page (à côté du **?**) envoie le lien de l'application à des amis. Sur téléphone, elle ouvre la liste de partage du système (WhatsApp, Messages, e-mail…). Sur ordinateur, une fenêtre propose de copier le lien ou de l'envoyer par WhatsApp, Telegram ou e-mail. Chaque personne qui ouvre le lien a sa propre application et ses propres données.
 
 ## Fichiers à déposer
 
