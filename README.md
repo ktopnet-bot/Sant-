@@ -2,11 +2,15 @@
 
 Application de suivi d'analyses biochimiques avec graphiques. Une valeur qui dépasse sa limite de plus de 20 % passe en rouge (seuil réglable).
 
-Créée par Kamel Nasralli. Version 1.6.1 (20 octobre 2026).
+Créée par Kamel Nasralli. Version 1.7.1 (21 octobre 2026).
 
 ## Langues
 
 L'application existe en français, en allemand (Deutsch) et en arabe (العربية, de droite à gauche). Le bouton de langue est en haut de la page ; le choix est mémorisé, et la langue de l'appareil est utilisée au premier lancement. L'import CSV/JSON reconnaît les noms d'analyses dans les trois langues.
+
+## Aide
+
+Le bouton **?** en haut de la page ouvre un guide en français, allemand et arabe : ajouter une mesure, ajouter une analyse absente de la liste, scanner une analyse, comprendre les couleurs, régler le seuil, gérer plusieurs personnes, supprimer une mesure, importer et exporter, installer l'application.
 
 ## Fichiers à déposer
 
@@ -38,8 +42,8 @@ L'application s'ouvre ensuite en plein écran, comme une application, et fonctio
 
 En haut de la page, la liste « Qui utilise l'application ? » permet de choisir une personne, d'en ajouter, de la renommer ou de la supprimer. Chaque personne a ses propres mesures et son propre seuil d'alerte.
 
-- Le premier profil, « Moi » par défaut (vous pouvez le renommer), contient les analyses de votre fichier. Il ne peut pas être supprimé.
-- Les autres profils démarrent vides. On y ajoute des mesures à la main ou avec l'onglet **Import / Export**.
+- Le premier profil, « Exemple » (en allemand « Beispiel », en arabe « مثال »), contient les analyses du fichier d'origine, à titre de démonstration. Il peut être renommé ou supprimé comme les autres ; le lien « Restaurer l'exemple » le ramène tant qu'il est absent. Si c'est le seul profil et que vous le supprimez, un profil vide « Mon profil » est créé à la place.
+- Les nouveaux profils démarrent vides. On y ajoute des mesures à la main ou avec l'onglet **Import / Export**.
 - Les profils ne sont pas protégés par un mot de passe : toute personne qui utilise le même navigateur peut ouvrir tous les profils.
 - Les données restent dans le navigateur de l'appareil utilisé. Si chaque personne ouvre l'application sur son propre téléphone, chacune a sa propre liste, et rien n'est partagé entre les appareils. Pour transférer un profil, exportez-le en JSON ou en CSV, puis importez-le sur l'autre appareil.
 
