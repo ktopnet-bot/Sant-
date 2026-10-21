@@ -2,7 +2,7 @@
 
 Application de suivi d'analyses biochimiques avec graphiques. Une valeur qui dépasse sa limite de plus de 20 % passe en rouge (seuil réglable).
 
-Créée par Kamel Nasralli. Version 1.7.1 (21 octobre 2026).
+Créée par Kamel Nasralli. Version 1.7.2 (21 octobre 2026).
 
 ## Langues
 
@@ -58,7 +58,7 @@ Dans le formulaire « Ajouter une mesure », cliquez sur **+ Analyse absente de 
 
 ## Numéro de version
 
-La version s'affiche sous le titre et en bas de page, avec l'historique des versions. Elle est aussi écrite dans les sauvegardes JSON.
+La version s'affiche sous le titre et en bas de page. Elle est aussi écrite dans les sauvegardes JSON.
 
 ## Confidentialité
 
